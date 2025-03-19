@@ -1,0 +1,793 @@
+{% extends 'base/base.html' %}
+
+{% block title %}동 선택 화면{% endblock %}
+
+{% block content %}
+<!-- 토스트 메시지 컴포넌트 -->
+<div id="toast" class="hidden fixed top-4 right-4 z-50">
+    <div class="bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>지도를 더 확대한 후 매물을 확인해주세요.</span>
+    </div>
+</div>
+<!-- ✅ 매물 종류 및 거래 유형 선택 -->
+<div class="w-full bg-white -bottom-3 shadow py-3 flex justify-center gap-6">
+    <div class="flex gap-3">
+        <div class="relative">
+            <select id="district-select" class="appearance-none w-40 py-2.5 px-4 pr-10 text-sm bg-white border border-gray-300 rounded-lg hover:border-blue-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                <option value="">구 선택</option>
+                {% for district in districts.keys %}
+                    <option value="{{ district }}" {% if district == selected_district %}selected{% endif %}>
+                        {{ district }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="relative">
+            <select id="dong-select" class="appearance-none w-40 py-2.5 px-4 pr-10 text-sm bg-white border border-gray-300 rounded-lg hover:border-blue-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+                <option value="">동 선택</option>
+                {% for dong in selected_district_dongs %}
+                    <option value="{{ dong }}" {% if dong == selected_dong %}selected{% endif %}>
+                        {{ dong }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="relative">
+        <button id="conditionsButton"
+                class="w-40 flex items-center justify-between py-2.5 px-4 text-sm bg-white border border-gray-300 rounded-lg hover:border-blue-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+            <span>매물 조건</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
+        
+        <div id="conditionsPanel" class="hidden absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+            <div class="p-4 border-b border-gray-200">
+                <h3 class="text-sm font-medium text-gray-800 mb-3">매물 종류</h3>
+                <div class="flex gap-3">
+                    <button class="filter-btn flex-1 py-2.5 px-4 rounded-lg transition-all duration-200 border border-gray-300
+                                    ui-selected bg-blue-500 text-white shadow-md"
+                                    data-type="전체"
+                                    onclick="updateMapFilters('property', '전체')">전체</button>
+                    <button class="filter-btn flex-1 py-2.5 px-4 rounded-lg transition-all duration-200 border border-gray-300
+                                    bg-white text-gray-700 hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                                    data-type="원룸"
+                                    onclick="updateMapFilters('property', '원룸')">원룸</button>
+                    <button class="filter-btn flex-1 py-2.5 px-4 rounded-lg transition-all duration-200 border border-gray-300
+                                    bg-white text-gray-700 hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                                    data-type="투룸"
+                                    onclick="updateMapFilters('property', '투룸')">투룸</button>
+                </div>
+            </div>
+
+            <div class="p-4">
+                <h3 class="text-sm font-medium text-gray-800 mb-3">거래 유형</h3>
+                <div class="flex gap-3">
+                    <button class="filter-btn flex-1 py-2.5 px-4 rounded-lg transition-all duration-200 border border-gray-300
+                                    ui-selected bg-blue-500 text-white shadow-md"
+                                    data-type="전체"
+                                    onclick="updateMapFilters('transaction', '전체')">전체</button>
+                    <button class="filter-btn flex-1 py-2.5 px-4 rounded-lg transition-all duration-200 border border-gray-300
+                                    bg-white text-gray-700 hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                                    data-type="월세"
+                                    onclick="updateMapFilters('transaction', '월세')">월세</button>
+                    <button class="filter-btn flex-1 py-2.5 px-4 rounded-lg transition-all duration-200 border border-gray-300
+                                    bg-white text-gray-700 hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                                    data-type="전세"
+                                    onclick="updateMapFilters('transaction', '전세')">전세</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ 왼쪽 패널 (접힌 상태) -->
+<div id="sidebar" class="fixed left-0 w-12 mt-0 bg-white shadow-md flex flex-col items-center py-3 transition-all duration-300 z-40 h-[calc(100vh-120px)]">
+    <!-- 주변 정보 아이콘 -->
+    <button id="toggleSurroundings" class="p-2 rounded-full hover:bg-gray-100 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" />
+        </svg>
+    </button>
+    <span class="text-xs text-gray-600 font-medium mb-6">주변정보</span>
+    
+    <!-- 시세 정보 아이콘 -->
+    <button id="togglePrices" class="p-2 rounded-full hover:bg-gray-100 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+    </button>
+    <span class="text-xs text-gray-600 font-medium mb-6">시세정보</span>
+    
+    <!-- 범죄율 아이콘 -->
+    <button id="toggleCrime" class="p-2 rounded-full hover:bg-gray-100 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+    </button>
+    <span class="text-xs text-gray-600 font-medium mb-6">범죄율</span>
+    
+    <!-- 인구 분석 아이콘 -->
+    <button id="togglePopulation" class="p-2 rounded-full hover:bg-gray-100 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+    </button>
+    <span class="text-xs text-gray-600 font-medium mb-6">인구분석</span>
+
+    <!-- 주변 거리 정보 아이콘 추가 (인구 분석 아이콘 위에) -->
+    <button id="toggleDistance" class="p-2 rounded-full hover:bg-gray-100 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+    </button>
+    <span class="text-xs text-gray-600 font-medium mb-6">거리정보</span>
+    
+    <!-- 매물 확인 버튼 (하단에 고정) -->
+    <div class="mt-auto">
+        <button id="checkProperties" 
+            class="w-10 h-10 p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors shadow-md flex items-center justify-center"
+            disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </button>
+        <span class="text-xs text-gray-600 font-medium -mt-1">매물확인</span>
+    </div>
+</div>
+
+<!-- ✅ 왼쪽 패널 (확장된 상태) -->
+<div id="surroundingsPanel" class="hidden fixed left-12 w-48 bg-white shadow-md p-3 mt-0 z-40 h-[calc(100vh-120px)]">
+    <div class="space-y-3 h-full overflow-y-auto 
+                scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-200 
+                hover:scrollbar-thumb-slate-300">
+        <!-- 카테고리 메뉴 -->
+        <div class="mt-3">
+            <h3 class="text-xs font-medium text-gray-700 mb-2">주변 정보</h3>
+            <!-- 전체 선택 버튼 -->
+            <div class="mb-4">
+                <button class="category-btn w-full py-2 px-4 mb-4 border border-gray-300 rounded-lg transition-all duration-200
+                                bg-white hover:bg-gray-50"
+                        onclick="handleCategoryToggle('ALL')">전체</button>
+            </div>
+
+            <!-- 공공기관 및 안전 -->
+            <div class="mb-4">
+                <h4 class="text-xs font-medium text-gray-600 mb-2">공공기관 및 안전</h4>
+                <div class="flex gap-2">
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border border-gray-300 rounded-lg transition-all duration-200
+                                    ui-not-selected:bg-white ui-not-selected:hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                            onclick="handleCategoryToggle('PO')">경찰서</button>
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border border-gray-300 rounded-lg transition-all duration-200
+                                    ui-not-selected:bg-white ui-not-selected:hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                            onclick="handleCategoryToggle('CC')">주민센터</button>
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border border-gray-300 rounded-lg transition-all duration-200
+                                    ui-not-selected:bg-white ui-not-selected:hover:bg-gray-50
+                                    ui-selected:bg-blue-500 ui-selected:text-white ui-selected:shadow-md"
+                            onclick="handleCategoryToggle('PT')">우체국</button>
+                </div>
+            </div>
+
+            <!-- 의료 시설 -->
+            <div class="mb-4">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">의료 시설</h4>
+                <div class="flex gap-2">
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('HP')">병원</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('PH')">보건소</button>
+                </div>
+            </div>
+
+            <!-- 편의 시설 -->
+            <div class="mb-4">
+                <h4 class="text-xs font-medium text-gray-700 mb-2">편의 시설</h4>
+                <!-- 첫 번째 줄: 3개 버튼 -->
+                <div class="flex gap-2 mb-1.5">
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border rounded-lg hover:bg-gray-50 transition-colors" 
+                            onclick="handleCategoryToggle('CS')">편의점</button>
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border rounded-lg hover:bg-gray-50 transition-colors" 
+                            onclick="handleCategoryToggle('EG')">전기차 충전소</button>
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border rounded-lg hover:bg-gray-50 transition-colors" 
+                            onclick="handleCategoryToggle('GS')">주유소</button>
+                </div>
+                <!-- 두 번째 줄: 2개 버튼 -->
+                <div class="flex gap-2">
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border rounded-lg hover:bg-gray-50 transition-colors" 
+                            onclick="handleCategoryToggle('SL')">셀프 세탁소</button>
+                    <button class="category-btn flex-1 py-2 px-4 text-xs border rounded-lg hover:bg-gray-50 transition-colors" 
+                            onclick="handleCategoryToggle('SM')">마트</button>
+                </div>
+            </div>
+
+            <!-- 교통 관련 -->
+            <div class="mb-4">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">교통</h4>
+                <div class="flex gap-2">
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('BS')">버스정류장</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('PS')">공영주차장</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('SB')">지하철역</button>
+                </div>
+            </div>
+
+            <!-- 교육 관련 -->
+            <div class="mb-4">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">교육</h4>
+                <div class="flex gap-2">
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('DC')">어린이집</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('ED')">교육시설</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('SC')">학교</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('UV')">대학교</button>
+                </div>
+            </div>
+
+            <!-- 여가 관련 -->
+            <div class="mb-4">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">여가</h4>
+                <div class="flex gap-2">
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('FN')">피트니스</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('MR')">음악연습실</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('PR')">PC방</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('TT')">영화관</button>
+                </div>
+            </div>
+
+            <!-- 체육/공원 관련 -->
+            <div class="mb-4">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">체육/공원</h4>
+                <div class="flex gap-2">
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('OS')">체육시설</button>
+                    <button class="category-btn w-full py-2 px-4 border rounded-lg hover:bg-gray-50 transition-colors" onclick="handleCategoryToggle('PK')">공원</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ 시세 정보 패널 (확장된 상태) -->
+<div id="pricesPanel" class="hidden fixed left-12 w-48 bg-white shadow-md p-3 mt-0 z-40 h-[calc(100vh-120px)]">
+    <div class="space-y-3 h-full overflow-y-auto">
+        <h3 class="text-xs font-medium text-gray-700 mb-2">시세 정보</h3>
+        <p class="text-sm text-gray-600">이 지역의 평균 월세는 50만원이며, 전세는 1억 5천만원입니다.</p>
+        <!-- 추가 시세 정보 내용 -->
+    </div>
+</div>
+
+<!-- ✅ 범죄율 패널 (확장된 상태) -->
+<div id="crimePanel" class="hidden fixed left-12 w-48 bg-white shadow-md p-3 mt-0 z-40 h-[calc(100vh-120px)]">
+    <div class="space-y-3 h-full overflow-y-auto">
+        <h3 class="text-xs font-medium text-gray-700 mb-2">범죄율 정보</h3>
+        <p class="text-sm text-gray-600">이 지역의 5대 범죄 발생률은 서울시 평균보다 20% 낮습니다.</p>
+        <!-- 추가 범죄율 정보 내용 -->
+    </div>
+</div>
+
+<!-- ✅ 인구 분석 패널 (확장된 상태) -->
+<div id="populationPanel" class="hidden fixed left-12 w-48 bg-white shadow-md p-3 mt-0 z-40 h-[calc(100vh-120px)]">
+    <div class="space-y-3 h-full overflow-y-auto">
+        <h3 class="text-xs font-medium text-gray-700 mb-2">인구 분석</h3>
+        <p class="text-sm text-gray-600">이 지역은 20-30대 청년 인구 비율이 높으며, 1인 가구가 많습니다.</p>
+        <!-- 추가 인구 분석 내용 -->
+    </div>
+</div>
+
+<!-- ✅ 주변 거리 정보 패널 추가 -->
+<div id="distancePanel" class="hidden fixed left-12 bg-white shadow-md p-0 mt-1 z-40"
+    style="width: 720px; height: 600px;">
+    <div class="h-full w-auto">
+        <iframe id="distanceFrame" src="/static/html/Distance_info.html"
+                class="border-none"
+                style="border:none; width: 100%; height: 100%; display: block; margin: 0 auto;"></iframe>
+    </div>
+</div>
+
+<!-- ✅ 지도 컨테이너 -->
+<div class="fixed left-0 mt-0 overflow-hidden">
+    <div class="ml-12 w-[calc(100vw-3rem)] h-[calc(100vh-120px)]">
+        <iframe id="mapFrame" src="{% url 'map' %}" class="w-full h-full border-none"></iframe>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const districtSelect = document.getElementById("district-select");
+        const dongSelect = document.getElementById("dong-select");
+        const mapFrame = document.getElementById("mapFrame");
+        let selectedDistrict = sessionStorage.getItem("selectedDistrict");
+        let selectedDong = sessionStorage.getItem("selectedDong");
+
+        // 구 선택 이벤트
+        districtSelect.addEventListener("change", function () {
+            selectedDistrict = this.value;
+            sessionStorage.setItem("selectedDistrict", selectedDistrict);
+
+            if (selectedDistrict) {
+                fetch(`/listings/get_dongs/?district=${encodeURIComponent(selectedDistrict)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        dongSelect.innerHTML = "<option value=''>동 선택</option>";
+                        data.dongs.forEach(dong => {
+                            const option = document.createElement("option");
+                            option.value = dong;
+                            option.textContent = dong;
+                            dongSelect.appendChild(option);
+                        });
+
+                        dongSelect.disabled = false;
+                    })
+                    .catch(error => console.error("Error fetching dongs:", error));
+
+                // 구 선택 시 지도 이동
+                mapFrame.contentWindow.postMessage({ 
+                    type: "moveToLocation", 
+                    address: selectedDistrict 
+                }, "*");
+            }
+        });
+
+        // 동 선택 이벤트
+        dongSelect.addEventListener("change", function () {
+            selectedDong = this.value;
+            sessionStorage.setItem("selectedDong", selectedDong);
+
+            if (selectedDistrict && selectedDong) {
+                const fullAddress = `${selectedDistrict} ${selectedDong}`;
+                mapFrame.contentWindow.postMessage({ 
+                    type: "moveToLocation", 
+                    address: fullAddress 
+                }, "*");
+            }
+        });
+
+        // 페이지 로드 시 이전 선택값 복원
+        if (selectedDistrict) {
+            districtSelect.value = selectedDistrict;
+            fetch(`/listings/get_dongs/?district=${encodeURIComponent(selectedDistrict)}`)
+                .then(response => response.json())
+                .then(data => {
+                    dongSelect.innerHTML = "<option value=''>동 선택</option>";
+                    data.dongs.forEach(dong => {
+                        const option = document.createElement("option");
+                        option.value = dong;
+                        option.textContent = dong;
+                        dongSelect.appendChild(option);
+                    });
+                    if (selectedDong) {
+                        dongSelect.value = selectedDong;
+                    }
+                    dongSelect.disabled = false;
+                })
+                .catch(error => console.error("Error fetching dongs:", error));
+        }
+
+        // 사이드바 토글 기능 추가 - 수정된 부분
+        const sidebar = document.getElementById('sidebar');
+        const surroundingsPanel = document.getElementById('surroundingsPanel');
+        const pricesPanel = document.getElementById('pricesPanel');
+        const crimePanel = document.getElementById('crimePanel');
+        const populationPanel = document.getElementById('populationPanel');
+        const distancePanel = document.getElementById('distancePanel');
+        
+        // 모든 패널 닫기 함수 - 변수명 수정
+        function closeAllPanels() {
+            surroundingsPanel.classList.add('hidden');
+            pricesPanel.classList.add('hidden');
+            crimePanel.classList.add('hidden');
+            populationPanel.classList.add('hidden');
+            distancePanel.classList.add('hidden');
+        }
+
+        // 주변 정보 토글
+        document.getElementById('toggleSurroundings').addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isCurrentlyVisible = surroundingsPanel.classList.contains('hidden');
+            closeAllPanels();
+            if (isCurrentlyVisible) {
+                surroundingsPanel.classList.remove('hidden');
+            }
+            console.log('주변 정보 패널 토글');
+        });
+
+        // 시세 정보 토글
+        document.getElementById('togglePrices').addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isCurrentlyVisible = pricesPanel.classList.contains('hidden');
+            closeAllPanels();
+            if (isCurrentlyVisible) {
+                pricesPanel.classList.remove('hidden');
+            }
+            console.log('시세 정보 패널 토글');
+        });
+        
+        // 범죄율 토글
+        document.getElementById('toggleCrime').addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isCurrentlyVisible = crimePanel.classList.contains('hidden');
+            closeAllPanels();
+            if (isCurrentlyVisible) {
+                crimePanel.classList.remove('hidden');
+            }
+            console.log('범죄율 패널 토글');
+        });
+        
+        // 인구 분석 토글
+        document.getElementById('togglePopulation').addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isCurrentlyVisible = populationPanel.classList.contains('hidden');
+            closeAllPanels();
+            if (isCurrentlyVisible) {
+                populationPanel.classList.remove('hidden');
+            }
+            console.log('인구 분석 패널 토글');
+        });
+
+        // 거리 정보 토글
+        document.getElementById('toggleDistance').addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isCurrentlyVisible = distancePanel.classList.contains('hidden');
+            closeAllPanels();
+            if (isCurrentlyVisible) {
+                distancePanel.classList.remove('hidden');
+            }
+            console.log('거리 정보 패널 토글');
+        });
+        
+        // 카테고리 버튼 클릭 시 사이드바 유지
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+                console.log('카테고리 버튼 클릭됨');
+            });
+        });
+    });
+
+    const conditionsButton = document.getElementById('conditionsButton');
+    const conditionsPanel = document.getElementById('conditionsPanel');
+    const arrowIcon = document.querySelector('svg');
+    // 조건 버튼 클릭 시 패널 토글
+    conditionsButton.addEventListener('click', function(event) {
+        event.stopPropagation();
+        const isHidden = conditionsPanel.classList.contains('hidden');
+        
+        conditionsPanel.classList.toggle('hidden');
+
+        if (isHidden) {
+            arrowIcon.style.transform = 'rotate(180deg)';
+        } else {
+            arrowIcon.style.transform = 'rotate(0)';
+        }
+    });
+
+    // 패널 외부 클릭 시 닫기
+    document.addEventListener('click', function(event) {
+        if (!conditionsButton.contains(event.target) && !conditionsPanel.contains(event.target)) {
+            conditionsPanel.classList.add('hidden');
+            arrowIcon.style.transform = 'rotate(0)';
+        }
+    });
+
+    // 필터 버튼 클릭 시 패널 유지
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+</script>
+
+<script>
+    function handleCategoryToggle(category) {
+        const mapWindow = document.getElementById('mapFrame').contentWindow;
+        const btn = event.target;
+        
+        if (category === 'ALL') {
+            // 전체 버튼 클릭 시
+            const allButtons = document.querySelectorAll('.category-btn');
+            const isActivating = !btn.classList.contains('active');
+            
+            // 전체 버튼을 포함한 모든 버튼의 스타일 변경
+            allButtons.forEach(button => {
+                if (isActivating) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            
+            // 지도에 전체 카테고리 토글 적용
+            mapWindow.toggleAllCategories();
+        } else {
+            // 개별 카테고리 버튼 클릭 시
+            btn.classList.toggle('active');
+            mapWindow.toggleCategory(category, btn);
+            
+            // 모든 개별 버튼이 활성화되었는지 확인
+            const categoryButtons = document.querySelectorAll('.category-btn:not([onclick="handleCategoryToggle(\'ALL\')"])');
+            const allButton = document.querySelector('.category-btn[onclick="handleCategoryToggle(\'ALL\')"]');
+            const allActive = Array.from(categoryButtons).every(button => button.classList.contains('active'));
+            
+            // 전체 버튼 상태 업데이트
+            if (allActive) {
+                allButton.classList.add('active');
+            } else {
+                allButton.classList.remove('active');
+            }
+        }
+    }
+</script>
+
+<script>
+    function updateMapFilters(filterType, value) {
+        const mapFrame = document.getElementById('mapFrame');
+        
+        // iframe이 로드되었는지 확인
+        if (!mapFrame.contentWindow) {
+            console.error("❌ mapFrame이 아직 로드되지 않았습니다.");
+            return;
+        }
+
+        // 해당 필터 그룹의 모든 버튼 선택 해제
+        const buttons = document.querySelectorAll(`[data-type][onclick*="updateMapFilters('${filterType}"]`);
+        buttons.forEach(btn => {
+            btn.classList.remove('ui-selected', 'bg-blue-500', 'text-white', 'shadow-md');
+            btn.classList.add('bg-white', 'text-gray-700');
+        });
+
+        // 클릭된 버튼 선택 상태로 변경
+        const clickedButton = event ? event.currentTarget : 
+            document.querySelector(`[data-type="전체"][onclick*="updateMapFilters('${filterType}"]`);
+        clickedButton.classList.remove('bg-white', 'text-gray-700');
+        clickedButton.classList.add('ui-selected', 'bg-blue-500', 'text-white', 'shadow-md');
+
+        // 선택 상태 저장
+        sessionStorage.setItem(`selected_${filterType}`, value);
+
+        // iframe 로드 완료 후 필터 적용
+        if (mapFrame.contentWindow.setPropertyFilter && mapFrame.contentWindow.setTransactionFilter) {
+            if (filterType === 'property') {
+                mapFrame.contentWindow.setPropertyFilter(value);
+            } else {
+                mapFrame.contentWindow.setTransactionFilter(value);
+            }
+        }
+    }
+
+    // 페이지 로드 시 이전 선택 상태 복원 또는 기본값('전체') 설정
+    document.addEventListener('DOMContentLoaded', function() {
+        const mapFrame = document.getElementById('mapFrame');
+        
+        // iframe 로드 완료 후 필터 상태 복원
+        mapFrame.addEventListener('load', function() {
+            const savedProperty = sessionStorage.getItem('selected_property') || '전체';
+            const savedTransaction = sessionStorage.getItem('selected_transaction') || '전체';
+            
+            // 이벤트 없이 직접 '전체' 버튼 선택
+            updateMapFilters('property', savedProperty);
+            updateMapFilters('transaction', savedTransaction);
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const mapFrame = document.getElementById("mapFrame");
+    
+        // ✅ iframe이 완전히 로드된 후 메시지를 보내도록 이벤트 추가
+        mapFrame.addEventListener("load", function () {
+            console.log("🟢 iframe(mapFrame) 로드 완료!");
+            sendLocationToMap();
+        });
+    });
+    
+    function sendLocationToMap() {
+        const mapFrame = document.getElementById("mapFrame");
+    
+        if (!mapFrame.contentWindow) {
+            console.error("❌ mapFrame.contentWindow가 null입니다! iframe이 아직 로드되지 않았을 가능성이 큼.");
+            return;
+        }
+    
+        let selectedDistrict = decodeURIComponent(sessionStorage.getItem("selectedDistrict"));
+        let selectedDong = decodeURIComponent(sessionStorage.getItem("selectedDong"));
+        let type = decodeURIComponent(sessionStorage.getItem("type"));
+    
+        console.log("📌 동선택화면 - 저장된 구:", selectedDistrict);
+        console.log("📌 동선택화면 - 저장된 동:", selectedDong);
+        console.log("📌 동선택화면 - 저장된 타입:", type);
+    
+        if (selectedDistrict && selectedDong && type === 'moveToLocation') {
+            const fullAddress = `${selectedDistrict} ${selectedDong}`;
+            console.log("📤 지도에 메시지 전송 (iframe 완전 로드 후): ", fullAddress);
+    
+            mapFrame.contentWindow.postMessage({
+                type: "moveToLocation",
+                address: fullAddress 
+            }, "*");
+
+            // 메시지 전송 후 sessionStorage 초기화
+            sessionStorage.removeItem("selectedDistrict");
+            sessionStorage.removeItem("selectedDong");
+            sessionStorage.removeItem("type");
+        }
+        else {
+            mapFrame.contentWindow.postMessage({
+                type: 'initializeMap',
+            }, '*');
+
+            // 메시지 전송 후 sessionStorage 초기화
+            sessionStorage.removeItem("selectedDistrict");
+            sessionStorage.removeItem("selectedDong");
+            sessionStorage.removeItem("type");
+        }
+    }
+</script>
+
+<script>
+    let clusterCenter = null;
+    let mapLevel = null;
+    // let allClustersData = [];  // 모든 클러스터 정보를 저장할 배열
+
+    // // iframe으로부터 메시지 수신 부분 수정
+    // window.addEventListener('message', function(event) {
+    //     if (event.data.type === 'clusterCenter') {
+    //         clusterCenter = event.data.center;
+    //         mapLevel = clusterCenter.level;
+            
+    //         const checkButton = document.getElementById('checkProperties');
+    //         checkButton.disabled = false;
+    //         checkButton.classList.remove('opacity-50');
+            
+    //         if (mapLevel > 4) {
+    //             showToast();
+    //             return;
+    //         }
+            
+    //         checkButton.classList.add('animate-pulse');
+    //         setTimeout(() => {
+    //             checkButton.classList.remove('animate-pulse');
+    //         }, 2000);
+    //     } 
+    //     else if (event.data.type === 'saveCluster') {
+    //         const clusterData = event.data.cluster;
+            
+    //         // 서버로 클러스터 데이터 전송
+    //         saveClustersToCSV(clusterData);
+    //     }
+    // });
+
+    // // 클러스터 정보를 활용한 UI 업데이트 함수 예시
+    // function updateClusterInfo(clusters) {
+    //     const totalClusters = clusters.length;
+    //     const totalMarkers = clusters.reduce((sum, cluster) => sum + cluster.count, 0);
+        
+    //     console.log(`총 클러스터 수: ${totalClusters}`);
+    //     console.log(`총 매물 수: ${totalMarkers}`);
+        
+    //     // 여기에 UI 업데이트 로직 추가 가능
+    // }
+
+    function showToast() {
+        const toast = document.getElementById('toast');
+        console.log('toast element:', toast);
+        toast.classList.remove('hidden');
+        toast.classList.add('animate-fade-in-down');
+        
+        setTimeout(() => {
+            toast.classList.add('animate-fade-out-up');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('animate-fade-in-down', 'animate-fade-out-up');
+            }, 300);
+        }, 3000);
+    }
+
+    // 매물 확인 버튼 클릭 이벤트
+    document.getElementById('checkProperties').addEventListener('click', function() {
+        if (clusterCenter) {
+            if (mapLevel > 4) {
+                showToast();
+                return;
+            }
+            // 현재 선택된 필터 값 가져오기
+            const selectedProperty = sessionStorage.getItem('selected_property') || '전체';
+            const selectedTransaction = sessionStorage.getItem('selected_transaction') || '전체';
+            
+            // 네이버 부동산 파라미터 설정
+            let propertyType = '';
+            switch(selectedProperty) {
+                case '원룸':
+                    propertyType = 'OR';  // 원룸
+                    break;
+                case '투룸':
+                    propertyType = 'TR';  // 투룸
+                    break;
+                default:
+                    propertyType = 'OR:TR';  // 전체 (원룸+투룸)
+            }
+
+            let transactionType = '';
+            switch(selectedTransaction) {
+                case '월세':
+                    transactionType = 'RENT';  // 월세
+                    break;
+                case '전세':
+                    transactionType = 'JEONSE';  // 전세
+                    break;
+                default:
+                    transactionType = 'RENT:JEONSE';  // 전체 (월세+전세)
+            }
+
+            const naverLandUrl = `https://new.land.naver.com/rooms?` + 
+                `ms=${clusterCenter.lat},${clusterCenter.lng},16&` +
+                `type=${transactionType}&` +
+                `roomType=${propertyType}&` +
+                `aa=SMALLSPCRENT`;
+            
+            console.log("🔍 네이버 부동산 URL:", naverLandUrl);
+            
+            window.open(naverLandUrl, '_blank');
+        } else {
+            alert('먼저 지도에서 클러스터를 선택해주세요.');
+        }
+    });
+</script>
+<!-- 
+<script>
+    // CSV 저장 함수 수정
+    function saveClustersToCSV(clusters) {
+        fetch('/listings/save_clusters/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                clusters: clusters  // 클러스터 배열 전체 전송
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('클러스터 정보가 성공적으로 저장되었습니다.');
+            } else {
+                console.error('클러스터 저장 실패:', data.error);
+            }
+        })
+        .catch(error => console.error('Error saving clusters:', error));
+    }
+
+    // CSRF 토큰을 가져오는 함수
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script> -->
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/filters.js"></script>
+<script>
+    // 기존 JavaScript 코드들...
+</script>
+{% endblock %}

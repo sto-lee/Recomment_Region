@@ -1,0 +1,14 @@
+from data.insert_data_rectype import insert_data_rectype
+from data.insert_data_property import insert_data_property
+from data.insert_data_amenity import insert_data_amenity
+from data.insert_data_district import insert_data_district
+from data.insert_data_neighborhood import insert_data_neighborhood
+from data.insert_data_board import insert_data_board
+
+
+insert_data_property()
+insert_data_amenity()
+insert_data_district()
+insert_data_neighborhood()
+insert_data_board()
+insert_data_rectype

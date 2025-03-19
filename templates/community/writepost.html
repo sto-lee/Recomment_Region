@@ -1,0 +1,236 @@
+<!-- 
+이 페이지는 Bootstrap Icons을 포함하고 있습니다.
+출처: https://icons.getbootstrap.com/
+라이선스: MIT (https://github.com/twbs/icons/blob/main/LICENSE)
+-->
+
+{% extends 'base/base.html' %}
+
+{% block title %}커뮤니티 글쓰기{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <form action="{% url 'community' %}" 
+          method="post" 
+          enctype="multipart/form-data" 
+          class="bg-white rounded-lg shadow-lg p-6"
+          onsubmit="return validateForm(event)">
+        {% csrf_token %}
+        
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">커뮤니티 글쓰기</h1>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                등록하기
+            </button>
+        </div>
+    
+        <div class="border-b mb-6"></div>
+    
+        <!-- 구와 동 선택 영역 -->
+        <div class="flex gap-4 mb-6">
+            <select name="district" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">구 선택</option>
+                <option value="gangnam">강남구</option>
+                <option value="jongno">종로구</option>
+                <option value="geumcheon">금천구</option>
+            </select>
+            <select name="neighborhood" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">동 선택</option>
+                <option value="samsung">삼성동</option>
+                <option value="yeoksam">역삼동</option>
+                <option value="gasan">가산동</option>
+            </select>
+        </div>
+    
+        <select name="category" class="w-full px-4 py-2 border rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">주제를 선택해주세요</option>
+            <option value="free">자유 게시판</option>
+            <option value="anonymous">익명 게시판</option>
+        </select>
+        
+        <textarea name="content" 
+                  placeholder="내용을 입력해 주세요" 
+                  maxlength="5000"
+                  pattern="[가-힣a-zA-Z0-9\s!.,?]+"
+                  class="w-full h-64 px-4 py-2 border rounded-lg mb-6 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    
+        <div class="flex items-center gap-4">
+            <label for="image-upload" class="w-20 h-20 flex items-center justify-center border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                <i class="bi bi-image text-3xl text-gray-600"></i>
+            </label>
+            <input type="file" 
+                   id="image-upload" 
+                   name="image" 
+                   accept="image/jpeg,image/png,image/gif"
+                   class="hidden" 
+                   onchange="validateAndPreviewImage(event)">
+            
+            <div class="image-preview flex gap-4" id="image-preview"></div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const districtSelect = document.querySelector('select[name="district"]');
+        const neighborhoodSelect = document.querySelector('select[name="neighborhood"]');
+        const contentTextarea = document.querySelector('textarea[name="content"]');
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // 입력값 검증 함수
+        function validateForm(event) {
+            try {
+                const district = districtSelect.value;
+                const neighborhood = neighborhoodSelect.value;
+                const content = contentTextarea.value.trim();
+                
+                // 필수 입력값 검증
+                if (!district || !neighborhood || !content) {
+                    alert('모든 필수 항목을 입력해주세요.');
+                    event.preventDefault();
+                    return false;
+                }
+
+                // 콘텐츠 유효성 검증
+                const contentPattern = /^[가-힣a-zA-Z0-9\s!.,?]+$/;
+                if (!contentPattern.test(content) || content.length > 5000) {
+                    alert('내용에 허용되지 않은 문자가 포함되어 있거나 너무 깁니다.');
+                    event.preventDefault();
+                    return false;
+                }
+
+                return true;
+            } catch (error) {
+                console.error('Form validation error:', error);
+                event.preventDefault();
+                return false;
+            }
+        }
+
+        // 이미지 검증 및 미리보기
+        function validateAndPreviewImage(event) {
+            try {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                // 파일 크기 제한 (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('파일 크기는 5MB를 초과할 수 없습니다.');
+                    event.target.value = '';
+                    return;
+                }
+
+                // 파일 타입 검증
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('허용되지 않은 파일 형식입니다.');
+                    event.target.value = '';
+                    return;
+                }
+
+                // 안전한 이미지 미리보기
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.innerHTML = `<img src="${escapeHtml(e.target.result)}" class="w-20 h-20 object-cover rounded-lg">`;
+                };
+                reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('Image validation error:', error);
+                event.target.value = '';
+            }
+        }
+
+        // HTML 이스케이프 함수
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // 세션 스토리지 보안 강화
+        function secureStorage(key, value = null) {
+            try {
+                if (value) {
+                    const encrypted = encryptData(value);
+                    sessionStorage.setItem(key, encrypted);
+                } else {
+                    const encrypted = sessionStorage.getItem(key);
+                    return encrypted ? decryptData(encrypted) : null;
+                }
+            } catch (error) {
+                console.error('Storage error:', error);
+                return null;
+            }
+        }
+
+        // API 요청 보안 처리
+        async function secureApiRequest(url, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+
+                const response = await fetch(url, options);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                return await response.json();
+            } catch (error) {
+                console.error('API error:', error);
+                throw error;
+            }
+        }
+
+        // 폼 제출 처리
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            try {
+                if (!validateForm(event)) return;
+
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                if (data.success) {
+                    // 성공 시 세션 데이터 초기화
+                    secureStorage('draftPost', null);
+                    window.location.href = data.redirect_url;
+                } else {
+                    alert(data.error || '게시글 작성에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('게시글 작성 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 이벤트 리스너 등록
+        form.addEventListener('submit', handleSubmit);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,1455 @@
+{
+  "클러스터_위도": 37.5098276676831,
+  "클러스터_경도": 127.02397766423822,
+  "클러스터_level": 4.0,
+  "facilities": {
+    "bus": [
+      {
+        "bus_lat": 37.50934621,
+        "bus_lon": 127.0223963,
+        "bus_type": "버스정류장",
+        "bus_name": "영동시장.논현역3번출구",
+        "distance": 149.40600691109674,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.5091091,
+        "bus_lon": 127.0219545,
+        "bus_type": "버스정류장",
+        "bus_name": "논현역4번출구",
+        "distance": 195.5254924050417,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.51133678,
+        "bus_lon": 127.0224536,
+        "bus_type": "버스정류장",
+        "bus_name": "영동시장.논현역1번출구",
+        "distance": 215.01143583057976,
+        "walking_time": "약 4분"
+      },
+      {
+        "bus_lat": 37.51028967,
+        "bus_lon": 127.021493,
+        "bus_type": "버스정류장",
+        "bus_name": "논현역",
+        "distance": 225.1002362652333,
+        "walking_time": "약 4분"
+      },
+      {
+        "bus_lat": 37.51185086,
+        "bus_lon": 127.0234689,
+        "bus_type": "버스정류장",
+        "bus_name": "영동시장",
+        "distance": 229.4007356910414,
+        "walking_time": "약 4분"
+      },
+      {
+        "bus_lat": 37.5072265,
+        "bus_lon": 127.0230319,
+        "bus_type": "버스정류장",
+        "bus_name": "논현역",
+        "distance": 301.0269222125819,
+        "walking_time": "약 5분"
+      },
+      {
+        "bus_lat": 37.506367,
+        "bus_lon": 127.023728,
+        "bus_type": "버스정류장",
+        "bus_name": "논현역",
+        "distance": 385.4383282792551,
+        "walking_time": "약 6분"
+      },
+      {
+        "bus_lat": 37.51066295,
+        "bus_lon": 127.019358,
+        "bus_type": "버스정류장",
+        "bus_name": "논현역7번출구",
+        "distance": 417.9276701976788,
+        "walking_time": "약 7분"
+      },
+      {
+        "bus_lat": 37.50605355,
+        "bus_lon": 127.0235528,
+        "bus_type": "버스정류장",
+        "bus_name": "교보사거리",
+        "distance": 421.3327431201984,
+        "walking_time": "약 7분"
+      },
+      {
+        "bus_lat": 37.51029082,
+        "bus_lon": 127.019213,
+        "bus_type": "버스정류장",
+        "bus_name": "논현역6번출구",
+        "distance": 423.4108163831128,
+        "walking_time": "약 7분"
+      }
+    ],
+    "community_center": [
+      {
+        "community_center_lat": 37.5115038,
+        "community_center_lon": 127.0285345,
+        "community_center_type": "주민센터",
+        "community_center_name": "논현1동 주민자치센터",
+        "distance": 443.0419266960658,
+        "walking_time": "약 7분"
+      },
+      {
+        "community_center_lat": 37.50271558,
+        "community_center_lon": 127.02221,
+        "community_center_type": "주민센터",
+        "community_center_name": "서초4동 자치회관",
+        "distance": 806.0530664659333,
+        "walking_time": "약 13분"
+      },
+      {
+        "community_center_lat": 37.51496808,
+        "community_center_lon": 127.0139821,
+        "community_center_type": "주민센터",
+        "community_center_name": "잠원동 자치회관",
+        "distance": 1050.7072234229977,
+        "walking_time": "약 16분"
+      },
+      {
+        "community_center_lat": 37.50509404,
+        "community_center_lon": 127.0133786,
+        "community_center_type": "주민센터",
+        "community_center_name": "반포1동 자치회관",
+        "distance": 1072.9075594702963,
+        "walking_time": "약 17분"
+      },
+      {
+        "community_center_lat": 37.51728313,
+        "community_center_lon": 127.0372042,
+        "community_center_type": "주민센터",
+        "community_center_name": "논현2동 주민자치센터",
+        "distance": 1431.1509519873498,
+        "walking_time": "약 22분"
+      },
+      {
+        "community_center_lat": 37.49537321,
+        "community_center_lon": 127.0332838,
+        "community_center_type": "주민센터",
+        "community_center_name": "역삼1동 주민자치센터",
+        "distance": 1804.7763312465493,
+        "walking_time": "약 27분"
+      },
+      {
+        "community_center_lat": 37.49206947,
+        "community_center_lon": 127.0249478,
+        "community_center_type": "주민센터",
+        "community_center_name": "서초2동 자치회관",
+        "distance": 1976.4751892776148,
+        "walking_time": "약 30분"
+      },
+      {
+        "community_center_lat": 37.49012683,
+        "community_center_lon": 127.0195384,
+        "community_center_type": "주민센터",
+        "community_center_name": "서초1동 자치회관",
+        "distance": 2225.362566707957,
+        "walking_time": "약 34분"
+      }
+    ],
+    "convenience_store": [
+      {
+        "convenience_store_lat": 37.5097069,
+        "convenience_store_lon": 127.0246702,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 논현신우점",
+        "distance": 62.54398845806334,
+        "walking_time": "약 1분"
+      },
+      {
+        "convenience_store_lat": 37.51051524,
+        "convenience_store_lon": 127.0235361,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 논현동화점",
+        "distance": 85.80357646319142,
+        "walking_time": "약 2분"
+      },
+      {
+        "convenience_store_lat": 37.50887756,
+        "convenience_store_lon": 127.0231369,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 논현대지본점",
+        "distance": 129.07776961215154,
+        "walking_time": "약 2분"
+      },
+      {
+        "convenience_store_lat": 37.50931378,
+        "convenience_store_lon": 127.0255479,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 논현타운점",
+        "distance": 149.82790047531185,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.50976878,
+        "convenience_store_lon": 127.0259875,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "세븐일레븐 논현스타우스점",
+        "distance": 177.3990333544483,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.50924194,
+        "convenience_store_lon": 127.0261278,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 논현우람점",
+        "distance": 200.5256985210058,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.50805429,
+        "convenience_store_lon": 127.0246134,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 논현영동시장점",
+        "distance": 205.0088776562084,
+        "walking_time": "약 4분"
+      },
+      {
+        "convenience_store_lat": 37.5111902,
+        "convenience_store_lon": 127.0256341,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "세븐일레븐 논현12호점",
+        "distance": 210.4779006817211,
+        "walking_time": "약 4분"
+      },
+      {
+        "convenience_store_lat": 37.50850474,
+        "convenience_store_lon": 127.0221218,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "세븐일레븐 영동점",
+        "distance": 220.08276355590127,
+        "walking_time": "약 4분"
+      },
+      {
+        "convenience_store_lat": 37.51054029,
+        "convenience_store_lon": 127.0211369,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "미니스톱 논현역2점",
+        "distance": 262.80005229997664,
+        "walking_time": "약 4분"
+      }
+    ],
+    "daycare": [
+      {
+        "daycare_lat": 37.50914042,
+        "daycare_lon": 127.0245807,
+        "daycare_type": "어린이집",
+        "daycare_name": "초록나라어린이집",
+        "distance": 93.1078981131382,
+        "walking_time": "약 2분"
+      },
+      {
+        "daycare_lat": 37.51108922,
+        "daycare_lon": 127.0257611,
+        "daycare_type": "어린이집",
+        "daycare_name": "사과나무어린이집",
+        "distance": 210.76881730169728,
+        "walking_time": "약 4분"
+      },
+      {
+        "daycare_lat": 37.51100194,
+        "daycare_lon": 127.0268685,
+        "daycare_type": "어린이집",
+        "daycare_name": "논현어린이집",
+        "distance": 286.4727544403595,
+        "walking_time": "약 5분"
+      },
+      {
+        "daycare_lat": 37.50786125,
+        "daycare_lon": 127.0212414,
+        "daycare_type": "어린이집",
+        "daycare_name": "반포복지관어린이집",
+        "distance": 325.6732271721855,
+        "walking_time": "약 5분"
+      },
+      {
+        "daycare_lat": 37.51128485,
+        "daycare_lon": 127.0289792,
+        "daycare_type": "어린이집",
+        "daycare_name": "보미나어린이집",
+        "distance": 469.97235276797016,
+        "walking_time": "약 8분"
+      },
+      {
+        "daycare_lat": 37.50997457,
+        "daycare_lon": 127.018463,
+        "daycare_type": "어린이집",
+        "daycare_name": "반포1동어린이집",
+        "distance": 486.6960799472751,
+        "walking_time": "약 8분"
+      },
+      {
+        "daycare_lat": 37.50867592,
+        "daycare_lon": 127.0185172,
+        "daycare_type": "어린이집",
+        "daycare_name": "서초구립 반포단비어린이집",
+        "distance": 498.3811661699757,
+        "walking_time": "약 8분"
+      },
+      {
+        "daycare_lat": 37.51471891,
+        "daycare_lon": 127.0227401,
+        "daycare_type": "어린이집",
+        "daycare_name": "퍼스트클래스룸어린이집",
+        "distance": 554.7269185637589,
+        "walking_time": "약 9분"
+      },
+      {
+        "daycare_lat": 37.5090878,
+        "daycare_lon": 127.0175788,
+        "daycare_type": "어린이집",
+        "daycare_name": "가나안샘터어린이집",
+        "distance": 570.380551975054,
+        "walking_time": "약 9분"
+      },
+      {
+        "daycare_lat": 37.515043450022006,
+        "daycare_lon": 127.02290298189229,
+        "daycare_type": "어린이집",
+        "daycare_name": "신논현어린이집",
+        "distance": 587.6636077185418,
+        "walking_time": "약 9분"
+      }
+    ],
+    "education": [
+      {
+        "education_lat": 37.51404673,
+        "education_lon": 127.0295507,
+        "education_type": "공연장",
+        "education_name": "엠팟홀",
+        "distance": 679.4992227161473,
+        "walking_time": "약 11분"
+      },
+      {
+        "education_lat": 37.51404673,
+        "education_lon": 127.0295507,
+        "education_type": "공연장",
+        "education_name": "삼익아트홀",
+        "distance": 679.4992227161473,
+        "walking_time": "약 11분"
+      },
+      {
+        "education_lat": 37.51737884,
+        "education_lon": 127.0205016,
+        "education_type": "미술관/갤러리",
+        "education_name": "김영섭사진화랑",
+        "distance": 893.8758246687977,
+        "walking_time": "약 14분"
+      },
+      {
+        "education_lat": 37.51496808,
+        "education_lon": 127.0139821,
+        "education_type": "도서관",
+        "education_name": "서초구립 잠원도서관",
+        "distance": 1050.7072234229977,
+        "walking_time": "약 16분"
+      },
+      {
+        "education_lat": 37.500936,
+        "education_lon": 127.0296228,
+        "education_type": "도서관",
+        "education_name": "국립어린이청소년 도서관",
+        "distance": 1107.0269302771435,
+        "walking_time": "약 17분"
+      },
+      {
+        "education_lat": 37.51951013,
+        "education_lon": 127.019106,
+        "education_type": "공연장",
+        "education_name": "거암아트홀",
+        "distance": 1159.2147305101882,
+        "walking_time": "약 18분"
+      },
+      {
+        "education_lat": 37.50248707,
+        "education_lon": 127.0125134,
+        "education_type": "도서관",
+        "education_name": "서초구립반포도서관",
+        "distance": 1299.5714943580938,
+        "walking_time": "약 20분"
+      },
+      {
+        "education_lat": 37.51846218273785,
+        "education_lon": 127.03453476540844,
+        "education_type": "박물관/기념관",
+        "education_name": "국립관세박물관",
+        "distance": 1337.4742064276973,
+        "walking_time": "약 20분"
+      },
+      {
+        "education_lat": 37.49743406,
+        "education_lon": 127.0245168,
+        "education_type": "미술관/갤러리",
+        "education_name": "부띠크모나코뮤지엄",
+        "distance": 1378.9266776879278,
+        "walking_time": "약 21분"
+      },
+      {
+        "education_lat": 37.50839127,
+        "education_lon": 127.0397754,
+        "education_type": "공연장",
+        "education_name": "라움아트센터",
+        "distance": 1402.5805212707255,
+        "walking_time": "약 21분"
+      }
+    ],
+    "fitness": [
+      {
+        "fitness_lat": 37.51051524,
+        "fitness_lon": 127.0235361,
+        "fitness_type": "운동시설",
+        "fitness_name": "논현역점 스포애니 주)케이디스포츠",
+        "distance": 85.80357646319142,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.51025583,
+        "fitness_lon": 127.0231534,
+        "fitness_type": "운동시설",
+        "fitness_name": "포텐PT",
+        "distance": 86.90550706227555,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.5106818,
+        "fitness_lon": 127.0246023,
+        "fitness_type": "운동시설",
+        "fitness_name": "바디스페이스(371)",
+        "distance": 109.79907367578171,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.50929563,
+        "fitness_lon": 127.0226432,
+        "fitness_type": "운동시설",
+        "fitness_name": "코리안 탑팀 강남",
+        "distance": 131.73789233054742,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.50867738,
+        "fitness_lon": 127.023051,
+        "fitness_type": "운동시설",
+        "fitness_name": "액트짐 논현점",
+        "distance": 151.79251655204027,
+        "walking_time": "약 3분"
+      },
+      {
+        "fitness_lat": 37.50908783,
+        "fitness_lon": 127.02185,
+        "fitness_type": "운동시설",
+        "fitness_name": "위 크로스핏 강남",
+        "distance": 204.9110602219544,
+        "walking_time": "약 4분"
+      },
+      {
+        "fitness_lat": 37.51083127,
+        "fitness_lon": 127.021874,
+        "fitness_type": "운동시설",
+        "fitness_name": "휴메이크 휘트니스",
+        "distance": 216.5258998741492,
+        "walking_time": "약 4분"
+      },
+      {
+        "fitness_lat": 37.50828803,
+        "fitness_lon": 127.0222059,
+        "fitness_type": "운동시설",
+        "fitness_name": "아우라짐 논현역점",
+        "distance": 231.8038150441368,
+        "walking_time": "약 4분"
+      },
+      {
+        "fitness_lat": 37.50952321,
+        "fitness_lon": 127.0266148,
+        "fitness_type": "운동시설",
+        "fitness_name": "스카이짐",
+        "distance": 235.06037187462337,
+        "walking_time": "약 4분"
+      },
+      {
+        "fitness_lat": 37.50998073,
+        "fitness_lon": 127.0266511,
+        "fitness_type": "운동시설",
+        "fitness_name": "논현PT 미라클 통증케어 체형교정",
+        "distance": 236.4242461469577,
+        "walking_time": "약 4분"
+      }
+    ],
+    "gas_station": [
+      {
+        "gas_station_lat": 37.50373272,
+        "gas_station_lon": 127.0231956,
+        "gas_station_type": "주유소",
+        "gas_station_name": "에너지플러스 허브 삼방",
+        "distance": 681.2291601821224,
+        "walking_time": "약 11분"
+      },
+      {
+        "gas_station_lat": 37.50328119,
+        "gas_station_lon": 127.0215087,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크(주)직영사평로주유소",
+        "distance": 759.8156997632462,
+        "walking_time": "약 12분"
+      },
+      {
+        "gas_station_lat": 37.5107347,
+        "gas_station_lon": 127.0327347,
+        "gas_station_type": "주유소",
+        "gas_station_name": "유한책임회사 동하석유 (힐탑주유소)",
+        "distance": 778.9687521144865,
+        "walking_time": "약 12분"
+      },
+      {
+        "gas_station_lat": 37.51615528,
+        "gas_station_lon": 127.0188593,
+        "gas_station_type": "주유소",
+        "gas_station_name": "지에스칼텍스(주)남서울주유소",
+        "distance": 835.9757893767053,
+        "walking_time": "약 13분"
+      },
+      {
+        "gas_station_lat": 37.51853332,
+        "gas_station_lon": 127.0282444,
+        "gas_station_type": "주유소",
+        "gas_station_name": "㈜에스에스모터스 논현주유소 지점",
+        "distance": 1038.6013987649817,
+        "walking_time": "약 16분"
+      },
+      {
+        "gas_station_lat": 37.51896164,
+        "gas_station_lon": 127.0194295,
+        "gas_station_type": "주유소",
+        "gas_station_name": "대교주유소",
+        "distance": 1092.0013711239103,
+        "walking_time": "약 17분"
+      },
+      {
+        "gas_station_lat": 37.51950298,
+        "gas_station_lon": 127.0263183,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크㈜직영 신사현대주유소",
+        "distance": 1095.4736677749552,
+        "walking_time": "약 17분"
+      },
+      {
+        "gas_station_lat": 37.50273402,
+        "gas_station_lon": 127.0364874,
+        "gas_station_type": "주유소",
+        "gas_station_name": "에너지플러스 허브 GS타워",
+        "distance": 1356.403818908918,
+        "walking_time": "약 21분"
+      },
+      {
+        "gas_station_lat": 37.51766937,
+        "gas_station_lon": 127.0358227,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크 JJ네트웍스 JJ주유소",
+        "distance": 1360.8051083059938,
+        "walking_time": "약 21분"
+      },
+      {
+        "gas_station_lat": 37.50320462,
+        "gas_station_lon": 127.010877,
+        "gas_station_type": "주유소",
+        "gas_station_name": "반포그린주유소",
+        "distance": 1370.3159821384866,
+        "walking_time": "약 21분"
+      }
+    ],
+    "hospital": [
+      {
+        "hospital_lat": 37.50999521,
+        "hospital_lon": 127.0238232,
+        "hospital_type": "병원",
+        "hospital_name": "새시대한의원",
+        "distance": 23.080287469216056,
+        "walking_time": "약 1분"
+      },
+      {
+        "hospital_lat": 37.50999521,
+        "hospital_lon": 127.0238232,
+        "hospital_type": "병원",
+        "hospital_name": "서울연세21세기의원",
+        "distance": 23.080287469216056,
+        "walking_time": "약 1분"
+      },
+      {
+        "hospital_lat": 37.51051524,
+        "hospital_lon": 127.0235361,
+        "hospital_type": "병원",
+        "hospital_name": "미화이트치과의원",
+        "distance": 85.80357646319142,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.51050317,
+        "hospital_lon": 127.0230377,
+        "hospital_type": "병원",
+        "hospital_name": "우성한의원",
+        "distance": 111.87424830103352,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.50978782,
+        "hospital_lon": 127.0254684,
+        "hospital_type": "병원",
+        "hospital_name": "리메이크강남의원",
+        "distance": 131.56539470131762,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.50929563,
+        "hospital_lon": 127.0226432,
+        "hospital_type": "병원",
+        "hospital_name": "소통의행복안성민한의원",
+        "distance": 131.73789233054742,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.50929563,
+        "hospital_lon": 127.0226432,
+        "hospital_type": "병원",
+        "hospital_name": "닥터핏의원",
+        "distance": 131.73789233054742,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.50929563,
+        "hospital_lon": 127.0226432,
+        "hospital_type": "병원",
+        "hospital_name": "리젠의원",
+        "distance": 131.73789233054742,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.50929563,
+        "hospital_lon": 127.0226432,
+        "hospital_type": "병원",
+        "hospital_name": "머스트성형외과의원",
+        "distance": 131.73789233054742,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.50929563,
+        "hospital_lon": 127.0226432,
+        "hospital_type": "병원",
+        "hospital_name": "바른길산부인과의원",
+        "distance": 131.73789233054742,
+        "walking_time": "약 2분"
+      }
+    ],
+    "music_room": [
+      {
+        "music_room_lat": 37.51042417,
+        "music_room_lon": 127.0243277,
+        "music_room_type": "노래방",
+        "music_room_name": "난타노래연습장",
+        "distance": 73.16191185994745,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.50957152,
+        "music_room_lon": 127.0231035,
+        "music_room_type": "노래방",
+        "music_room_name": "파티파티 노래연습장",
+        "distance": 82.19841665483261,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.5090322,
+        "music_room_lon": 127.0234508,
+        "music_room_type": "노래방",
+        "music_room_name": "거침없이달려 노래연습장",
+        "distance": 99.91716050516634,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.50956265,
+        "music_room_lon": 127.0228547,
+        "music_room_type": "노래방",
+        "music_room_name": "RG노래연습장",
+        "distance": 103.34216816923234,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.50870808,
+        "music_room_lon": 127.0235888,
+        "music_room_type": "노래방",
+        "music_room_name": "에이치(H) 노래연습장",
+        "distance": 129.1312271479634,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.50903107,
+        "music_room_lon": 127.0227667,
+        "music_room_type": "노래방",
+        "music_room_name": "영심이 노래연습장",
+        "distance": 138.76318307656547,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.50832294,
+        "music_room_lon": 127.0234179,
+        "music_room_type": "노래방",
+        "music_room_name": "탑스타 노래연습장",
+        "distance": 174.45113037472896,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.50814993,
+        "music_room_lon": 127.0234987,
+        "music_room_type": "노래방",
+        "music_room_name": "나는가수다 프리웨이 노래연습장",
+        "distance": 191.2798306693756,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.50766469,
+        "music_room_lon": 127.0237322,
+        "music_room_type": "노래방",
+        "music_room_name": "축제노래연습장",
+        "distance": 241.48474358759103,
+        "walking_time": "약 4분"
+      },
+      {
+        "music_room_lat": 37.50746639,
+        "music_room_lon": 127.0241475,
+        "music_room_type": "노래방",
+        "music_room_name": "씽씽 노래연습장",
+        "distance": 262.98911647735906,
+        "walking_time": "약 4분"
+      }
+    ],
+    "park_station": [
+      {
+        "park_station_lat": 37.50821709,
+        "park_station_lon": 127.0263165,
+        "park_station_type": "주차장",
+        "park_station_name": "논현초교 공영주차장",
+        "distance": 273.1888638509438,
+        "walking_time": "약 5분"
+      },
+      {
+        "park_station_lat": 37.50472514,
+        "park_station_lon": 127.0209826,
+        "park_station_type": "주차장",
+        "park_station_name": "언구비 공영주차장",
+        "distance": 625.8679285328325,
+        "walking_time": "약 10분"
+      },
+      {
+        "park_station_lat": 37.51426314,
+        "park_station_lon": 127.0288551,
+        "park_station_type": "주차장",
+        "park_station_name": "논현로131길",
+        "distance": 654.4635794712608,
+        "walking_time": "약 10분"
+      },
+      {
+        "park_station_lat": 37.51583666,
+        "park_station_lon": 127.0211409,
+        "park_station_type": "주차장",
+        "park_station_name": "강남대로150길",
+        "distance": 713.4803358832562,
+        "walking_time": "약 11분"
+      },
+      {
+        "park_station_lat": 37.50486073,
+        "park_station_lon": 127.0183491,
+        "park_station_type": "주차장",
+        "park_station_name": "반포동 방음언덕형 공영주차장",
+        "distance": 742.6514596365924,
+        "walking_time": "약 12분"
+      },
+      {
+        "park_station_lat": 37.5161854,
+        "park_station_lon": 127.0163009,
+        "park_station_type": "주차장",
+        "park_station_name": "잠원동방음언덕형공영주차장",
+        "distance": 978.8984304367468,
+        "walking_time": "약 15분"
+      },
+      {
+        "park_station_lat": 37.50224832,
+        "park_station_lon": 127.0299744,
+        "park_station_type": "주차장",
+        "park_station_name": "역삼문화공원 공영주차장",
+        "distance": 995.0358365602524,
+        "walking_time": "약 15분"
+      },
+      {
+        "park_station_lat": 37.5009606,
+        "park_station_lon": 127.0299802,
+        "park_station_type": "주차장",
+        "park_station_name": "역삼문화공원제1호공영주차장",
+        "distance": 1119.15090148744,
+        "walking_time": "약 17분"
+      },
+      {
+        "park_station_lat": 37.50363254,
+        "park_station_lon": 127.0104809,
+        "park_station_type": "주차장",
+        "park_station_name": "반포복개천 공영주차장",
+        "distance": 1375.4674938536723,
+        "walking_time": "약 21분"
+      },
+      {
+        "park_station_lat": 37.51987034,
+        "park_station_lon": 127.0333477,
+        "park_station_type": "주차장",
+        "park_station_name": "언주로147길",
+        "distance": 1389.2421679857337,
+        "walking_time": "약 21분"
+      }
+    ],
+    "pc_room": [
+      {
+        "pc_room_lat": 37.5090755301994,
+        "pc_room_lon": 127.023046835449,
+        "pc_room_type": "PC방",
+        "pc_room_name": "엔탑PC방",
+        "distance": 117.19964902601087,
+        "walking_time": "약 2분"
+      },
+      {
+        "pc_room_lat": 37.5088399610431,
+        "pc_room_lon": 127.022822366763,
+        "pc_room_type": "PC방",
+        "pc_room_name": "에이스PC",
+        "distance": 149.82190747213727,
+        "walking_time": "약 3분"
+      },
+      {
+        "pc_room_lat": 37.5087231568081,
+        "pc_room_lon": 127.022052779902,
+        "pc_room_type": "PC방",
+        "pc_room_name": "조커 게임랜드",
+        "distance": 209.5497897353773,
+        "walking_time": "약 4분"
+      },
+      {
+        "pc_room_lat": 37.5093209659373,
+        "pc_room_lon": 127.021605856925,
+        "pc_room_type": "PC방",
+        "pc_room_name": "로마루 PC방",
+        "distance": 216.660766733752,
+        "walking_time": "약 4분"
+      },
+      {
+        "pc_room_lat": 37.5099911854509,
+        "pc_room_lon": 127.020295166733,
+        "pc_room_type": "PC방",
+        "pc_room_name": "플레이PC방",
+        "distance": 325.32377669889206,
+        "walking_time": "약 5분"
+      },
+      {
+        "pc_room_lat": 37.5105294433427,
+        "pc_room_lon": 127.02030809339,
+        "pc_room_type": "PC방",
+        "pc_room_name": "탑플레이스PC 반포본점",
+        "distance": 332.94757494481405,
+        "walking_time": "약 5분"
+      },
+      {
+        "pc_room_lat": 37.5109643101244,
+        "pc_room_lon": 127.027646765019,
+        "pc_room_type": "PC방",
+        "pc_room_name": "논현24PC방",
+        "distance": 347.435601831588,
+        "walking_time": "약 6분"
+      },
+      {
+        "pc_room_lat": 37.5100088988029,
+        "pc_room_lon": 127.019980401098,
+        "pc_room_type": "PC방",
+        "pc_room_name": "3POP PC CAFE",
+        "distance": 353.1546170337189,
+        "walking_time": "약 6분"
+      },
+      {
+        "pc_room_lat": 37.51076838291,
+        "pc_room_lon": 127.027854694435,
+        "pc_room_type": "PC방",
+        "pc_room_name": "친친 피씨(PC)방",
+        "distance": 357.6126085848967,
+        "walking_time": "약 6분"
+      },
+      {
+        "pc_room_lat": 37.5071830213509,
+        "pc_room_lon": 127.021331763841,
+        "pc_room_type": "PC방",
+        "pc_room_name": "샤넬노리터PC",
+        "distance": 375.429272936118,
+        "walking_time": "약 6분"
+      }
+    ],
+    "police_office": [
+      {
+        "police_office_lat": 37.51386514,
+        "police_office_lon": 127.0293218,
+        "police_office_type": "경찰소",
+        "police_office_name": "논현1파출소",
+        "distance": 650.9537579918821,
+        "walking_time": "약 10분"
+      },
+      {
+        "police_office_lat": 37.51837187,
+        "police_office_lon": 127.0241335,
+        "police_office_type": "경찰소",
+        "police_office_name": "신사파출소",
+        "distance": 950.1713676853628,
+        "walking_time": "약 15분"
+      },
+      {
+        "police_office_lat": 37.51520381,
+        "police_office_lon": 127.0338464,
+        "police_office_type": "경찰소",
+        "police_office_name": "논현2파출소",
+        "distance": 1055.952440088939,
+        "walking_time": "약 16분"
+      },
+      {
+        "police_office_lat": 37.49197502,
+        "police_office_lon": 127.0107936,
+        "police_office_type": "경찰소",
+        "police_office_name": "서초3파출소",
+        "distance": 2300.7357971752813,
+        "walking_time": "약 35분"
+      }
+    ],
+    "post_office": [
+      {
+        "post_office_lat": 37.51091767,
+        "post_office_lon": 127.0228814,
+        "post_office_type": "우체국",
+        "post_office_name": "서울영동시장우편취급국",
+        "distance": 155.0488069109265,
+        "walking_time": "약 3분"
+      },
+      {
+        "post_office_lat": 37.50591645,
+        "post_office_lon": 127.0283134,
+        "post_office_type": "우체국",
+        "post_office_name": "서울논현거평우편취급국",
+        "distance": 579.1446568524522,
+        "walking_time": "약 9분"
+      },
+      {
+        "post_office_lat": 37.51309318,
+        "post_office_lon": 127.0179756,
+        "post_office_type": "우체국",
+        "post_office_name": "서울잠원한신우편취급국",
+        "distance": 641.9612240288012,
+        "walking_time": "약 10분"
+      },
+      {
+        "post_office_lat": 37.50384149,
+        "post_office_lon": 127.01963,
+        "post_office_type": "우체국",
+        "post_office_name": "서울반포1동우편취급국",
+        "distance": 768.2061475963401,
+        "walking_time": "약 12분"
+      },
+      {
+        "post_office_lat": 37.51405585,
+        "post_office_lon": 127.0325346,
+        "post_office_type": "우체국",
+        "post_office_name": "서울논현동우체국",
+        "distance": 889.2040233315424,
+        "walking_time": "약 14분"
+      },
+      {
+        "post_office_lat": 37.51714598,
+        "post_office_lon": 127.0196956,
+        "post_office_type": "우체국",
+        "post_office_name": "서울신사현대우편취급국",
+        "distance": 897.1330822681887,
+        "walking_time": "약 14분"
+      },
+      {
+        "post_office_lat": 37.50467299,
+        "post_office_lon": 127.0358791,
+        "post_office_type": "우체국",
+        "post_office_name": "서울역삼한라우편취급국",
+        "distance": 1196.0852185038566,
+        "walking_time": "약 18분"
+      },
+      {
+        "post_office_lat": 37.4978709,
+        "post_office_lon": 127.0220702,
+        "post_office_type": "우체국",
+        "post_office_name": "서울진흥아파트우편취급국",
+        "distance": 1340.136983711369,
+        "walking_time": "약 21분"
+      },
+      {
+        "post_office_lat": 37.50008187,
+        "post_office_lon": 127.032938,
+        "post_office_type": "우체국",
+        "post_office_name": "서울역삼1동우체국",
+        "distance": 1341.3060862757425,
+        "walking_time": "약 21분"
+      },
+      {
+        "post_office_lat": 37.50174917,
+        "post_office_lon": 127.0123167,
+        "post_office_type": "우체국",
+        "post_office_name": "서울반포주공우편취급국",
+        "distance": 1365.638296647517,
+        "walking_time": "약 21분"
+      }
+    ],
+    "school": [
+      {
+        "school_lat": 37.5084895751287,
+        "school_lon": 127.026222910697,
+        "school_type": "초등학교",
+        "school_name": "서울논현초등학교",
+        "distance": 247.70899484216253,
+        "walking_time": "약 4분"
+      },
+      {
+        "school_lat": 37.5063251046839,
+        "school_lon": 127.014699724248,
+        "school_type": "중학교",
+        "school_name": "원촌중학교",
+        "distance": 906.3300978710556,
+        "walking_time": "약 14분"
+      },
+      {
+        "school_lat": 37.5027027335348,
+        "school_lon": 127.016510661972,
+        "school_type": "고등학교",
+        "school_name": "반포고등학교",
+        "distance": 1030.293043693314,
+        "walking_time": "약 16분"
+      },
+      {
+        "school_lat": 37.5062446440008,
+        "school_lon": 127.012346682947,
+        "school_type": "초등학교",
+        "school_name": "서울원촌초등학교",
+        "distance": 1100.5830843541148,
+        "walking_time": "약 17분"
+      },
+      {
+        "school_lat": 37.5024388979462,
+        "school_lon": 127.014619457733,
+        "school_type": "초등학교",
+        "school_name": "서울서원초등학교",
+        "distance": 1164.662950137514,
+        "walking_time": "약 18분"
+      },
+      {
+        "school_lat": 37.5007499044884,
+        "school_lon": 127.017066977739,
+        "school_type": "초등학교",
+        "school_name": "서울원명초등학교",
+        "distance": 1179.193791334284,
+        "walking_time": "약 18분"
+      },
+      {
+        "school_lat": 37.4990487668755,
+        "school_lon": 127.024891501335,
+        "school_type": "초등학교",
+        "school_name": "서울서초초등학교",
+        "distance": 1201.2668401121257,
+        "walking_time": "약 18분"
+      },
+      {
+        "school_lat": 37.5169158985011,
+        "school_lon": 127.012915373961,
+        "school_type": "중학교",
+        "school_name": "신동중학교",
+        "distance": 1254.2815117081398,
+        "walking_time": "약 19분"
+      },
+      {
+        "school_lat": 37.4985298571843,
+        "school_lon": 127.023220688907,
+        "school_type": "중학교",
+        "school_name": "서일중학교",
+        "distance": 1258.0325921302604,
+        "walking_time": "약 19분"
+      },
+      {
+        "school_lat": 37.5194111496903,
+        "school_lon": 127.033490549669,
+        "school_type": "중학교",
+        "school_name": "언북중학교",
+        "distance": 1356.3011365902178,
+        "walking_time": "약 21분"
+      }
+    ],
+    "self_laundromat": [
+      {
+        "self_laundromat_lat": 37.50810331,
+        "self_laundromat_lon": 127.0197562,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "더런드리 강남반포점",
+        "distance": 418.82675838909097,
+        "walking_time": "약 7분"
+      },
+      {
+        "self_laundromat_lat": 37.50810331,
+        "self_laundromat_lon": 127.0197562,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "더런드리 강남반포점",
+        "distance": 418.82675838909097,
+        "walking_time": "약 7분"
+      },
+      {
+        "self_laundromat_lat": 37.50660505,
+        "self_laundromat_lon": 127.0212232,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "위워시 반포점",
+        "distance": 432.9409832107536,
+        "walking_time": "약 7분"
+      },
+      {
+        "self_laundromat_lat": 37.50660505,
+        "self_laundromat_lon": 127.0212232,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "위워시 반포점",
+        "distance": 432.9409832107536,
+        "walking_time": "약 7분"
+      },
+      {
+        "self_laundromat_lat": 37.50942841,
+        "self_laundromat_lon": 127.018684,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "워시엔조이 반포점",
+        "distance": 469.0360457746133,
+        "walking_time": "약 8분"
+      },
+      {
+        "self_laundromat_lat": 37.50942841,
+        "self_laundromat_lon": 127.018684,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "워시엔조이 반포점",
+        "distance": 469.0360457746133,
+        "walking_time": "약 8분"
+      },
+      {
+        "self_laundromat_lat": 37.50602567,
+        "self_laundromat_lon": 127.0208803,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "크린업24 반포점",
+        "distance": 503.36125075452696,
+        "walking_time": "약 8분"
+      },
+      {
+        "self_laundromat_lat": 37.50602567,
+        "self_laundromat_lon": 127.0208803,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "크린업24 반포점",
+        "distance": 503.36125075452696,
+        "walking_time": "약 8분"
+      },
+      {
+        "self_laundromat_lat": 37.51193612,
+        "self_laundromat_lon": 127.0185027,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "크린토피아 코인워시 잠원본점",
+        "distance": 536.816690362939,
+        "walking_time": "약 9분"
+      },
+      {
+        "self_laundromat_lat": 37.51193612,
+        "self_laundromat_lon": 127.0185027,
+        "self_laundromat_type": "셀프 빨래방",
+        "self_laundromat_name": "크린토피아 코인워시 잠원본점",
+        "distance": 536.816690362939,
+        "walking_time": "약 9분"
+      }
+    ],
+    "subway": [
+      {
+        "subway_lat": 37.5111988300765,
+        "subway_lon": 127.021657861669,
+        "subway_type": "지하철",
+        "subway_name": "7호선-논현역",
+        "distance": 255.1745431664829,
+        "walking_time": "약 4분"
+      },
+      {
+        "subway_lat": 37.5164324582415,
+        "subway_lon": 127.020326886309,
+        "subway_type": "지하철",
+        "subway_name": "3호선-신사역",
+        "distance": 801.9088781042467,
+        "walking_time": "약 12분"
+      },
+      {
+        "subway_lat": 37.5142064294604,
+        "subway_lon": 127.031463762217,
+        "subway_type": "지하철",
+        "subway_name": "7호선-학동역",
+        "distance": 820.3997316856108,
+        "walking_time": "약 13분"
+      },
+      {
+        "subway_lat": 37.5074454982119,
+        "subway_lon": 127.034284713238,
+        "subway_type": "지하철",
+        "subway_name": "9호선-언주역",
+        "distance": 946.9522543192304,
+        "walking_time": "약 15분"
+      },
+      {
+        "subway_lat": 37.5081263886404,
+        "subway_lon": 127.011497032246,
+        "subway_type": "지하철",
+        "subway_name": "7호선-반포역",
+        "distance": 1117.0054206556722,
+        "walking_time": "약 17분"
+      },
+      {
+        "subway_lat": 37.5127991148107,
+        "subway_lon": 127.01122017966,
+        "subway_type": "지하철",
+        "subway_name": "3호선-잠원역",
+        "distance": 1172.7612593600106,
+        "walking_time": "약 18분"
+      },
+      {
+        "subway_lat": 37.4981646510326,
+        "subway_lon": 127.028307900881,
+        "subway_type": "지하철",
+        "subway_name": "2호선-강남역",
+        "distance": 1351.9525312201383,
+        "walking_time": "약 21분"
+      },
+      {
+        "subway_lat": 37.5007162693593,
+        "subway_lon": 127.036618203089,
+        "subway_type": "지하철",
+        "subway_name": "2호선-역삼역",
+        "distance": 1506.5679882182064,
+        "walking_time": "약 23분"
+      },
+      {
+        "subway_lat": 37.4928178646055,
+        "subway_lon": 127.013838469407,
+        "subway_type": "지하철",
+        "subway_name": "2호선-교대(법원, 검찰청)역",
+        "distance": 2092.227810590966,
+        "walking_time": "약 32분"
+      },
+      {
+        "subway_lat": 37.4928178646055,
+        "subway_lon": 127.013838469407,
+        "subway_type": "지하철",
+        "subway_name": "3호선-교대(법원, 검찰청)역",
+        "distance": 2092.227810590966,
+        "walking_time": "약 32분"
+      }
+    ],
+    "supermarket": [
+      {
+        "supermarket_lat": 37.50999521,
+        "supermarket_lon": 127.0238232,
+        "supermarket_type": "마트",
+        "supermarket_name": "GS더프레시 강남영동점",
+        "distance": 23.080287469216056,
+        "walking_time": "약 1분"
+      },
+      {
+        "supermarket_lat": 37.51051524,
+        "supermarket_lon": 127.0235361,
+        "supermarket_type": "마트",
+        "supermarket_name": "동화상가(주)",
+        "distance": 85.80357646319142,
+        "walking_time": "약 2분"
+      },
+      {
+        "supermarket_lat": 37.50915694,
+        "supermarket_lon": 127.0245957,
+        "supermarket_type": "마트",
+        "supermarket_name": "영동전통시장",
+        "distance": 92.38076387289742,
+        "walking_time": "약 2분"
+      },
+      {
+        "supermarket_lat": 37.50375605,
+        "supermarket_lon": 127.0241095,
+        "supermarket_type": "마트",
+        "supermarket_name": "교보타워 지하아케이드",
+        "distance": 675.233230154485,
+        "walking_time": "약 11분"
+      },
+      {
+        "supermarket_lat": 37.51352352,
+        "supermarket_lon": 127.0302251,
+        "supermarket_type": "마트",
+        "supermarket_name": "홈플러스익스프레스 학동역점",
+        "distance": 687.4129410454364,
+        "walking_time": "약 11분"
+      },
+      {
+        "supermarket_lat": 37.51001764,
+        "supermarket_lon": 127.0347588,
+        "supermarket_type": "마트",
+        "supermarket_name": "논현종합시장",
+        "distance": 951.1862018713572,
+        "walking_time": "약 15분"
+      },
+      {
+        "supermarket_lat": 37.50123504,
+        "supermarket_lon": 127.0266306,
+        "supermarket_type": "마트",
+        "supermarket_name": "점프밀라노",
+        "distance": 983.697601861874,
+        "walking_time": "약 15분"
+      },
+      {
+        "supermarket_lat": 37.51876726,
+        "supermarket_lon": 127.0206916,
+        "supermarket_type": "마트",
+        "supermarket_name": "이마트에브리데이 강남시장점",
+        "distance": 1035.4284402367523,
+        "walking_time": "약 16분"
+      },
+      {
+        "supermarket_lat": 37.51876726,
+        "supermarket_lon": 127.0206916,
+        "supermarket_type": "마트",
+        "supermarket_name": "강남시장",
+        "distance": 1035.4284402367523,
+        "walking_time": "약 16분"
+      },
+      {
+        "supermarket_lat": 37.51544279,
+        "supermarket_lon": 127.0141936,
+        "supermarket_type": "마트",
+        "supermarket_name": "신사쇼핑",
+        "distance": 1065.159563954295,
+        "walking_time": "약 16분"
+      }
+    ],
+    "tax_office": [
+      {
+        "tax_office_lat": 37.49828846,
+        "tax_office_lon": 127.0301032,
+        "tax_office_type": "세무서",
+        "tax_office_name": "삼성세무서",
+        "distance": 1392.236723201211,
+        "walking_time": "약 21분"
+      },
+      {
+        "tax_office_lat": 37.49828846,
+        "tax_office_lon": 127.0301032,
+        "tax_office_type": "세무서",
+        "tax_office_name": "서초세무서",
+        "distance": 1392.236723201211,
+        "walking_time": "약 21분"
+      },
+      {
+        "tax_office_lat": 37.49828846,
+        "tax_office_lon": 127.0301032,
+        "tax_office_type": "세무서",
+        "tax_office_name": "역삼세무서",
+        "distance": 1392.236723201211,
+        "walking_time": "약 21분"
+      }
+    ],
+    "theater": [
+      {
+        "theater_lat": 37.5116328572551,
+        "theater_lon": 127.023923410549,
+        "theater_type": "영화관",
+        "theater_name": "강남비디오소극장",
+        "distance": 200.784956518126,
+        "walking_time": "약 3분"
+      },
+      {
+        "theater_lat": 37.5140467250769,
+        "theater_lon": 127.029550652058,
+        "theater_type": "영화관",
+        "theater_name": "(주)케이엠티브이",
+        "distance": 679.4957857545419,
+        "walking_time": "약 11분"
+      },
+      {
+        "theater_lat": 37.5163705406376,
+        "theater_lon": 127.02194180264,
+        "theater_type": "영화관",
+        "theater_name": "메가박스 브로드웨이",
+        "distance": 749.3664053536385,
+        "walking_time": "약 12분"
+      },
+      {
+        "theater_lat": 37.5161918332017,
+        "theater_lon": 127.020655869811,
+        "theater_type": "영화관",
+        "theater_name": "클래식시네마스페이스(주)",
+        "distance": 765.9166553893467,
+        "walking_time": "약 12분"
+      },
+      {
+        "theater_lat": 37.5166065016895,
+        "theater_lon": 127.021516108092,
+        "theater_type": "영화관",
+        "theater_name": "메가박스 브로드웨이",
+        "distance": 784.4169267298374,
+        "walking_time": "약 12분"
+      },
+      {
+        "theater_lat": 37.5169719062298,
+        "theater_lon": 127.02270573272,
+        "theater_type": "영화관",
+        "theater_name": "씨네마강남",
+        "distance": 802.2854110000096,
+        "walking_time": "약 12분"
+      },
+      {
+        "theater_lat": 37.5016428104731,
+        "theater_lon": 127.026336096148,
+        "theater_type": "영화관",
+        "theater_name": "(주)강제규필름",
+        "distance": 933.5888696168488,
+        "walking_time": "약 14분"
+      },
+      {
+        "theater_lat": 37.5003941401087,
+        "theater_lon": 127.026984908497,
+        "theater_type": "영화관",
+        "theater_name": "메가박스 씨티(강남대로)",
+        "distance": 1081.9828584867446,
+        "walking_time": "약 17분"
+      },
+      {
+        "theater_lat": 37.4980609129976,
+        "theater_lon": 127.026504807476,
+        "theater_type": "영화관",
+        "theater_name": "메가박스중앙(주) 강남",
+        "distance": 1327.258460952575,
+        "walking_time": "약 20분"
+      }
+    ],
+    "university": [
+      {
+        "university_lat": 37.5169057779708,
+        "university_lon": 127.031003951379,
+        "university_type": "대학교",
+        "university_name": "국제예술대학",
+        "distance": 1001.7524731191148,
+        "walking_time": "약 15분"
+      },
+      {
+        "university_lat": 37.4907404857731,
+        "university_lon": 127.015424537648,
+        "university_type": "대학교",
+        "university_name": "서울교육대학교",
+        "distance": 2252.528269023644,
+        "walking_time": "약 34분"
+      }
+    ]
+  }
+}

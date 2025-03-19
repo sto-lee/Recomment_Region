@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+
+{% block title %}마이페이지{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">마이페이지</h1>
+
+    <!-- 메뉴 리스트 -->
+    <div class="space-y-4">
+        <a href="{% url 'myprofile' %}" 
+            class="block bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4"
+            onclick="return checkSession(event)">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <span class="font-medium">{{ user.username|default:'사용자'|escape }}</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+            </div>
+        </a>
+
+        <a href="{% url 'mybookmarks' %}" 
+            class="block bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4"
+            onclick="return checkSession(event)">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center">
+                        <i data-lucide="bookmark" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                    <span class="font-medium">북마크한 글</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+            </div>
+        </a>
+
+        <a href="{% url 'myposts' %}" 
+            class="block bg-white rounded-lg shadow hover:shadow-md transition-shadow p-4"
+            onclick="return checkSession(event)">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
+                        <i data-lucide="pen-square" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                    <span class="font-medium">작성한 글</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Lucide 스크립트 -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    // Lucide 아이콘 초기화
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // 세션 체크 함수
+    function checkSession(event) {
+        const isLoggedIn = "{{ request.session.is_logged_in|yesno:'true,false' }}" === "true";
+        
+        if (!isLoggedIn) {
+            event.preventDefault();
+            const currentPath = encodeURIComponent(window.location.pathname);
+            window.location.href = "{% url 'login' %}?next=" + currentPath;
+            return false;
+        }
+        return true;
+    }
+
+    // 페이지 로드 시 세션 확인
+    document.addEventListener('DOMContentLoaded', function() {
+        const isLoggedIn = "{{ request.session.is_logged_in|yesno:'true,false' }}" === "true";
+        if (!isLoggedIn) {
+            const currentPath = encodeURIComponent(window.location.pathname);
+            window.location.href = "{% url 'login' %}?next=" + currentPath;
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!-- navbar.html -->
+<nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="{% url 'home' %}" 
+                    class="font-bold text-xl text-gray-800 hover:text-gray-600 transition-colors">
+                    HOME
+                </a>
+            </div>
+
+            <!-- 햄버거 메뉴 버튼 (모바일) -->
+            <button id="menu-toggle" class="block md:hidden text-black focus:outline-none">
+                ☰
+            </button>
+
+            <div id="menu" class="hidden md:flex items-center space-x-8">
+                <!-- 항상 보이는 메뉴들 -->
+                <a href="{% url 'listings' %}" 
+                    class="text-gray-700 hover:text-gray-900 transition-colors">매물</a>
+                <a href="{% url 'recommendations:recommend_page_1' %}" 
+                    class="text-gray-700 hover:text-gray-900 transition-colors">매물 추천</a>
+                <a href="{% url 'community' %}" 
+                    class="text-gray-700 hover:text-gray-900 transition-colors">커뮤니티</a>
+                <a href="{% url 'mypage' %}" 
+                    class="text-gray-700 hover:text-gray-900 transition-colors">마이페이지</a>
+                
+                <!-- 로그인 상태에 따라 변경되는 버튼 -->
+                {% if request.user.is_authenticated %}
+                    <button onclick="confirmLogout(event)" 
+                            class="text-gray-700 hover:text-gray-900 transition-colors">로그아웃</button>
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path|urlencode }}" 
+                        class="text-gray-700 hover:text-gray-900 transition-colors">로그인</a>
+                {% endif %}
+            </div>
+
+            <!-- 모바일 메뉴 (햄버거 버튼 클릭 시 활성화) -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md">
+                <a href="{% url 'listings' %}"
+                    class="block px-4 py-2 text-black hover:bg-gray-100">매물</a>
+                <a href="{% url 'recommendations:recommend_page_1' %}"
+                    class="block px-4 py-2 text-black hover:bg-gray-100">매물 추천</a>
+                <a href="{% url 'community' %}"
+                    class="block px-4 py-2 text-black hover:bg-gray-100">커뮤니티</a>
+                <a href="{% url 'mypage' %}"
+                    class="block px-4 py-2 text-black hover:bg-gray-100">마이페이지</a>
+                <a href="#" class="block px-4 py-2 text-red-500 hover:bg-gray-100 logout-button" onclick="confirmLogout(event)">로그아웃</a>
+                
+                <!-- 로그인 상태에 따라 변경되는 버튼 -->
+                {% if request.user.is_authenticated %}
+                    <button onclick="confirmLogout(event)" 
+                            class="text-gray-700 hover:text-gray-900 transition-colors">로그아웃</button>
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path|urlencode }}" 
+                        class="text-gray-700 hover:text-gray-900 transition-colors">로그인</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

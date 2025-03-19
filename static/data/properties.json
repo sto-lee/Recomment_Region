@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "신축 아파트",
+        "lat": 37.5665,
+        "lng": 126.9780,
+        "type": "apt",
+        "transaction": "sale",
+        "price": "5000",
+        "address": "서울시 중구 명동"
+    },
+    {
+        "id": 2,
+        "name": "역세권 원룸",
+        "lat": 37.5668,
+        "lng": 126.9782,
+        "type": "house",
+        "transaction": "rent",
+        "price": "70",
+        "address": "서울시 중구 을지로"
+    }
+] 

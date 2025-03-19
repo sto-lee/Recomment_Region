@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 보안 관련 메타 태그 추가 -->
+    <!-- <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+        img-src 'self' data: http: https:; 
+        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; 
+        font-src 'self' https://cdn.jsdelivr.net;
+        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com;">
+    <meta name="referrer" content="strict-origin"> -->
+    
+    <title>{% block title %}부동산 웹사이트{% endblock %}</title>
+    {% load static %}
+    {% load tailwind_tags %}
+    {% tailwind_css %}
+    
+    <!-- CSRF 토큰 -->
+    {% csrf_token %}
+</head>
+<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+    <!-- 네비게이션 바를 include로 가져옴 -->
+    {% if not hide_navbar %}
+        {% include 'base/navbar.html' %}
+    {% endif %}
+    
+    <!-- 메인 컨텐츠 -->
+    <main class="pt-16">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- 공통 스크립트 -->
+    <script>
+        // CSRF 토큰 가져오기
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        function confirmLogout(event) {
+            try {
+                event.preventDefault();
+                
+                // XSS 방지를 위한 경로 검증
+                const currentPath = encodeURIComponent(window.location.pathname);
+                const allowedPaths = ['/home', '/listings', '/community', '/mypage'];
+                
+                if (!allowedPaths.some(path => currentPath.startsWith(path))) {
+                    throw new Error('Invalid redirect path');
+                }
+
+                if (confirm("정말 로그아웃 하시겠습니까?")) {
+                    // CSRF 토큰을 포함한 로그아웃 요청
+                    fetch("{% url 'logout' %}?next=" + currentPath, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            window.location.href = response.url;
+                        }
+                    }).catch(error => {
+                        console.error('Logout error:', error);
+                        alert('로그아웃 처리 중 오류가 발생했습니다.');
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('처리 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 세션 보안 강화
+        if (window.sessionStorage) {
+            // 세션 데이터 암호화 (UTF-8 지원)
+            const encryptData = (data) => {
+                return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+            };
+
+            // 세션 데이터 복호화 (UTF-8 지원)
+            const decryptData = (encrypted) => {
+                return JSON.parse(decodeURIComponent(escape(atob(encrypted))));
+            };
+
+            // 기존 sessionStorage 메소드 재정의
+            const originalSetItem = sessionStorage.setItem;
+            sessionStorage.setItem = function(key, value) {
+                originalSetItem.call(this, key, encryptData(value));
+            };
+
+            const originalGetItem = sessionStorage.getItem;
+            sessionStorage.getItem = function(key) {
+                const value = originalGetItem.call(this, key);
+                return value ? decryptData(value) : null;
+            };
+        }
+    </script>
+
+    {% block extra_scripts %}
+    {% endblock %}
+</body>
+</html> 

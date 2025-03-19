@@ -1,0 +1,1403 @@
+{
+  "클러스터_위도": 37.48228942858813,
+  "클러스터_경도": 126.89928828584748,
+  "클러스터_level": 3.0,
+  "facilities": {
+    "bus": [
+      {
+        "bus_lat": 37.48149236,
+        "bus_lon": 126.8999955,
+        "bus_type": "버스정류장",
+        "bus_name": "문성골",
+        "distance": 108.3948857705733,
+        "walking_time": "약 2분"
+      },
+      {
+        "bus_lat": 37.48330302,
+        "bus_lon": 126.8992002,
+        "bus_type": "버스정류장",
+        "bus_name": "베스트웨스턴구로호텔코오롱싸이언스밸리",
+        "distance": 112.9739066001964,
+        "walking_time": "약 2분"
+      },
+      {
+        "bus_lat": 37.48317476,
+        "bus_lon": 126.9000464,
+        "bus_type": "버스정류장",
+        "bus_name": "구.사조참치",
+        "distance": 119.02137864389844,
+        "walking_time": "약 2분"
+      },
+      {
+        "bus_lat": 37.48298698,
+        "bus_lon": 126.8981516,
+        "bus_type": "버스정류장",
+        "bus_name": "구로디지털단지우체국",
+        "distance": 126.79087321923129,
+        "walking_time": "약 2분"
+      },
+      {
+        "bus_lat": 37.48351825,
+        "bus_lon": 126.8991865,
+        "bus_type": "버스정류장",
+        "bus_name": "코오롱싸이언스밸리.베스트웨스턴구로호텔",
+        "distance": 136.9335592359051,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.48292657,
+        "bus_lon": 126.9006494,
+        "bus_type": "버스정류장",
+        "bus_name": "구로디지털단지입구",
+        "distance": 139.44022878239403,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.48209193,
+        "bus_lon": 126.8974692,
+        "bus_type": "버스정류장",
+        "bus_name": "JNK디지털타워",
+        "distance": 162.007664766977,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.48161251,
+        "bus_lon": 126.8973623,
+        "bus_type": "버스정류장",
+        "bus_name": "한국산업기술시험원.디지털탑프라자",
+        "distance": 185.8683183304649,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.48365104,
+        "bus_lon": 126.8980497,
+        "bus_type": "버스정류장",
+        "bus_name": "고용노동부관악지청.이마트구로점",
+        "distance": 186.72803414371143,
+        "walking_time": "약 3분"
+      },
+      {
+        "bus_lat": 37.48309943,
+        "bus_lon": 126.9015481,
+        "bus_type": "버스정류장",
+        "bus_name": "구로디지털단지역",
+        "distance": 218.79803497179617,
+        "walking_time": "약 4분"
+      }
+    ],
+    "community_center": [
+      {
+        "community_center_lat": 37.48256328,
+        "community_center_lon": 126.9077947,
+        "community_center_type": "주민센터",
+        "community_center_name": "조원동 자치회관",
+        "distance": 751.2032116283989,
+        "walking_time": "약 12분"
+      },
+      {
+        "community_center_lat": 37.48254989,
+        "community_center_lon": 126.8896421,
+        "community_center_type": "주민센터",
+        "community_center_name": "가리봉동 자치회관",
+        "distance": 851.6491967044687,
+        "walking_time": "약 13분"
+      },
+      {
+        "community_center_lat": 37.47516041,
+        "community_center_lon": 126.9031745,
+        "community_center_type": "주민센터",
+        "community_center_name": "독산3동 자치회관",
+        "distance": 863.7067669250964,
+        "walking_time": "약 13분"
+      },
+      {
+        "community_center_lat": 37.47689182,
+        "community_center_lon": 126.8917817,
+        "community_center_type": "주민센터",
+        "community_center_name": "가산동 자치회관",
+        "distance": 893.8582154173816,
+        "walking_time": "약 14분"
+      },
+      {
+        "community_center_lat": 37.48734704,
+        "community_center_lon": 126.89033,
+        "community_center_type": "주민센터",
+        "community_center_name": "구로3동 자치회관",
+        "distance": 970.0802599224436,
+        "walking_time": "약 15분"
+      },
+      {
+        "community_center_lat": 37.49273981,
+        "community_center_lon": 126.8982505,
+        "community_center_type": "주민센터",
+        "community_center_name": "대림2동 자치회관",
+        "distance": 1165.6313989962032,
+        "walking_time": "약 18분"
+      },
+      {
+        "community_center_lat": 37.48565541,
+        "community_center_lon": 126.8866217,
+        "community_center_type": "주민센터",
+        "community_center_name": "구로4동 자치회관",
+        "distance": 1178.6512834328205,
+        "walking_time": "약 18분"
+      },
+      {
+        "community_center_lat": 37.47021905,
+        "community_center_lon": 126.8970437,
+        "community_center_type": "주민센터",
+        "community_center_name": "독산1동 자치회관",
+        "distance": 1356.7017140295245,
+        "walking_time": "약 21분"
+      },
+      {
+        "community_center_lat": 37.49545723,
+        "community_center_lon": 126.905842,
+        "community_center_type": "주민센터",
+        "community_center_name": "대림1동 자치회관",
+        "distance": 1574.2347859034046,
+        "walking_time": "약 24분"
+      },
+      {
+        "community_center_lat": 37.4913197,
+        "community_center_lon": 126.883399,
+        "community_center_type": "주민센터",
+        "community_center_name": "구로2동 자치회관",
+        "distance": 1724.4487229112135,
+        "walking_time": "약 26분"
+      }
+    ],
+    "convenience_store": [
+      {
+        "convenience_store_lat": 37.48214887,
+        "convenience_store_lon": 126.898931,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 구로티타운점",
+        "distance": 35.187722625341884,
+        "walking_time": "약 1분"
+      },
+      {
+        "convenience_store_lat": 37.48294669,
+        "convenience_store_lon": 126.8985862,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 구로파트너점",
+        "distance": 95.8077319865397,
+        "walking_time": "약 2분"
+      },
+      {
+        "convenience_store_lat": 37.48178017,
+        "convenience_store_lon": 126.8984019,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 구로동양점",
+        "distance": 96.560270842837,
+        "walking_time": "약 2분"
+      },
+      {
+        "convenience_store_lat": 37.4820342,
+        "convenience_store_lon": 126.8977072,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 구로우체국점",
+        "distance": 142.3691002699653,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.48353325,
+        "convenience_store_lon": 126.899752,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 구로천일점",
+        "distance": 144.2321258246652,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.48308233,
+        "convenience_store_lon": 126.8976995,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "미니스톱 구로지플러스점",
+        "distance": 165.60991699519153,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.48158609,
+        "convenience_store_lon": 126.8973483,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "세븐일레븐 구로디지털탑점",
+        "distance": 188.2002368410756,
+        "walking_time": "약 3분"
+      },
+      {
+        "convenience_store_lat": 37.48258643,
+        "convenience_store_lon": 126.9016358,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 구로공단점",
+        "distance": 209.7551807452144,
+        "walking_time": "약 4분"
+      },
+      {
+        "convenience_store_lat": 37.48428564,
+        "convenience_store_lon": 126.8992821,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "GS25 구로싸이언점",
+        "distance": 221.96925258977728,
+        "walking_time": "약 4분"
+      },
+      {
+        "convenience_store_lat": 37.48358569,
+        "convenience_store_lon": 126.9015848,
+        "convenience_store_type": "편의점",
+        "convenience_store_name": "CU 구로디지털단지역점",
+        "distance": 248.67178754154057,
+        "walking_time": "약 4분"
+      }
+    ],
+    "daycare": [
+      {
+        "daycare_lat": 37.48398930204628,
+        "daycare_lon": 126.89834057548852,
+        "daycare_type": "어린이집",
+        "daycare_name": "IBK참!좋은어린이집",
+        "distance": 206.68897629698472,
+        "walking_time": "약 4분"
+      },
+      {
+        "daycare_lat": 37.48201451685488,
+        "daycare_lon": 126.90289288460596,
+        "daycare_type": "어린이집",
+        "daycare_name": "구립문성어린이집",
+        "distance": 319.5279970114896,
+        "walking_time": "약 5분"
+      },
+      {
+        "daycare_lat": 37.48278941,
+        "daycare_lon": 126.90291901702916,
+        "daycare_type": "어린이집",
+        "daycare_name": "미성어린이집",
+        "distance": 325.1547518448912,
+        "walking_time": "약 5분"
+      },
+      {
+        "daycare_lat": 37.48492975,
+        "daycare_lon": 126.8972941,
+        "daycare_type": "어린이집",
+        "daycare_name": "햇님어린이집",
+        "distance": 342.28206778056443,
+        "walking_time": "약 6분"
+      },
+      {
+        "daycare_lat": 37.47929984,
+        "daycare_lon": 126.8965978,
+        "daycare_type": "어린이집",
+        "daycare_name": "미소어린이집",
+        "distance": 408.4972155021822,
+        "walking_time": "약 7분"
+      },
+      {
+        "daycare_lat": 37.47921699311119,
+        "daycare_lon": 126.90193324849972,
+        "daycare_type": "어린이집",
+        "daycare_name": "꽃동산 어린이집",
+        "distance": 413.749283289035,
+        "walking_time": "약 7분"
+      },
+      {
+        "daycare_lat": 37.483652098931984,
+        "daycare_lon": 126.90455055846746,
+        "daycare_type": "어린이집",
+        "daycare_name": "구립뉴포레어린이집",
+        "distance": 488.4245450534495,
+        "walking_time": "약 8분"
+      },
+      {
+        "daycare_lat": 37.47996288555507,
+        "daycare_lon": 126.89444774339223,
+        "daycare_type": "어린이집",
+        "daycare_name": "넷마블푸르니어린이집",
+        "distance": 499.3612761121264,
+        "walking_time": "약 8분"
+      },
+      {
+        "daycare_lat": 37.48160996,
+        "daycare_lon": 126.8934776170924,
+        "daycare_type": "어린이집",
+        "daycare_name": "자람터어린이집",
+        "distance": 518.2596598534174,
+        "walking_time": "약 8분"
+      },
+      {
+        "daycare_lat": 37.4872898,
+        "daycare_lon": 126.899444,
+        "daycare_type": "어린이집",
+        "daycare_name": "한솔어린이집",
+        "distance": 556.1856600671161,
+        "walking_time": "약 9분"
+      }
+    ],
+    "education": [
+      {
+        "education_lat": 37.4798477,
+        "education_lon": 126.8953185,
+        "education_type": "박물관/기념관",
+        "education_name": "G밸리산업박물관",
+        "distance": 443.1931561164131,
+        "walking_time": "약 7분"
+      },
+      {
+        "education_lat": 37.48606517,
+        "education_lon": 126.9058854,
+        "education_type": "도서관",
+        "education_name": "신대방누리도서관",
+        "distance": 717.7108349953347,
+        "walking_time": "약 11분"
+      },
+      {
+        "education_lat": 37.48714316,
+        "education_lon": 126.8901547,
+        "education_type": "도서관",
+        "education_name": "꿈마을도서관",
+        "distance": 969.9298874487675,
+        "walking_time": "약 15분"
+      },
+      {
+        "education_lat": 37.47349155,
+        "education_lon": 126.8921298,
+        "education_type": "도서관",
+        "education_name": "금천구립가산도서관",
+        "distance": 1164.499065662675,
+        "walking_time": "약 18분"
+      },
+      {
+        "education_lat": 37.4718013,
+        "education_lon": 126.896009,
+        "education_type": "공연장",
+        "education_name": "문화정원아트홀",
+        "distance": 1201.592223321583,
+        "walking_time": "약 18분"
+      },
+      {
+        "education_lat": 37.489562316814336,
+        "education_lon": 126.88629292183346,
+        "education_type": "공연장",
+        "education_name": "구로 꿈나무극장",
+        "distance": 1403.1254494099271,
+        "walking_time": "약 21분"
+      },
+      {
+        "education_lat": 37.48989397,
+        "education_lon": 126.8865649,
+        "education_type": "도서관",
+        "education_name": "구로구립꿈나무어린이도서관",
+        "distance": 1405.4558422294162,
+        "walking_time": "약 21분"
+      },
+      {
+        "education_lat": 37.48737738,
+        "education_lon": 126.8813503,
+        "education_type": "도서관",
+        "education_name": "하늘도서관",
+        "distance": 1680.829877333137,
+        "walking_time": "약 26분"
+      },
+      {
+        "education_lat": 37.49662515,
+        "education_lon": 126.890315,
+        "education_type": "문화예술회관",
+        "education_name": "구로아트밸리예술극장",
+        "distance": 1779.8386125485515,
+        "walking_time": "약 27분"
+      },
+      {
+        "education_lat": 37.49710269,
+        "education_lon": 126.8895491,
+        "education_type": "미술관/갤러리",
+        "education_name": "갤러리 구루지",
+        "distance": 1857.8199224031025,
+        "walking_time": "약 28분"
+      }
+    ],
+    "electric_gas_station": [
+      {
+        "electric_gas_station_lat": 37.48105867,
+        "electric_gas_station_lon": 126.9057171,
+        "electric_gas_station_type": "전기차 충전소",
+        "electric_gas_station_name": "조원동 제1공영주차장",
+        "distance": 583.5436283845879,
+        "walking_time": "약 9분"
+      },
+      {
+        "electric_gas_station_lat": 37.49183884,
+        "electric_gas_station_lon": 126.8917009,
+        "electric_gas_station_type": "전기차 충전소",
+        "electric_gas_station_name": "구로리공원 앞(공중전화부스)",
+        "distance": 1255.2618222048404,
+        "walking_time": "약 19분"
+      },
+      {
+        "electric_gas_station_lat": 37.474417,
+        "electric_gas_station_lon": 126.8867632,
+        "electric_gas_station_type": "전기차 충전소",
+        "electric_gas_station_name": "제일모직아울렛 건너편(공중전화부스)",
+        "distance": 1409.909319260124,
+        "walking_time": "약 22분"
+      }
+    ],
+    "fitness": [
+      {
+        "fitness_lat": 37.4822405,
+        "fitness_lon": 126.8996725,
+        "fitness_type": "운동시설",
+        "fitness_name": "머슬마인드짐",
+        "distance": 34.33599546685357,
+        "walking_time": "약 1분"
+      },
+      {
+        "fitness_lat": 37.48262146,
+        "fitness_lon": 126.8990517,
+        "fitness_type": "운동시설",
+        "fitness_name": "머슬마인드 구로디지털 본점",
+        "distance": 42.41343372255727,
+        "walking_time": "약 1분"
+      },
+      {
+        "fitness_lat": 37.48303171,
+        "fitness_lon": 126.8993904,
+        "fitness_type": "운동시설",
+        "fitness_name": "러너스하이 피트니스 구로디지털",
+        "distance": 83.02827589832667,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.48269113,
+        "fitness_lon": 126.8984477,
+        "fitness_type": "운동시설",
+        "fitness_name": "(주)리조트휘트니스 PT 구로디지털단지점",
+        "distance": 86.58248769144812,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.48253994,
+        "fitness_lon": 126.9002463,
+        "fitness_type": "운동시설",
+        "fitness_name": "주식회사 바운드 구로디지털점",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "fitness_lat": 37.48178948,
+        "fitness_lon": 126.9010846,
+        "fitness_type": "운동시설",
+        "fitness_name": "정피트니스",
+        "distance": 167.96947024243815,
+        "walking_time": "약 3분"
+      },
+      {
+        "fitness_lat": 37.48298724,
+        "fitness_lon": 126.9010446,
+        "fitness_type": "운동시설",
+        "fitness_name": "니나강짐 구디점",
+        "distance": 173.31237212661196,
+        "walking_time": "약 3분"
+      },
+      {
+        "fitness_lat": 37.48399406,
+        "fitness_lon": 126.9007566,
+        "fitness_type": "운동시설",
+        "fitness_name": "우리 크로스핏 구디",
+        "distance": 229.5940761177393,
+        "walking_time": "약 4분"
+      },
+      {
+        "fitness_lat": 37.48337578,
+        "fitness_lon": 126.9023739,
+        "fitness_type": "운동시설",
+        "fitness_name": "정피트니스(2호점)",
+        "distance": 297.85989121112794,
+        "walking_time": "약 5분"
+      },
+      {
+        "fitness_lat": 37.48454459,
+        "fitness_lon": 126.9011985,
+        "fitness_type": "운동시설",
+        "fitness_name": "에이블짐 구로디지털단지역점",
+        "distance": 302.144194841909,
+        "walking_time": "약 5분"
+      }
+    ],
+    "gas_station": [
+      {
+        "gas_station_lat": 37.48153123,
+        "gas_station_lon": 126.8997835,
+        "gas_station_type": "주유소",
+        "gas_station_name": "JHC에너지",
+        "distance": 94.95906247306796,
+        "walking_time": "약 2분"
+      },
+      {
+        "gas_station_lat": 37.48094907,
+        "gas_station_lon": 126.899232,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크(주)직영 구로셀프주유소",
+        "distance": 149.12380410402525,
+        "walking_time": "약 3분"
+      },
+      {
+        "gas_station_lat": 37.47682775,
+        "gas_station_lon": 126.8991106,
+        "gas_station_type": "주유소",
+        "gas_station_name": "㈜화동유업",
+        "distance": 607.5133139230002,
+        "walking_time": "약 10분"
+      },
+      {
+        "gas_station_lat": 37.48020575,
+        "gas_station_lon": 126.9075034,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크(주)직영 금천제일주유소",
+        "distance": 761.0210618347342,
+        "walking_time": "약 12분"
+      },
+      {
+        "gas_station_lat": 37.48708383,
+        "gas_station_lon": 126.9056392,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크㈜직영신대방셀프주유소",
+        "distance": 773.4514009510664,
+        "walking_time": "약 12분"
+      },
+      {
+        "gas_station_lat": 37.47315113,
+        "gas_station_lon": 126.8978961,
+        "gas_station_type": "주유소",
+        "gas_station_name": "SK에너지㈜ 이가주유소",
+        "distance": 1023.5318674607682,
+        "walking_time": "약 16분"
+      },
+      {
+        "gas_station_lat": 37.49083817,
+        "gas_station_lon": 126.8931744,
+        "gas_station_type": "주유소",
+        "gas_station_name": "동아주유소",
+        "distance": 1092.9761202825282,
+        "walking_time": "약 17분"
+      },
+      {
+        "gas_station_lat": 37.48370727,
+        "gas_station_lon": 126.8870144,
+        "gas_station_type": "주유소",
+        "gas_station_name": "영진주유소",
+        "distance": 1094.4253436144677,
+        "walking_time": "약 17분"
+      },
+      {
+        "gas_station_lat": 37.49101799,
+        "gas_station_lon": 126.883528,
+        "gas_station_type": "주유소",
+        "gas_station_name": "구로주유소",
+        "distance": 1695.7884870469409,
+        "walking_time": "약 26분"
+      },
+      {
+        "gas_station_lat": 37.49755338,
+        "gas_station_lon": 126.892394,
+        "gas_station_type": "주유소",
+        "gas_station_name": "현대오일뱅크(주)직영 신구로주유소",
+        "distance": 1802.9799215668368,
+        "walking_time": "약 27분"
+      }
+    ],
+    "hospital": [
+      {
+        "hospital_lat": 37.48214887,
+        "hospital_lon": 126.898931,
+        "hospital_type": "병원",
+        "hospital_name": "이튼튼치과의원",
+        "distance": 35.187722625341884,
+        "walking_time": "약 1분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "눈에힘안과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "눈에힘안과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "닥터진치과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "서울WE좋은내과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "서울시원한마취통증의학과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "연세봄빛피부과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48253994,
+        "hospital_lon": 126.9002463,
+        "hospital_type": "병원",
+        "hospital_name": "연세봄정신건강의학과의원",
+        "distance": 89.00419413262334,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48213578,
+        "hospital_lon": 126.9003936,
+        "hospital_type": "병원",
+        "hospital_name": "참튼튼병원",
+        "distance": 99.01569660783066,
+        "walking_time": "약 2분"
+      },
+      {
+        "hospital_lat": 37.48353325,
+        "hospital_lon": 126.899752,
+        "hospital_type": "병원",
+        "hospital_name": "삼성편한내과의원",
+        "distance": 144.2321258246652,
+        "walking_time": "약 3분"
+      }
+    ],
+    "music_room": [
+      {
+        "music_room_lat": 37.48166984,
+        "music_room_lon": 126.89929,
+        "music_room_type": "노래방",
+        "music_room_name": "애플노래연습장",
+        "distance": 68.89527363860266,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.48304519,
+        "music_room_lon": 126.8995633,
+        "music_room_type": "노래방",
+        "music_room_name": "불러불러노래연습장",
+        "distance": 87.47030041413346,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.48277473,
+        "music_room_lon": 126.9002302,
+        "music_room_type": "노래방",
+        "music_room_name": "스타노래연습장",
+        "distance": 99.09410027728492,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.48326406,
+        "music_room_lon": 126.9001135,
+        "music_room_type": "노래방",
+        "music_room_name": "블랙홀 노래연습장",
+        "distance": 130.56379258407998,
+        "walking_time": "약 2분"
+      },
+      {
+        "music_room_lat": 37.48340811,
+        "music_room_lon": 126.9000884,
+        "music_room_type": "노래방",
+        "music_room_name": "MW노래연습장",
+        "distance": 143.03014491584966,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.48353325,
+        "music_room_lon": 126.899752,
+        "music_room_type": "노래방",
+        "music_room_name": "궁전노래연습장",
+        "distance": 144.2321258246652,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.48353325,
+        "music_room_lon": 126.899752,
+        "music_room_type": "노래방",
+        "music_room_name": "궁전2 노래연습장",
+        "distance": 144.2321258246652,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.4832697,
+        "music_room_lon": 126.9004935,
+        "music_room_type": "노래방",
+        "music_room_name": "팡팡노래연습장",
+        "distance": 152.2841590648104,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.48310315,
+        "music_room_lon": 126.9007656,
+        "music_room_type": "노래방",
+        "music_room_name": "소풍노래연습장",
+        "distance": 158.6794236575682,
+        "walking_time": "약 3분"
+      },
+      {
+        "music_room_lat": 37.48350078,
+        "music_room_lon": 126.9002466,
+        "music_room_type": "노래방",
+        "music_room_name": "고추노래연습장",
+        "distance": 159.03849904475274,
+        "walking_time": "약 3분"
+      }
+    ],
+    "outdoor_sports": [
+      {
+        "outdoor_sports_lat": 37.4854463023684,
+        "outdoor_sports_lon": 126.900861931696,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "구로디지털단지역 하부",
+        "distance": 377.4927879396091,
+        "walking_time": "약 6분"
+      },
+      {
+        "outdoor_sports_lat": 37.4822615957791,
+        "outdoor_sports_lon": 126.889580999202,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "가리봉동 주민센터 맞은편",
+        "distance": 856.5552332521363,
+        "walking_time": "약 13분"
+      },
+      {
+        "outdoor_sports_lat": 37.4917935272155,
+        "outdoor_sports_lon": 126.895209860135,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "대림역 하부",
+        "distance": 1116.3928713249516,
+        "walking_time": "약 17분"
+      },
+      {
+        "outdoor_sports_lat": 37.4908836860729,
+        "outdoor_sports_lon": 126.891610005413,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "구로리어린이공원",
+        "distance": 1171.4165413617206,
+        "walking_time": "약 18분"
+      },
+      {
+        "outdoor_sports_lat": 37.4831569081842,
+        "outdoor_sports_lon": 126.885583202317,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "가리봉",
+        "distance": 1213.1401309784053,
+        "walking_time": "약 19분"
+      },
+      {
+        "outdoor_sports_lat": 37.4889297964454,
+        "outdoor_sports_lon": 126.887502629607,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "혜원주택 앞",
+        "distance": 1275.3734709399023,
+        "walking_time": "약 20분"
+      },
+      {
+        "outdoor_sports_lat": 37.4925780367629,
+        "outdoor_sports_lon": 126.888328397174,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "다올소공원",
+        "distance": 1497.9778643531315,
+        "walking_time": "약 23분"
+      },
+      {
+        "outdoor_sports_lat": 37.489293618839,
+        "outdoor_sports_lon": 126.880612294475,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "솔길어린이공원",
+        "distance": 1822.632535200928,
+        "walking_time": "약 28분"
+      },
+      {
+        "outdoor_sports_lat": 37.4969472702116,
+        "outdoor_sports_lon": 126.889555987604,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "구로근린공원",
+        "distance": 1842.2320757932089,
+        "walking_time": "약 28분"
+      },
+      {
+        "outdoor_sports_lat": 37.4950845559096,
+        "outdoor_sports_lon": 126.884495477358,
+        "outdoor_sports_type": "야외 체육시설",
+        "outdoor_sports_name": "보광아파트 앞",
+        "distance": 1930.7260472498413,
+        "walking_time": "약 29분"
+      }
+    ],
+    "park": [
+      {
+        "park_lat": 37.4734274,
+        "park_lon": 126.9090028,
+        "park_type": "공원",
+        "park_name": "만수천공원(관악산)",
+        "distance": 1306.0991945507892,
+        "walking_time": "약 20분"
+      }
+    ],
+    "park_station": [
+      {
+        "park_station_lat": 37.48355607,
+        "park_station_lon": 126.9030187,
+        "park_station_type": "주차장",
+        "park_station_name": "조원동제2공영",
+        "distance": 358.02768609808913,
+        "walking_time": "약 6분"
+      },
+      {
+        "park_station_lat": 37.48369142,
+        "park_station_lon": 126.9031528,
+        "park_station_type": "주차장",
+        "park_station_name": "조원동제2공영",
+        "distance": 374.9389965464328,
+        "walking_time": "약 6분"
+      },
+      {
+        "park_station_lat": 37.4854463,
+        "park_station_lon": 126.9008619,
+        "park_station_type": "주차장",
+        "park_station_name": "구로디지털단지역 공영주차장",
+        "distance": 377.4915143447259,
+        "walking_time": "약 6분"
+      },
+      {
+        "park_station_lat": 37.47894573,
+        "park_station_lon": 126.9020754,
+        "park_station_type": "주차장",
+        "park_station_name": "공유) 06-25구역",
+        "distance": 445.7809295974352,
+        "walking_time": "약 7분"
+      },
+      {
+        "park_station_lat": 37.48478517,
+        "park_station_lon": 126.9032892,
+        "park_station_type": "주차장",
+        "park_station_name": "구로디지털단지역 공영주차장",
+        "distance": 449.0447569658708,
+        "walking_time": "약 7분"
+      },
+      {
+        "park_station_lat": 37.47871096,
+        "park_station_lon": 126.9017917,
+        "park_station_type": "주차장",
+        "park_station_name": "공유) 06-24구역",
+        "distance": 455.1128181231818,
+        "walking_time": "약 7분"
+      },
+      {
+        "park_station_lat": 37.48343065,
+        "park_station_lon": 126.9046863,
+        "park_station_type": "주차장",
+        "park_station_name": "조원동제2공영",
+        "distance": 492.9196034441805,
+        "walking_time": "약 8분"
+      },
+      {
+        "park_station_lat": 37.47764781,
+        "park_station_lon": 126.9009793,
+        "park_station_type": "주차장",
+        "park_station_name": "공유) 06-28구역",
+        "distance": 537.2614303119,
+        "walking_time": "약 9분"
+      },
+      {
+        "park_station_lat": 37.47761924,
+        "park_station_lon": 126.901294,
+        "park_station_type": "주차장",
+        "park_station_name": "공유) 06-27구역",
+        "distance": 548.6324960765359,
+        "walking_time": "약 9분"
+      },
+      {
+        "park_station_lat": 37.4792523,
+        "park_station_lon": 126.9043394,
+        "park_station_type": "주차장",
+        "park_station_name": "공유) 04-01구역",
+        "distance": 559.2012659764366,
+        "walking_time": "약 9분"
+      }
+    ],
+    "pc_room": [
+      {
+        "pc_room_lat": 37.4824321768795,
+        "pc_room_lon": 126.899814314405,
+        "pc_room_type": "PC방",
+        "pc_room_name": "TOOL PC",
+        "distance": 49.05458061976769,
+        "walking_time": "약 1분"
+      },
+      {
+        "pc_room_lat": 37.4816698383765,
+        "pc_room_lon": 126.899290046475,
+        "pc_room_type": "PC방",
+        "pc_room_name": "콜PC",
+        "distance": 68.89546328912863,
+        "walking_time": "약 2분"
+      },
+      {
+        "pc_room_lat": 37.48200020873,
+        "pc_room_lon": 126.898099733933,
+        "pc_room_type": "PC방",
+        "pc_room_name": "GRAY PC방",
+        "distance": 109.69548525004036,
+        "walking_time": "약 2분"
+      },
+      {
+        "pc_room_lat": 37.4811759149298,
+        "pc_room_lon": 126.898879166625,
+        "pc_room_type": "PC방",
+        "pc_room_name": "Ping",
+        "distance": 128.97239956834818,
+        "walking_time": "약 2분"
+      },
+      {
+        "pc_room_lat": 37.4835332463617,
+        "pc_room_lon": 126.899752015371,
+        "pc_room_type": "PC방",
+        "pc_room_name": "헤라PC CAFE",
+        "distance": 144.2321226551288,
+        "walking_time": "약 3분"
+      },
+      {
+        "pc_room_lat": 37.4835856942208,
+        "pc_room_lon": 126.901584839285,
+        "pc_room_type": "PC방",
+        "pc_room_name": "PC CLUB Z",
+        "distance": 248.6748842722404,
+        "walking_time": "약 4분"
+      },
+      {
+        "pc_room_lat": 37.4829262301224,
+        "pc_room_lon": 126.901999065663,
+        "pc_room_type": "PC방",
+        "pc_room_name": "럭키짱PC",
+        "distance": 249.45306678589589,
+        "walking_time": "약 4분"
+      },
+      {
+        "pc_room_lat": 37.4832010642873,
+        "pc_room_lon": 126.902357685701,
+        "pc_room_type": "PC방",
+        "pc_room_name": "골라 게임랜드",
+        "distance": 289.18426531106496,
+        "walking_time": "약 5분"
+      },
+      {
+        "pc_room_lat": 37.4832010642873,
+        "pc_room_lon": 126.902357685701,
+        "pc_room_type": "PC방",
+        "pc_room_name": "공단PC",
+        "distance": 289.18426531106496,
+        "walking_time": "약 5분"
+      },
+      {
+        "pc_room_lat": 37.4844404933455,
+        "pc_room_lon": 126.902251260428,
+        "pc_room_type": "PC방",
+        "pc_room_name": "블루넷PC방",
+        "distance": 354.34850544623424,
+        "walking_time": "약 6분"
+      }
+    ],
+    "police_office": [
+      {
+        "police_office_lat": 37.47920893,
+        "police_office_lon": 126.8926603,
+        "police_office_type": "경찰소",
+        "police_office_name": "가리봉파출소",
+        "distance": 677.7767367112632,
+        "walking_time": "약 11분"
+      },
+      {
+        "police_office_lat": 37.48664583,
+        "police_office_lon": 126.9059471,
+        "police_office_type": "경찰소",
+        "police_office_name": "신대방지구대",
+        "distance": 761.4842502744723,
+        "walking_time": "약 12분"
+      },
+      {
+        "police_office_lat": 37.48666065,
+        "police_office_lon": 126.8913999,
+        "police_office_type": "경찰소",
+        "police_office_name": "구로3파출소",
+        "distance": 848.9490242576788,
+        "walking_time": "약 13분"
+      },
+      {
+        "police_office_lat": 37.47993673,
+        "police_office_lon": 126.8880557,
+        "police_office_type": "경찰소",
+        "police_office_name": "가산파출소",
+        "distance": 1025.0977001354497,
+        "walking_time": "약 16분"
+      },
+      {
+        "police_office_lat": 37.48925211,
+        "police_office_lon": 126.8907002,
+        "police_office_type": "경찰소",
+        "police_office_name": "구일지구대",
+        "distance": 1083.3311502034894,
+        "walking_time": "약 17분"
+      },
+      {
+        "police_office_lat": 37.49343055,
+        "police_office_lon": 126.8987029,
+        "police_office_type": "경찰소",
+        "police_office_name": "대림지구대",
+        "distance": 1239.9123865854203,
+        "walking_time": "약 19분"
+      },
+      {
+        "police_office_lat": 37.49898725,
+        "police_office_lon": 126.8966377,
+        "police_office_type": "경찰소",
+        "police_office_name": "대림3파출소",
+        "distance": 1871.382309327588,
+        "walking_time": "약 28분"
+      }
+    ],
+    "post_office": [
+      {
+        "post_office_lat": 37.48329888,
+        "post_office_lon": 126.8984697,
+        "post_office_type": "우체국",
+        "post_office_name": "서울구로디지털단지우체국",
+        "distance": 133.4775949011598,
+        "walking_time": "약 2분"
+      },
+      {
+        "post_office_lat": 37.47844469,
+        "post_office_lon": 126.8937442,
+        "post_office_type": "우체국",
+        "post_office_name": "서울가산동우체국",
+        "distance": 649.6893876339738,
+        "walking_time": "약 10분"
+      },
+      {
+        "post_office_lat": 37.48967148,
+        "post_office_lon": 126.9045668,
+        "post_office_type": "우체국",
+        "post_office_name": "서울대림동우체국",
+        "distance": 943.7713135286594,
+        "walking_time": "약 15분"
+      },
+      {
+        "post_office_lat": 37.49415933,
+        "post_office_lon": 126.9007745,
+        "post_office_type": "우체국",
+        "post_office_name": "서울대림1동우편취급국",
+        "distance": 1326.3707190496768,
+        "walking_time": "약 20분"
+      },
+      {
+        "post_office_lat": 37.47019149,
+        "post_office_lon": 126.8985251,
+        "post_office_type": "우체국",
+        "post_office_name": "서울금천우체국",
+        "distance": 1346.9141688774266,
+        "walking_time": "약 21분"
+      },
+      {
+        "post_office_lat": 37.49032516,
+        "post_office_lon": 126.8843948,
+        "post_office_type": "우체국",
+        "post_office_name": "서울구로4동우체국",
+        "distance": 1589.1044007965677,
+        "walking_time": "약 24분"
+      },
+      {
+        "post_office_lat": 37.49492531,
+        "post_office_lon": 126.8896406,
+        "post_office_type": "우체국",
+        "post_office_name": "서울동구로우체국",
+        "distance": 1642.780217736194,
+        "walking_time": "약 25분"
+      },
+      {
+        "post_office_lat": 37.47789556,
+        "post_office_lon": 126.8806648,
+        "post_office_type": "우체국",
+        "post_office_name": "서울가산디지털우체국",
+        "distance": 1714.4340702491452,
+        "walking_time": "약 26분"
+      },
+      {
+        "post_office_lat": 37.4984417,
+        "post_office_lon": 126.9079864,
+        "post_office_type": "우체국",
+        "post_office_name": "서울신길5동우체국",
+        "distance": 1953.1334723078533,
+        "walking_time": "약 30분"
+      }
+    ],
+    "public_health_center": [
+      {
+        "public_health_center_lat": 37.48199214,
+        "public_health_center_lon": 126.8923489,
+        "public_health_center_type": "보건소",
+        "public_health_center_name": "G밸리보건지소",
+        "distance": 613.2089316431386,
+        "walking_time": "약 10분"
+      }
+    ],
+    "school": [
+      {
+        "school_lat": 37.4781477195501,
+        "school_lon": 126.896184019972,
+        "school_type": "초등학교",
+        "school_name": "서울가산초등학교",
+        "distance": 535.8424668737318,
+        "walking_time": "약 8분"
+      },
+      {
+        "school_lat": 37.4873460122893,
+        "school_lon": 126.902516130281,
+        "school_type": "초등학교",
+        "school_name": "서울영림초등학교",
+        "distance": 630.2850788577313,
+        "walking_time": "약 10분"
+      },
+      {
+        "school_lat": 37.4879630931966,
+        "school_lon": 126.895027399291,
+        "school_type": "초등학교",
+        "school_name": "서울영서초등학교",
+        "distance": 734.4090228291179,
+        "walking_time": "약 11분"
+      },
+      {
+        "school_lat": 37.4792685652716,
+        "school_lon": 126.907219449459,
+        "school_type": "고등학교",
+        "school_name": "금천문화예술정보학교",
+        "distance": 776.280507686515,
+        "walking_time": "약 12분"
+      },
+      {
+        "school_lat": 37.4748818804257,
+        "school_lon": 126.899471333222,
+        "school_type": "초등학교",
+        "school_name": "서울문성초등학교",
+        "distance": 823.8401354762323,
+        "walking_time": "약 13분"
+      },
+      {
+        "school_lat": 37.4847045985983,
+        "school_lon": 126.890267788001,
+        "school_type": "초등학교",
+        "school_name": "서울구로남초등학교",
+        "distance": 840.0211604758582,
+        "walking_time": "약 13분"
+      },
+      {
+        "school_lat": 37.4897523897016,
+        "school_lon": 126.89491012521,
+        "school_type": "중학교",
+        "school_name": "영서중학교",
+        "distance": 915.3511398442942,
+        "walking_time": "약 14분"
+      },
+      {
+        "school_lat": 37.4745944107703,
+        "school_lon": 126.895368861106,
+        "school_type": "중학교",
+        "school_name": "세일중학교",
+        "distance": 922.9031661423512,
+        "walking_time": "약 14분"
+      },
+      {
+        "school_lat": 37.484127765974,
+        "school_lon": 126.909505620969,
+        "school_type": "초등학교",
+        "school_name": "서울조원초등학교",
+        "distance": 924.4276462321212,
+        "walking_time": "약 14분"
+      },
+      {
+        "school_lat": 37.4754682009333,
+        "school_lon": 126.908493841535,
+        "school_type": "중학교",
+        "school_name": "문성중학교",
+        "distance": 1111.375911890953,
+        "walking_time": "약 17분"
+      }
+    ],
+    "subway": [
+      {
+        "subway_lat": 37.4853149237865,
+        "subway_lon": 126.901494378412,
+        "subway_type": "지하철",
+        "subway_name": "2호선-구로디지털단지역",
+        "distance": 388.6765863278641,
+        "walking_time": "약 6분"
+      },
+      {
+        "subway_lat": 37.4927430722225,
+        "subway_lon": 126.896611839343,
+        "subway_type": "지하철",
+        "subway_name": "7호선-대림(구로구청)역",
+        "distance": 1186.1369973426133,
+        "walking_time": "약 18분"
+      },
+      {
+        "subway_lat": 37.4853205005175,
+        "subway_lon": 126.886331688209,
+        "subway_type": "지하철",
+        "subway_name": "7호선-남구로역",
+        "distance": 1191.8849155862467,
+        "walking_time": "약 18분"
+      },
+      {
+        "subway_lat": 37.4933105886136,
+        "subway_lon": 126.8949461878,
+        "subway_type": "지하철",
+        "subway_name": "2호선-대림(구로구청)역",
+        "distance": 1283.98422561926,
+        "walking_time": "약 20분"
+      },
+      {
+        "subway_lat": 37.4815957375443,
+        "subway_lon": 126.882559483336,
+        "subway_type": "지하철",
+        "subway_name": "7호선-가산디지털단지역",
+        "distance": 1478.1333254573788,
+        "walking_time": "약 23분"
+      }
+    ],
+    "supermarket": [
+      {
+        "supermarket_lat": 37.48439923,
+        "supermarket_lon": 126.8978858,
+        "supermarket_type": "마트",
+        "supermarket_name": "(주)이마트 구로점",
+        "distance": 265.2375856726874,
+        "walking_time": "약 4분"
+      },
+      {
+        "supermarket_lat": 37.47806807,
+        "supermarket_lon": 126.9014441,
+        "supermarket_type": "마트",
+        "supermarket_name": "푸른터시장",
+        "distance": 506.47578737383714,
+        "walking_time": "약 8분"
+      },
+      {
+        "supermarket_lat": 37.47544481,
+        "supermarket_lon": 126.8936809,
+        "supermarket_type": "마트",
+        "supermarket_name": "홈플러스(주)익스프레스 가산점",
+        "distance": 907.7919163406202,
+        "walking_time": "약 14분"
+      },
+      {
+        "supermarket_lat": 37.47761902,
+        "supermarket_lon": 126.8890553,
+        "supermarket_type": "마트",
+        "supermarket_name": "현대아울렛",
+        "distance": 1041.6542778363296,
+        "walking_time": "약 16분"
+      },
+      {
+        "supermarket_lat": 37.47818755,
+        "supermarket_lon": 126.8871542,
+        "supermarket_type": "마트",
+        "supermarket_name": "마리오아울렛 1관",
+        "distance": 1163.8142524155658,
+        "walking_time": "약 18분"
+      },
+      {
+        "supermarket_lat": 37.47643941,
+        "supermarket_lon": 126.8873317,
+        "supermarket_type": "마트",
+        "supermarket_name": "가산퍼블릭 상업시설",
+        "distance": 1239.4758219856794,
+        "walking_time": "약 19분"
+      },
+      {
+        "supermarket_lat": 37.47844577,
+        "supermarket_lon": 126.8850808,
+        "supermarket_type": "마트",
+        "supermarket_name": "마리오아울렛 3관",
+        "distance": 1324.520134763815,
+        "walking_time": "약 20분"
+      },
+      {
+        "supermarket_lat": 37.47949312,
+        "supermarket_lon": 126.8846349,
+        "supermarket_type": "마트",
+        "supermarket_name": "롯데쇼핑(주) 아울렛 가산점",
+        "distance": 1329.8671505606055,
+        "walking_time": "약 20분"
+      },
+      {
+        "supermarket_lat": 37.47068103,
+        "supermarket_lon": 126.8956481,
+        "supermarket_type": "마트",
+        "supermarket_name": "롯데쇼핑(주) 롯데마트맥스 금천점",
+        "distance": 1330.1648477532913,
+        "walking_time": "약 20분"
+      },
+      {
+        "supermarket_lat": 37.49530067,
+        "supermarket_lon": 126.8980583,
+        "supermarket_type": "마트",
+        "supermarket_name": "두암종합시장",
+        "distance": 1450.848378751397,
+        "walking_time": "약 22분"
+      }
+    ],
+    "tax_office": [
+      {
+        "tax_office_lat": 37.47801956,
+        "tax_office_lon": 126.8997992,
+        "tax_office_type": "세무서",
+        "tax_office_name": "금천세무서",
+        "distance": 476.9233483138423,
+        "walking_time": "약 8분"
+      }
+    ],
+    "theater": [
+      {
+        "theater_lat": 37.4864917793931,
+        "theater_lon": 126.905526238207,
+        "theater_type": "영화관",
+        "theater_name": "롯데시네마 신대방",
+        "distance": 722.0105521353681,
+        "walking_time": "약 11분"
+      },
+      {
+        "theater_lat": 37.4776190161713,
+        "theater_lon": 126.88905533739,
+        "theater_type": "영화관",
+        "theater_name": "롯데시네마 가산디지털",
+        "distance": 1041.6516300792105,
+        "walking_time": "약 16분"
+      }
+    ]
+  }
+}
