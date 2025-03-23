@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서울시 자치구별 범죄 분석</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+        }
+        .chart-container {
+            margin-top: 20px;
+            display: none;
+        }
+        canvas {
+            max-width: 100%;
+            margin: auto;
+        }
+        table {
+            width: 80%;
+            margin: 10px auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .analysis-box {
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            text-align: left;
+            border-left: 4px solid #4682b4;
+        }
+        .trend-up {
+            color: #cc0000;
+        }
+        .trend-down {
+            color: #008800;
+        }
+        .highlight {
+            font-weight: bold;
+            background-color: #ffffcc;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📊 서울시 자치구별 범죄 분석</h1>
+    <div class="container">
+        <div class="chart-container" id="crimeTrendContainer">
+            <h3>연도별 범죄 발생 추이</h3>
+            <canvas id="crimeChart"></canvas>
+            <div class="analysis-box" id="crimeTrendAnalysis">
+                <h4>📊 범죄 발생 추이 분석</h4>
+                <p id="crimeTrend"></p>
+                <p id="crimeYearComparison"></p>
+                <p id="crimeGrowth"></p>
+            </div>
+        </div>
+
+        <div class="chart-container" id="crimeTypeContainer">
+            <h3>범죄 유형별 비율</h3>
+            <canvas id="crimeTypeChart"></canvas>
+            <table id="crimeTable">
+                <thead>
+                    <tr>
+                        <th>범죄 유형</th>
+                        <th>건수</th>
+                        <th>비율 (%)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="analysis-box">
+                <h4>📊 범죄 유형별 분석</h4>
+                <p id="dominantCrimeType"></p>
+                <p id="crimeDistribution"></p>
+                <p id="crimeTypeInsight"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let crimeChart = null;
+        let typeChart = null;
+        let colors = {
+            "trend": "rgba(255, 99, 132, 1)",
+            "background": "rgba(255, 99, 132, 0.2)",
+            "crimeTypes": ["#FFB6C1", "#FFDAB9", "#FFFACD", "#B0E0E6", "#D8BFD8", "#98FB98"]
+        };
+        console.log("차트 객체 상태:", typeof crimeChart, crimeChart);
+        document.addEventListener("DOMContentLoaded", function() {
+            function waitForDistrictSelect(callback) {
+                let districtSelect = parent.document.getElementById("district-select");
+
+                if (districtSelect) {
+                    callback(districtSelect);
+                } else {
+                    console.warn("⚠️ 'district-select' 요소가 아직 로드되지 않았습니다. 다시 시도 중...");
+                    setTimeout(() => waitForDistrictSelect(callback), 500);
+                }
+            }
+
+            waitForDistrictSelect(function(districtSelect) {
+                console.log("✅ 'district-select' 요소가 정상적으로 로드되었습니다.");
+
+                crimeDataset = {}; // ✅ 전역 변수 선언
+
+                // ✅ JSON 파일 로드 (한 번만 수행)
+                fetch("/static/data/crime_data.json")
+                    .then(response => response.json())
+                    .then(data => {
+                        crimeDataset = data;
+
+                        let savedDistrict = sessionStorage.getItem("selectedDistrict");
+                        if (savedDistrict) {
+                            console.log("📌 저장된 구 불러오기:", savedDistrict);
+                            districtSelect.value = savedDistrict;
+                            updateChartsByDistrict(savedDistrict);
+                        }
+                    })
+                    .catch(error => console.error("데이터 로드 오류: ", error));
+
+                // ✅ `district-select` 값이 변경될 때 그래프 업데이트
+                districtSelect.addEventListener("change", function() {
+                    let selectedDistrict = districtSelect.value;
+
+                    if (!selectedDistrict) {
+                        console.warn("⚠️ 'district-select' 값이 비어 있어 updateChartsByDistrict 실행 안함.");
+                        return;
+                    }
+
+                    sessionStorage.setItem("selectedDistrict", selectedDistrict);
+                    updateChartsByDistrict(selectedDistrict);
+                });
+            });
+        });
+
+        // ✅ 선택한 구를 이용하여 그래프 업데이트 함수
+        function updateChartsByDistrict(selectedDistrict) {
+            if (!selectedDistrict) {
+                console.warn("⚠️ 'district-select' 값이 없습니다. updateCharts 실행 안함.");
+                return;
+            }
+
+            if (!crimeDataset[selectedDistrict]) {
+                console.error("❌ JSON 데이터에서 해당 구를 찾을 수 없습니다:", selectedDistrict);
+                document.querySelectorAll(".chart-container").forEach(el => el.style.display = "none");
+                return;
+            }
+
+            let data = crimeDataset[selectedDistrict];
+
+            if (!data) {
+                console.error("❌ 데이터가 없습니다. selectedDistrict:", selectedDistrict);
+                return;
+            }
+
+            console.log("✅ 매칭된 구 데이터:", selectedDistrict, data);
+            
+            document.querySelectorAll(".chart-container").forEach(el => el.style.display = "block");
+            updateCharts(data, selectedDistrict);
+        }
+
+        function updateCharts(data, districtName) {
+            if (!data) {
+                console.error("❌ updateCharts: 데이터가 없습니다. 실행 안함.");
+                return;
+            }
+
+            let crimeChartContainer = document.getElementById('crimeChart');
+            let typeChartContainer = document.getElementById('crimeTypeChart');
+
+            if (!crimeChartContainer || !typeChartContainer) {
+                console.error("❌ 차트 캔버스 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            if (typeof crimeChart !== 'undefined' && crimeChart !== null) {
+                crimeChart.destroy();
+            }
+            if (typeof typeChart !== 'undefined' && typeChart !== null) {
+                typeChart.destroy();
+            }
+
+            // 차트 컨테이너들 표시
+            document.querySelectorAll(".chart-container").forEach(el => el.style.display = "block");
+
+            // 범죄 추이 차트 업데이트
+            updateCrimeTrendChart(data, districtName);
+            
+            // 범죄 유형 차트 업데이트
+            updateCrimeTypeChart(data, districtName);
+            
+            // 분석 내용 업데이트
+            analyzeCrimeTrend(data, districtName);
+            analyzeCrimeTypes(data, districtName);
+        }
+
+        function updateCrimeTrendChart(data, districtName) {
+            let ctx = document.getElementById('crimeChart').getContext('2d');
+            if (!ctx) {
+                console.error("❌ 'crimeChart' 캔버스 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            const years = Object.keys(data[Object.keys(data)[0]]).sort();
+            const totalCrimes = years.map(year =>
+                Object.values(data).reduce((acc, cur) => acc + (cur[year] || 0), 0)
+            );
+
+            crimeChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [{
+                        label: `${districtName} 범죄 발생 건수`,
+                        data: totalCrimes,
+                        borderColor: colors.trend,
+                        backgroundColor: colors.background,
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: false }
+                    }
+                }
+            });
+        }
+
+        function updateCrimeTypeChart(data, districtName) {
+            let ctx = document.getElementById('crimeTypeChart').getContext('2d');
+            if (!ctx) {
+                console.error("❌ 'crimeTypeChart' 캔버스 요소를 찾을 수 없습니다.");
+                return;
+            }
+
+            const latestYear = Object.keys(Object.values(data)[0]).sort().pop();
+            const latestData = Object.keys(data).reduce((acc, key) => {
+                acc[key] = data[key][latestYear] || 0;
+                return acc;
+            }, {});
+            const total = Object.values(latestData).reduce((a, b) => a + b, 0);
+
+            typeChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(latestData),
+                    datasets: [{
+                        data: Object.values(latestData),
+                        backgroundColor: colors.crimeTypes
+                    }]
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            formatter: (value) => `${((value / total) * 100).toFixed(1)}%`,
+                            color: "#000",
+                            font: { weight: "bold", size: 20 },
+                            anchor: 'end',
+                            align: 'start',
+                            offset: 6
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+
+            // 테이블 업데이트
+            updateCrimeTable(latestData, total);
+        }
+
+        function updateCrimeTable(latestData, total) {
+            const tableBody = document.getElementById("crimeTable").getElementsByTagName("tbody")[0];
+            tableBody.innerHTML = "";
+            
+            Object.keys(latestData).forEach(type => {
+                const count = latestData[type];
+                const percentage = ((count / total) * 100).toFixed(1);
+                
+                let row = `<tr>
+                    <td>${type}</td>
+                    <td>${count}건</td>
+                    <td>${percentage}%</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function analyzeCrimeTrend(data, districtName) {
+            const years = Object.keys(data[Object.keys(data)[0]]).sort();
+            const totalCrimes = years.map(year =>
+                Object.values(data).reduce((acc, cur) => acc + (cur[year] || 0), 0)
+            );
+            
+            // 최근 추세 분석
+            const latestDiff = totalCrimes[totalCrimes.length-1] - totalCrimes[totalCrimes.length-2];
+            const crimeTrend = latestDiff > 0 ? "증가" : (latestDiff < 0 ? "감소" : "유지");
+            const trendClass = latestDiff > 0 ? "trend-up" : (latestDiff < 0 ? "trend-down" : "");
+            
+            // 첫 해와 마지막 해 비교
+            const firstYearTotal = totalCrimes[0];
+            const lastYearTotal = totalCrimes[totalCrimes.length-1];
+            const overallDiff = lastYearTotal - firstYearTotal;
+            const overallGrowth = ((overallDiff / firstYearTotal) * 100).toFixed(1);
+            
+            document.getElementById('crimeTrend').innerHTML = 
+                `${districtName}의 범죄 발생 건수는 최근 <span class="${trendClass}">${crimeTrend}</span> 추세를 보이고 있습니다.`;
+            
+            document.getElementById('crimeYearComparison').innerHTML = 
+                `최근 연도(${years[years.length-1]})의 범죄 발생 건수는 <span class="highlight">${lastYearTotal}건</span>으로, 이전 연도(${years[years.length-2]})의 ${totalCrimes[totalCrimes.length-2]}건 대비 <span class="${trendClass}">${Math.abs(latestDiff)}건 ${crimeTrend}</span>했습니다.`;
+            
+            document.getElementById('crimeGrowth').innerHTML = 
+                `${years[0]}년부터 ${years[years.length-1]}년까지 범죄 발생 건수는 <span class="highlight">${overallGrowth}%</span> 변화했습니다.`;
+        }
+            
+            function analyzeCrimeTypes(data, districtName) {
+        const latestYear = Object.keys(Object.values(data)[0]).sort().pop();
+        const latestData = Object.keys(data).reduce((acc, key) => {
+            acc[key] = data[key][latestYear] || 0;
+            return acc;
+        }, {});
+
+        const total = Object.values(latestData).reduce((a, b) => a + b, 0);
+
+        // 가장 많이 발생한 범죄 유형 찾기
+        let maxCrimeType = "";
+        let maxCrimeCount = 0;
+
+        for (const type in latestData) {
+            if (latestData[type] > maxCrimeCount) {
+                maxCrimeCount = latestData[type];
+                maxCrimeType = type;
+            }
+        }
+
+        // 범죄 유형별 주요 비율 계산
+        let crimeInsights = [];
+        for (const type in latestData) {
+            let percentage = ((latestData[type] / total) * 100).toFixed(1);
+            crimeInsights.push(`${type}: <span class="highlight">${percentage}%</span>`);
+        }
+
+        document.getElementById('dominantCrimeType').innerHTML = 
+            `최근 가장 많이 발생한 범죄 유형은 <span class="highlight">${maxCrimeType}</span>이며, 총 <span class="highlight">${maxCrimeCount}건</span>이 발생했습니다.`;
+
+        document.getElementById('crimeDistribution').innerHTML = 
+            `${districtName}에서 발생한 범죄 유형별 비율: ${crimeInsights.join(", ")}.`;
+
+        document.getElementById('crimeTypeInsight').innerHTML = 
+            `전체적으로 ${districtName}에서는 <span class="highlight">${maxCrimeType}</span>이 가장 우세하며, 범죄 예방을 위한 대응이 필요합니다.`;
+    }
+
+    // ✅ 선택한 구를 이용하여 그래프 및 분석 업데이트 함수
+    function updateChartsByDistrict(selectedDistrict) {
+        if (!selectedDistrict) {
+            console.warn("⚠️ 'district-select' 값이 없습니다. updateCharts 실행 안함.");
+            return;
+        }
+
+        if (!crimeDataset[selectedDistrict]) {
+            console.error("❌ JSON 데이터에서 해당 구를 찾을 수 없습니다:", selectedDistrict);
+            document.querySelectorAll(".chart-container").forEach(el => el.style.display = "none");
+            return;
+        }
+
+        let data =crimeDataset[selectedDistrict];
+
+        if (!data) {
+            console.error("❌ 데이터가 없습니다. selectedDistrict:", selectedDistrict);
+            return;
+        }
+
+        console.log("✅ 매칭된 구 데이터:", selectedDistrict, data);
+        
+        document.querySelectorAll(".chart-container").forEach(el => el.style.display = "block");
+        updateCharts(data, selectedDistrict);
+    }
+
+    function updateCharts(data, districtName) {
+        if (!data) {
+            console.error("❌ updateCharts: 데이터가 없습니다. 실행 안함.");
+            return;
+        }
+
+        let crimeChartContainer = document.getElementById('crimeChart');
+        let typeChartContainer = document.getElementById('crimeTypeChart');
+
+        if (!crimeChartContainer || !typeChartContainer) {
+            console.error("❌ 차트 캔버스 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        if (crimeChart) crimeChart.destroy();
+        if (typeChart) typeChart.destroy();
+
+        // 차트 컨테이너들 표시
+        document.querySelectorAll(".chart-container").forEach(el => el.style.display = "block");
+
+        // 범죄 추이 차트 업데이트
+        updateCrimeTrendChart(data, districtName);
+        
+        // 범죄 유형 차트 업데이트
+        updateCrimeTypeChart(data, districtName);
+        
+        // 분석 내용 업데이트
+        analyzeCrimeTrend(data, districtName);
+        analyzeCrimeTypes(data, districtName);
+    }
+
+    function updateCrimeTrendChart(data, districtName) {
+        let ctx = document.getElementById('crimeChart').getContext('2d');
+        if (!ctx) {
+            console.error("❌ 'crimeChart' 캔버스 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        const years = Object.keys(data[Object.keys(data)[0]]).sort();
+        const totalCrimes = years.map(year =>
+            Object.values(data).reduce((acc, cur) => acc + (cur[year] || 0), 0)
+        );
+
+        crimeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [{
+                    label: `${districtName} 범죄 발생 건수`,
+                    data: totalCrimes,
+                    borderColor: "rgba(255, 99, 132, 1)",
+                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: false }
+                },
+                plugins: {
+                    legend: { display: false } // ✅ 숫자 값 제거
+                }
+            }
+        });
+    }
+
+    function updateCrimeTypeChart(data, districtName) {
+        let ctx = document.getElementById('crimeTypeChart').getContext('2d');
+        if (!ctx) {
+            console.error("❌ 'crimeTypeChart' 캔버스 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        const latestYear = Object.keys(Object.values(data)[0]).sort().pop();
+        const latestData = Object.keys(data).reduce((acc, key) => {
+            acc[key] = data[key][latestYear] || 0;
+            return acc;
+        }, {});
+        const total = Object.values(latestData).reduce((a, b) => a + b, 0);
+
+        typeChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(latestData),
+                datasets: [{
+                    data: Object.values(latestData),
+                    backgroundColor: ["#FFB6C1", "#FFDAB9", "#FFFACD", "#B0E0E6", "#D8BFD8"]
+                }]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        formatter: (value) => `${((value / total) * 100).toFixed(1)}%`,
+                        color: "#000",
+                        font: { weight: "bold", size: 20 },
+                        anchor: 'end',
+                        align: 'start',
+                        offset: 6
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+
+        // ✅ 범죄 유형별 데이터 테이블 업데이트
+        updateCrimeTable(latestData, total);
+    }
+
+    function updateCrimeTable(latestData, total) {
+        const tableBody = document.getElementById("crimeTable").getElementsByTagName("tbody")[0];
+        tableBody.innerHTML = "";
+        
+        Object.keys(latestData).forEach(type => {
+            const count = latestData[type];
+            const percentage = ((count / total) * 100).toFixed(1);
+            
+            let row = `<tr>
+                <td>${type}</td>
+                <td>${count}건</td>
+                <td>${percentage}%</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+</script>
+</body>
+</html>

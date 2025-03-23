@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매물 추천</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <style>
+        body {
+            overflow-y: auto;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 120px; /* 하단 여백 */
+            width: 100%; /* 전체 너비 사용 */
+        }
+        .form-container {
+            max-width: 800px;  /* 모달 너비 증가 */
+            margin: 0 auto;    /* 가운데 정렬 */
+            padding: 0 15px;   /* 좌우 여백 추가 */
+        }
+        .button-container {
+            position: relative; /* absolute 대신 relative 사용 */
+            margin-top: 20px;   /* 상단 여백 추가 */
+            padding: 10px 16px; /* 상하 패딩 줄임 */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between; /* 버튼 좌우 정렬 */
+        }
+        /* 버튼 높이 및 너비 설정 */
+        #backButton {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 150px; /* 너비 제한 */
+        }
+        #submitButton {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 150px; /* 너비 제한 */
+        }
+        .weight-type {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .weight-type.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .slider-container {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        input[type=range] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-height: 700px) {
+            body {
+                padding-bottom: 150px; /* 작은 화면에서 더 큰 여백 */
+            }
+        }
+    </style>
+</head>
+<body class="bg-transparent">
+    <div class="p-6 w-full">
+        
+        <form method="post" action="{% url 'recommendations:modal_confirm' %}" class="space-y-4 form-container" id="weightForm">
+            {% csrf_token %}
+
+            <!-- 이전 페이지 데이터 (숨김) -->
+            <input type="hidden" name="age" value="{{ age|default_if_none:"" }}">
+            <input type="hidden" name="gender" value="{{ gender|default_if_none:"" }}">
+            <input type="hidden" name="preferred_facilities" value="{{ preferred_facilities|default_if_none:"" }}">
+            <input type="hidden" name="transport" value="{{ transport|default_if_none:"" }}">
+            <input type="hidden" name="desired_district" value="{{ desired_district|default_if_none:"" }}">
+            <input type="hidden" name="desired_dong" value="{{ desired_dong|default_if_none:"" }}">
+            <input type="hidden" name="property_type" value="{{ property_type|default_if_none:"" }}">
+            
+            <!-- 전세 정보 -->
+            {% if property_type == 'jeonse' %}
+            <input type="hidden" name="jeonse_deposit_min" value="{{ jeonse_deposit_min|default_if_none:"" }}">
+            <input type="hidden" name="jeonse_deposit_max" value="{{ jeonse_deposit_max|default_if_none:"" }}">
+            {% else %}
+            <!-- 월세 정보 -->
+            <input type="hidden" name="monthly_deposit_min" value="{{ monthly_deposit_min|default_if_none:"" }}">
+            <input type="hidden" name="monthly_deposit_max" value="{{ monthly_deposit_max|default_if_none:"" }}">
+            <input type="hidden" name="monthly_rent_min" value="{{ monthly_rent_min|default_if_none:"" }}">
+            <input type="hidden" name="monthly_rent_max" value="{{ monthly_rent_max|default_if_none:"" }}">
+            {% endif %}
+            
+            <!-- 가중치 유형 선택 -->
+            <input type="hidden" name="weight_type" id="weight_type" value="facility">
+            
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-gray-700">추천 가중치 유형</h2>
+                <p class="text-sm text-gray-600 mb-4">중요하게 생각하는 기준에 맞는 유형을 선택하세요.</p>
+                
+                <!-- 가중치 유형 선택 버튼 그리드 -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="weight-type selected bg-blue-500 text-white rounded-lg p-4 shadow-md" data-type="facility">
+                        <h3 class="font-bold text-center mb-2">편의시설 우선형</h3>
+                        <div class="text-sm">
+                            <p>편의시설: 60%</p>
+                            <p>시세 정보: 30%</p>
+                            <p>범죄율: 5%</p>
+                            <p>인구밀도: 5%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="weight-type bg-white text-gray-700 rounded-lg p-4 shadow-md" data-type="price">
+                        <h3 class="font-bold text-center mb-2">시세 우선형</h3>
+                        <div class="text-sm">
+                            <p>편의시설: 30%</p>
+                            <p>시세 정보: 50%</p>
+                            <p>범죄율: 15%</p>
+                            <p>인구밀도: 5%</p>
+                        </div>
+                    </div>
+                    
+                    <div class="weight-type bg-white text-gray-700 rounded-lg p-4 shadow-md" data-type="safety">
+                        <h3 class="font-bold text-center mb-2">안전 우선형</h3>
+                        <div class="text-sm">
+                            <p>편의시설: 30%</p>
+                            <p>시세 정보: 25%</p>
+                            <p>범죄율: 40%</p>
+                            <p>인구밀도: 5%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 사용자 정의 가중치 섹션 -->
+                <div class="custom-weights-section mt-8 bg-white rounded-lg p-4 shadow-md">
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" id="useCustomWeights" class="mr-2">
+                        <label for="useCustomWeights" class="font-bold">사용자 지정 가중치 사용</label>
+                    </div>
+                    
+                    <div id="customWeightsContainer" class="space-y-4 opacity-50">
+                        <!-- 편의시설 가중치 -->
+                        <div class="slider-container">
+                            <label class="block font-medium">편의시설 가중치: <span id="facilityWeightValue">30</span>%</label>
+                            <input type="range" id="facility_weight" name="facility_weight" min="0" max="100" value="30" disabled 
+                                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        
+                        <!-- 시세 가중치 -->
+                        <div class="slider-container">
+                            <label class="block font-medium">시세 정보 가중치: <span id="priceWeightValue">30</span>%</label>
+                            <input type="range" id="price_weight" name="price_weight" min="0" max="100" value="30" disabled
+                                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        
+                        <!-- 범죄율 가중치 -->
+                        <div class="slider-container">
+                            <label class="block font-medium">범죄율 가중치: <span id="crimeWeightValue">30</span>%</label>
+                            <input type="range" id="crime_weight" name="crime_weight" min="0" max="100" value="30" disabled
+                                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        
+                        <!-- 인구밀도 가중치 -->
+                        <div class="slider-container">
+                            <label class="block font-medium">인구밀도 가중치: <span id="populationWeightValue">10</span>%</label>
+                            <input type="range" id="population_weight" name="population_weight" min="0" max="100" value="10" disabled
+                                  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        
+                        <!-- 가중치 합계 확인 -->
+                        <div class="mt-2 p-2 bg-gray-100 rounded">
+                            <p class="text-sm">가중치 합계: <span id="totalWeight">100</span>% <span id="weightWarning" class="text-red-500 hidden">(합계는 100%가 되어야 합니다)</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container mt-6">
+                <button type="button" id="backButton"
+                        class="bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
+                    이전 페이지로
+                </button>
+                <button type="button" id="submitButton" 
+                        class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    추천 결과 보기
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initialize } from "{% static 'js/recommendations/page3.js' %}";
+        initialize();
+    </script>
+</body>
+</html> 

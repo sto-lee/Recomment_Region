@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부동산 매물 추천 분석</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+        }
+        .chart-container {
+            margin-top: 20px;
+            display: none;
+        }
+        canvas {
+            max-width: 100%;
+            margin: auto;
+        }
+        table {
+            width: 80%;
+            margin: 10px auto;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .analysis-box {
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            text-align: left;
+            border-left: 4px solid #4682b4;
+        }
+        .trend-up {
+            color: #008800;
+        }
+        .trend-down {
+            color: #cc0000;
+        }
+        .highlight {
+            font-weight: bold;
+            background-color: #ffffcc;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <h1>📊인구 분석</h1>
+    <div class="container">
+        <div class="chart-container" id="charts">
+            <h3>상주 인구 vs. 직장 인구</h3>
+            <canvas id="populationChart"></canvas>
+            <div class="analysis-box" id="populationAnalysis">
+                <h4>📊 인구 동향 분석</h4>
+                <p id="populationTrend"></p>
+                <p id="populationComparison"></p>
+                <p id="populationGrowth"></p>
+            </div>
+        </div>
+
+        <div class="chart-container" id="genderCharts">
+            <h3>남성 / 여성 인구</h3>
+            <canvas id="genderChart"></canvas>
+            <div class="analysis-box">
+                <h4>📊 성별 인구 분석</h4>
+                <p id="genderDifference"></p>
+                <p id="genderTrend"></p>
+            </div>
+        </div>
+
+        <div class="chart-container" id="ageGroupCharts">
+            <h3>연령별 인구 분포</h3>
+            <canvas id="ageGroupChart"></canvas>
+            <table id="ageGroupTable">
+                <thead>
+                    <tr>
+                        <th>연령대</th>
+                        <th>인구수</th>
+                        <th>비율 (%)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="analysis-box">
+                <h4>📊 연령대별 인구 분석</h4>
+                <p id="dominantAgeGroup"></p>
+                <p id="ageDistribution"></p>
+                <p id="ageGroupInsight"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chartInstance, genderChartInstance, ageGroupChartInstance;
+        let colors = {
+            "resident_total": "blue",
+            "worker_total": "orange",
+            "male": "green",
+            "female": "red",
+            "ageGroup": ["#FF9999", "#FFCC99", "#FFFF99", "#99FF99", "#99CCFF", "#CC99FF"]
+        };
+
+// #################################################################################################################################
+document.addEventListener("DOMContentLoaded", function() {
+    function waitForDongSelect(callback) {
+        let neighborhoodSelect = parent.document.getElementById("dong-select");
+
+        if (neighborhoodSelect) {
+            callback(neighborhoodSelect);
+        } else {
+            console.warn("⚠️ 'dong-select' 요소가 아직 로드되지 않았습니다. 다시 시도 중...");
+            setTimeout(() => waitForDongSelect(callback), 500);
+        }
+    }
+
+    waitForDongSelect(function(neighborhoodSelect) {
+        console.log("✅ 'dong-select' 요소가 정상적으로 로드되었습니다.");
+
+        window.dataset = {}; // ✅ 전역 변수 선언
+
+        // ✅ JSON 파일 로드 (한 번만 수행)
+        fetch("/static/data/population_data.json")
+            .then(response => response.json())
+            .then(data => {
+                window.dataset = data;
+
+                let savedDong = sessionStorage.getItem("selectedDong");
+                if (savedDong) {
+                    console.log("📌 저장된 동 불러오기:", savedDong);
+                    neighborhoodSelect.value = savedDong;
+                    updateChartsByDong(savedDong);
+                }
+            })
+            .catch(error => console.error("데이터 로드 오류: ", error));
+
+        // ✅ `dong-select` 값이 변경될 때 그래프 업데이트
+        neighborhoodSelect.addEventListener("change", function() {
+            let selectedDong = neighborhoodSelect.value;
+
+            if (!selectedDong) {
+                console.warn("⚠️ 'dong-select' 값이 비어 있어 updateChartsByDong 실행 안함.");
+                return;
+            }
+
+            sessionStorage.setItem("selectedDong", selectedDong);
+            updateChartsByDong(selectedDong);
+        });
+    });
+});
+
+// ✅ 선택한 동을 이용하여 그래프 업데이트 함수
+function updateChartsByDong(selectedDong) {
+    if (!selectedDong) {
+        console.warn("⚠️ 'dong-select' 값이 없습니다. updateCharts 실행 안함.");
+        return;
+    }
+
+    let matchedDong = Object.keys(window.dataset).find(dong => dong.includes(selectedDong) || selectedDong.includes(dong));
+
+    if (!matchedDong) {
+        console.error("❌ CSV 데이터에서 해당 동을 찾을 수 없습니다:", selectedDong);
+        document.querySelectorAll(".chart-container").forEach(el => el.style.display = "none");
+        return;
+    }
+
+    let data = window.dataset[matchedDong];
+
+    if (!data) {
+        console.error("❌ 데이터가 없습니다. matchedDong:", matchedDong);
+        return;
+    }
+
+    console.log("✅ 매칭된 동 데이터:", matchedDong, data);
+    
+    document.querySelectorAll(".chart-container").forEach(el => el.style.display = "block");
+    updateCharts(data);
+}
+
+// #################################################################################################################################
+function updateCharts(data) {
+    if (!data) {
+        console.error("❌ updateCharts: 데이터가 없습니다. 실행 안함.");
+        return;
+    }
+
+    let chartContainer = document.getElementById('populationChart');
+
+    if (!chartContainer) {
+        console.error("❌ 'populationChart' 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    if (window.chartInstance) window.chartInstance.destroy();
+    if (window.genderChartInstance) window.genderChartInstance.destroy();
+    if (window.ageGroupChartInstance) window.ageGroupChartInstance.destroy();
+
+    /*수정 영역*/
+    // 차트 컨테이너들 표시
+    document.querySelectorAll(".chart-container").forEach(el => el.style.display = "block");
+    /*수정 영역*/
+
+    let ctx1 = chartContainer.getContext('2d');
+    if (!ctx1) {
+        console.error("❌ 'populationChart' 캔버스 요소를 찾을 수 없습니다.");
+        return;
+    }
+
+    window.chartInstance = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: data.years,
+            datasets: [
+                { label: "상주 인구", data: data.resident_total, borderColor: "blue", borderWidth: 3, fill: false },
+                { label: "직장 인구", data: data.worker_total, borderColor: "orange", borderWidth: 3, fill: false }
+            ]
+        }
+    });
+
+    // ✅ 남성 vs. 여성 인구 그래프
+    let ctx2 = document.getElementById('genderChart')?.getContext('2d');
+    if (ctx2) {
+        window.genderChartInstance = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: data.years,
+                datasets: [
+                    { label: "남성 인구", data: data.male, borderColor: "green", borderWidth: 3, fill: false },
+                    { label: "여성 인구", data: data.female, borderColor: "red", borderWidth: 3, fill: false }
+                ]
+            }
+        });
+    }
+    /*수정 영역*/
+    let ctx3 = document.getElementById('ageGroupChart')?.getContext('2d');
+    if (ctx3) {
+        window.ageGroupChartInstance = new Chart(ctx3, {
+            type: 'pie',
+            data: {
+                labels: ["10대", "20대", "30대", "40대", "50대", "60대 이상"],
+                datasets: [{
+                    data: data.ageGroups,
+                    backgroundColor: colors["ageGroup"],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            // return `${value}명 (${((value / sum) * 100).toFixed(1)}%)`;
+                            return `${((value / sum) * 100).toFixed(1)}%`;
+                        },
+                        color: "#000",
+                        font: { weight: "bold", size: 20 },
+                        anchor: 'end',
+                        align: 'start',
+                        offset: 6
+                    }
+                }
+            },
+            plugins: [ChartDataLabels]
+        });
+    }
+
+    // 분석 내용 업데이트 추가
+    analyzePopulationTrend(data);
+    analyzeGenderDistribution(data);
+    analyzeAgeGroups(data);
+    /*수정 영역*/
+}
+
+// #################################################################################################################################
+
+        function analyzePopulationTrend(data) {
+            // 상주인구 최근 추세 분석
+            let residentDiff = data.resident_total[data.resident_total.length-1] - data.resident_total[data.resident_total.length-2];
+            let residentTrend = residentDiff > 0 ? "상승" : (residentDiff < 0 ? "하락" : "유지");
+            let residentClass = residentDiff > 0 ? "trend-up" : (residentDiff < 0 ? "trend-down" : "");
+            
+            // 직장인구 최근 추세 분석
+            let workerDiff = data.worker_total[data.worker_total.length-1] - data.worker_total[data.worker_total.length-2];
+            let workerTrend = workerDiff > 0 ? "상승" : (workerDiff < 0 ? "하락" : "유지");
+            let workerClass = workerDiff > 0 ? "trend-up" : (workerDiff < 0 ? "trend-down" : "");
+            
+            // 5년 변화율 계산
+            let residentGrowth = ((data.resident_total[data.resident_total.length-1] - data.resident_total[0]) / data.resident_total[0] * 100).toFixed(1);
+            let workerGrowth = ((data.worker_total[data.worker_total.length-1] - data.worker_total[0]) / data.worker_total[0] * 100).toFixed(1);
+            
+            document.getElementById('populationTrend').innerHTML = 
+                `상주 인구는 최근 <span class="${residentClass}">${residentTrend}</span> 추세이며, 직장 인구는 <span class="${workerClass}">${workerTrend}</span> 추세입니다.`;
+            
+            // 상주인구와 직장인구 비교
+            let lastYearDiff = data.resident_total[data.resident_total.length-1] - data.worker_total[data.worker_total.length-1];
+            let comparisonText = lastYearDiff > 0 ? 
+                `상주 인구(${data.resident_total[data.resident_total.length-1]}명)가 직장 인구(${data.worker_total[data.worker_total.length-1]}명)보다 <span class="highlight">${lastYearDiff}명</span> 더 많습니다.` : 
+                `직장 인구(${data.worker_total[data.worker_total.length-1]}명)가 상주 인구(${data.resident_total[data.resident_total.length-1]}명)보다 <span class="highlight">${-lastYearDiff}명</span> 더 많습니다.`;
+            
+            document.getElementById('populationComparison').innerHTML = comparisonText;
+            
+            document.getElementById('populationGrowth').innerHTML = 
+                `지난 5년간 상주 인구는 <span class="highlight">${residentGrowth}%</span>, 직장 인구는 <span class="highlight">${workerGrowth}%</span> 변화했습니다.`;
+        }
+
+        function analyzeGenderDistribution(data) {
+            // 남성/여성 비교
+            let maleLast = data.male[data.male.length-1];
+            let femaleLast = data.female[data.female.length-1];
+            let genderDiff = maleLast - femaleLast;
+            
+            let genderText = genderDiff > 0 ? 
+                `남성 인구(${maleLast}명)가 여성 인구(${femaleLast}명)보다 <span class="highlight">${genderDiff}명</span> 더 많습니다.` : 
+                `여성 인구(${femaleLast}명)가 남성 인구(${maleLast}명)보다 <span class="highlight">${-genderDiff}명</span> 더 많습니다.`;
+            
+            // 성별 인구 추세
+            let maleDiff = data.male[data.male.length-1] - data.male[data.male.length-2];
+            let femaleDiff = data.female[data.female.length-1] - data.female[data.female.length-2];
+
+            let maleTrend = maleDiff > 0 ? "증가" : (maleDiff < 0 ? "감소" : "유지");
+            let femaleTrend = femaleDiff > 0 ? "증가" : (femaleDiff < 0 ? "감소" : "유지");
+
+            let maleClass = maleDiff > 0 ? "trend-up" : (maleDiff < 0 ? "trend-down" : "");
+            let femaleClass = femaleDiff > 0 ? "trend-up" : (femaleDiff < 0 ? "trend-down" : "");
+
+            document.getElementById('genderDifference').innerHTML = genderText;
+            document.getElementById('genderTrend').innerHTML = 
+                `최근 1년간 남성 인구는 <span class="${maleClass}">${Math.abs(maleDiff)}명 ${maleTrend}</span>했으며, 여성 인구는 <span class="${femaleClass}">${Math.abs(femaleDiff)}명 ${femaleTrend}</span>했습니다.`;
+        }
+
+        function analyzeAgeGroups(data) {
+            const ageLabels = ["10대", "20대", "30대", "40대", "50대", "60대 이상"];
+            const ageGroups = data.ageGroups;
+            const total = ageGroups.reduce((sum, current) => sum + current, 0);
+            
+            // 연령대별 테이블 생성
+            let tableBody = document.querySelector("#ageGroupTable tbody");
+            tableBody.innerHTML = "";
+            
+            let maxAgeIndex = 0;
+            let maxAge = ageGroups[0];
+            
+            for (let i = 0; i < ageGroups.length; i++) {
+                if (ageGroups[i] > maxAge) {
+                    maxAge = ageGroups[i];
+                    maxAgeIndex = i;
+                }
+                
+                let percentage = ((ageGroups[i] / total) * 100).toFixed(1);
+                let row = `<tr>
+                    <td>${ageLabels[i]}</td>
+                    <td>${ageGroups[i]}명</td>
+                    <td>${percentage}%</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            }
+            
+            // 가장 많은 연령대 및 분포 특징 분석
+            document.getElementById('dominantAgeGroup').innerHTML = 
+                `가장 많은 연령대는 <span class="highlight">${ageLabels[maxAgeIndex]}</span>로, 전체 인구의 <span class="highlight">${((maxAge / total) * 100).toFixed(1)}%</span>를 차지합니다.`;
+            
+            // 연령 분포 특성
+            let young = (ageGroups[0] + ageGroups[1]) / total;
+            let middle = (ageGroups[2] + ageGroups[3]) / total;
+            let old = (ageGroups[4] + ageGroups[5]) / total;
+            
+            let ageCharacteristic = "";
+            if (young > middle && young > old) {
+                ageCharacteristic = "젊은 층(10-20대)이 많은 지역";
+            } else if (middle > young && middle > old) {
+                ageCharacteristic = "중장년층(30-40대)이 많은 지역";
+            } else {
+                ageCharacteristic = "고령층(50대 이상)이 많은 지역";
+            }
+            
+            document.getElementById('ageDistribution').innerHTML = 
+                `10-20대: ${((young * 100).toFixed(1))}%, 30-40대: ${((middle * 100).toFixed(1))}%, 50대 이상: ${((old * 100).toFixed(1))}%`;
+            
+            document.getElementById('ageGroupInsight').innerHTML = 
+                `이 지역은 <span class="highlight">${ageCharacteristic}</span>으로 분석됩니다.`;
+        }
+        
+    </script>
+</body>
+</html>

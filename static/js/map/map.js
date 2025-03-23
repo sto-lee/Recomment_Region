@@ -1,5 +1,6 @@
 // 지도 관련 전역 변수
 let map;
+let currentMarker; // 현재 활성화된 마커
 
 // 필터 상태를 저장할 변수
 let currentFilters = {
@@ -92,26 +93,55 @@ window.addEventListener("message", function(event) {
     }
 
     if (event.data.type === "moveToLocation") {
-        const address = event.data.address;
-        console.log("📌 지도 이동 요청 수신: ", address);
+        // 위치 이동 요청 처리
+        if (event.data.address) {
+            // 주소 기반 이동 (기존 기능)
+            const address = event.data.address;
+            console.log("📌 주소 기반 지도 이동 요청 수신: ", address);
 
-        if (!address) {
-            console.error("❌ map.js - 받은 주소가 유효하지 않음!");
-            return;
-        }
-
-        // ✅ 주소를 좌표로 변환하여 지도 이동
-        const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(address, function(result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                console.log("📍 지도 이동 좌표:", coords);
+            // ✅ 주소를 좌표로 변환하여 지도 이동
+            const geocoder = new kakao.maps.services.Geocoder();
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    console.log("📍 지도 이동 좌표:", coords);
+                    map.setCenter(coords);
+                    map.setLevel(4); // 줌 레벨 조정
+                } else {
+                    console.error("📍 지도 이동 실패 - 주소 검색 실패:", status);
+                }
+            });
+        } 
+        else if (event.data.lat !== undefined && event.data.lng !== undefined) {
+            // 좌표 기반 이동 (새로운 기능)
+            const lat = parseFloat(event.data.lat);
+            const lng = parseFloat(event.data.lng);
+            
+            if (!isNaN(lat) && !isNaN(lng)) {
+                console.log("📌 좌표 기반 지도 이동 요청 수신:", lat, lng);
+                const coords = new kakao.maps.LatLng(lat, lng);
+                
+                // 마커 처리
+                if (window.currentMarker) {
+                    window.currentMarker.setMap(null); // 기존 마커 제거
+                }
+                
+                // 새 마커 생성
+                window.currentMarker = new kakao.maps.Marker({
+                    position: coords,
+                    map: map
+                });
+                
+                // 지도 이동
                 map.setCenter(coords);
-                map.setLevel(4); // 줌 레벨 조정
+                map.setLevel(3); // 줌 레벨 더 가깝게 조정
+                console.log("✅ 좌표 기반 지도 이동 완료");
             } else {
-                console.error("📍 지도 이동 실패 - 주소 검색 실패:", status);
+                console.error("❌ 유효하지 않은 좌표:", event.data);
             }
-        });
+        } else {
+            console.error("❌ 이동할 위치 정보가 없음:", event.data);
+        }
     } 
     else if (event.data.type === "initializeMap") {
         console.log("📍 지도 초기화 요청 수신");
@@ -141,3 +171,38 @@ function setTransactionFilter(type) {
 // 함수들을 window 객체에 추가하여 외부에서 접근 가능하게 함
 window.setPropertyFilter = setPropertyFilter;
 window.setTransactionFilter = setTransactionFilter;
+
+// 지도 객체를 전역으로 노출
+window.kakaoMap = map;
+window.currentMarker = currentMarker;
+
+// 좌표로 지도 이동 함수 추가
+window.moveToCoordinates = function(lat, lng) {
+    if (!map) {
+        console.error('지도가 초기화되지 않았습니다.');
+        return false;
+    }
+    
+    try {
+        const coords = new kakao.maps.LatLng(lat, lng);
+        
+        // 마커 처리
+        if (window.currentMarker) {
+            window.currentMarker.setMap(null);
+        }
+        
+        // 새 마커 생성
+        window.currentMarker = new kakao.maps.Marker({
+            position: coords,
+            map: map
+        });
+        
+        // 지도 이동
+        map.setCenter(coords);
+        map.setLevel(3);
+        return true;
+    } catch (error) {
+        console.error('지도 이동 중 오류 발생:', error);
+        return false;
+    }
+};

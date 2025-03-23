@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입력 정보 확인</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <style>
+        body {
+            overflow-y: auto;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 80px; /* 하단 여백 */
+            width: 100%; /* 전체 너비 사용 */
+        }
+        .content-container {
+            max-width: 800px;  /* 모달 너비 증가 */
+            margin: 0 auto;    /* 가운데 정렬 */
+            padding: 0 15px;   /* 좌우 여백 추가 */
+        }
+        .button-container {
+            position: relative;
+            margin-top: 20px;
+            padding: 10px 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-container button {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 150px;
+        }
+        .info-section {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-item {
+            display: flex;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 0.75rem;
+        }
+        .info-label {
+            font-weight: 600;
+            width: 40%;
+            color: #4b5563;
+        }
+        .info-value {
+            width: 60%;
+            color: #111827;
+        }
+        .weight-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .weight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .weight-bar {
+            height: 16px;
+            border-radius: 8px;
+            background-color: #3b82f6;
+        }
+        .facility-tag {
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        @media (max-height: 700px) {
+            body {
+                padding-bottom: 120px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 pb-24 w-full">
+        <div class="content-container">
+            <div class="text-center mb-8">
+                <h1 class="text-xl font-bold bg-blue-600 text-white py-3 rounded-lg mb-4">
+                    입력 정보 확인
+                </h1>
+                <p class="text-gray-600">
+                    입력하신 정보를 확인하시고 문제가 없으면 [추천 결과 보기] 버튼을 눌러주세요.
+                </p>
+            </div>
+            
+            <!-- 기본 정보 섹션 -->
+            <div class="info-section">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">기본 정보</h2>
+                
+                <div class="info-item">
+                    <div class="info-label">나이</div>
+                    <div class="info-value">{{ age }}세</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">성별</div>
+                    <div class="info-value">
+                        {% if gender == 'male' %}남성
+                        {% elif gender == 'female' %}여성
+                        {% else %}{{ gender }}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">희망 거주 지역</div>
+                    <div class="info-value">
+                        {{ desired_district }}
+                        {% if desired_dong %} {{ desired_dong }}{% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">주 이용 교통수단</div>
+                    <div class="info-value">
+                        {% if transport == 'public' %}대중교통
+                        {% elif transport == 'car' %}자가용
+                        {% elif transport == 'walk' %}도보
+                        {% else %}{{ transport }}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">선호하는 편의시설</div>
+                    <div class="info-value">
+                        {% if facility_list %}
+                            <div class="flex flex-wrap">
+                                {% for facility in facility_list %}
+                                <span class="facility-tag">{{ facility }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            없음
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 매물 선호도 섹션 -->
+            <div class="info-section">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">매물 선호도</h2>
+                
+                <div class="info-item">
+                    <div class="info-label">선호하는 매물 형태</div>
+                    <div class="info-value">
+                        {% if property_type == 'jeonse' %}전세
+                        {% elif property_type == 'monthly' %}월세
+                        {% else %}{{ property_type }}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if property_type == 'jeonse' %}
+                <div class="info-item">
+                    <div class="info-label">전세 보증금 범위</div>
+                    <div class="info-value">
+                        {% if jeonse_deposit_min or jeonse_deposit_max %}
+                            {% if jeonse_deposit_min %}{{ jeonse_deposit_min }}만원{% else %}0원{% endif %}
+                            ~
+                            {% if jeonse_deposit_max %}{{ jeonse_deposit_max }}만원{% else %}제한 없음{% endif %}
+                        {% else %}
+                            설정 안함
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="info-item">
+                    <div class="info-label">월세 보증금 범위</div>
+                    <div class="info-value">
+                        {% if monthly_deposit_min or monthly_deposit_max %}
+                            {% if monthly_deposit_min %}{{ monthly_deposit_min }}만원{% else %}0원{% endif %}
+                            ~
+                            {% if monthly_deposit_max %}{{ monthly_deposit_max }}만원{% else %}제한 없음{% endif %}
+                        {% else %}
+                            설정 안함
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">월세 범위</div>
+                    <div class="info-value">
+                        {% if monthly_rent_min or monthly_rent_max %}
+                            {% if monthly_rent_min %}{{ monthly_rent_min }}만원{% else %}0원{% endif %}
+                            ~
+                            {% if monthly_rent_max %}{{ monthly_rent_max }}만원{% else %}제한 없음{% endif %}
+                        {% else %}
+                            설정 안함
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- 가중치 설정 섹션 -->
+            <div class="info-section">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">가중치 설정</h2>
+                
+                <div class="info-item">
+                    <div class="info-label">선택한 가중치 유형</div>
+                    <div class="info-value">{{ weight_type_name }}</div>
+                </div>
+                
+                <div class="weight-grid">
+                    <div class="weight-item">
+                        <div class="text-sm font-medium mr-2 w-24">편의시설:</div>
+                        <div class="flex-1 bg-gray-200 rounded-lg h-4">
+                            <div class="weight-bar" data-percent="{{ facility_weight }}"></div>
+                        </div>
+                        <div class="text-sm font-medium ml-2">{{ facility_weight }}%</div>
+                    </div>
+                    
+                    <div class="weight-item">
+                        <div class="text-sm font-medium mr-2 w-24">시세 정보:</div>
+                        <div class="flex-1 bg-gray-200 rounded-lg h-4">
+                            <div class="weight-bar" data-percent="{{ price_weight }}"></div>
+                        </div>
+                        <div class="text-sm font-medium ml-2">{{ price_weight }}%</div>
+                    </div>
+                    
+                    <div class="weight-item">
+                        <div class="text-sm font-medium mr-2 w-24">범죄율:</div>
+                        <div class="flex-1 bg-gray-200 rounded-lg h-4">
+                            <div class="weight-bar" data-percent="{{ crime_weight }}"></div>
+                        </div>
+                        <div class="text-sm font-medium ml-2">{{ crime_weight }}%</div>
+                    </div>
+                    
+                    <div class="weight-item">
+                        <div class="text-sm font-medium mr-2 w-24">인구밀도:</div>
+                        <div class="flex-1 bg-gray-200 rounded-lg h-4">
+                            <div class="weight-bar" data-percent="{{ population_weight }}"></div>
+                        </div>
+                        <div class="text-sm font-medium ml-2">{{ population_weight }}%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 버튼 영역 -->
+            <form action="{% url 'recommendations:modal_result' %}" method="post" class="mt-8">
+                {% csrf_token %}
+                
+                <!-- 모든 데이터를 hidden 필드로 전달 -->
+                <input type="hidden" name="age" value="{{ age }}">
+                <input type="hidden" name="gender" value="{{ gender }}">
+                <input type="hidden" name="preferred_facilities" value="{{ preferred_facilities }}">
+                <input type="hidden" name="transport" value="{{ transport }}">
+                <input type="hidden" name="desired_district" value="{{ desired_district }}">
+                <input type="hidden" name="desired_dong" value="{{ desired_dong }}">
+                <input type="hidden" name="property_type" value="{{ property_type }}">
+                <input type="hidden" name="weight_type" value="{{ weight_type }}">
+                <input type="hidden" name="facility_weight" value="{{ facility_weight }}">
+                <input type="hidden" name="price_weight" value="{{ price_weight }}">
+                <input type="hidden" name="crime_weight" value="{{ crime_weight }}">
+                <input type="hidden" name="population_weight" value="{{ population_weight }}">
+                
+                {% if property_type == 'jeonse' %}
+                <input type="hidden" name="jeonse_deposit_min" value="{{ jeonse_deposit_min }}">
+                <input type="hidden" name="jeonse_deposit_max" value="{{ jeonse_deposit_max }}">
+                {% else %}
+                <input type="hidden" name="monthly_deposit_min" value="{{ monthly_deposit_min }}">
+                <input type="hidden" name="monthly_deposit_max" value="{{ monthly_deposit_max }}">
+                <input type="hidden" name="monthly_rent_min" value="{{ monthly_rent_min }}">
+                <input type="hidden" name="monthly_rent_max" value="{{ monthly_rent_max }}">
+                {% endif %}
+                
+                <div class="button-container">
+                    <button type="button" onclick="window.history.back()" class="bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
+                        이전 페이지로
+                    </button>
+                    <button type="submit" class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        추천 결과 보기
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // 페이지 로드 시 가중치 막대의 너비를 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            const weightBars = document.querySelectorAll('.weight-bar');
+            weightBars.forEach(bar => {
+                const percent = bar.getAttribute('data-percent');
+                bar.style.width = percent + '%';
+            });
+        });
+    </script>
+</body>
+</html> 

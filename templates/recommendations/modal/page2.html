@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매물 추천</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <style>
+        body {
+            overflow-y: auto;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 120px; /* 하단 여백 더 크게 증가 */
+            width: 100%; /* 전체 너비 사용 */
+        }
+        .form-container {
+            max-width: 800px;  /* 모달 너비 증가 */
+            margin: 0 auto;    /* 가운데 정렬 */
+            padding: 0 15px;   /* 좌우 여백 추가 */
+        }
+        .button-container {
+            position: relative; /* absolute 대신 relative 사용 */
+            margin-top: 20px;   /* 상단 여백 추가 */
+            padding: 10px 16px; /* 상하 패딩 줄임 */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: flex;
+            justify-content: space-between; /* 버튼 좌우 정렬 */
+        }
+        /* 버튼 높이 및 너비 설정 */
+        #backButton {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 150px; /* 너비 제한 */
+        }
+        #submitButton {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 150px; /* 너비 제한 */
+        }
+        @media (max-height: 700px) {
+            body {
+                padding-bottom: 150px; /* 작은 화면에서 더 큰 여백 */
+            }
+        }
+    </style>
+</head>
+<body class="bg-transparent">
+    <div class="p-6 w-full">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">매물 선호도를 선택해 주세요!</h2>
+        
+        <form method="post" action="{% url 'recommendations:modal_page3' %}" class="space-y-4 form-container" id="preferenceForm">
+            {% csrf_token %}
+
+            <!-- 이전 페이지 데이터 (숨김) -->
+            <input type="hidden" name="age" value="{{ age|default_if_none:"" }}">
+            <input type="hidden" name="gender" value="{{ gender|default_if_none:"" }}">
+            <input type="hidden" name="preferred_facilities" value="{{ preferred_facilities|default_if_none:"" }}">
+            <input type="hidden" name="transport" value="{{ transport|default_if_none:"" }}">
+            <input type="hidden" name="desired_district" value="{{ desired_district|default_if_none:"" }}">
+            <input type="hidden" name="desired_dong" value="{{ desired_dong|default_if_none:"" }}">
+
+            <!-- 필수 정보 섹션 -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-gray-700">필수 정보</h2>
+
+                <!-- 선호 매물 정보 -->
+                <div>
+                    <label class="block font-medium mb-2">선호하는 매물 형태: <span class="text-red-500">*</span></label>
+                    <div class="flex gap-4">
+                        <label class="flex-1">
+                            <input type="radio" name="property_type" value="jeonse" class="hidden peer" required>
+                            <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                                전세
+                            </div>
+                        </label>
+                        <label class="flex-1">
+                            <input type="radio" name="property_type" value="monthly" class="hidden peer">
+                            <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                                월세
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 선택 정보 섹션 -->
+            <div class="space-y-4 mt-8">
+                <h2 class="text-lg font-semibold text-gray-700">선택 정보</h2>
+
+                <!-- 선호 시세 정보 -->
+                <div id="priceRangeSection" class="mb-10">
+                    <label class="block font-medium mb-2">선호 시세 범위:</label>
+                    <div class="space-y-4" id="jeonseSection">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">전세 보증금 (만원):</label>
+                            <div class="flex gap-4">
+                                <input type="number" name="jeonse_deposit_min" placeholder="최소"
+                                      class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <span class="self-center">~</span>
+                                <input type="number" name="jeonse_deposit_max" placeholder="최대"
+                                      class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4" id="monthlySection" style="display: none;">
+                        <div>
+                            <label class="block text-sm text-gray-600 mb-1">월세 보증금 (만원):</label>
+                            <div class="flex gap-4">
+                                <input type="number" name="monthly_deposit_min" placeholder="최소"
+                                      class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <span class="self-center">~</span>
+                                <input type="number" name="monthly_deposit_max" placeholder="최대"
+                                      class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="pb-6">
+                            <label class="block text-sm text-gray-600 mb-1">월세 (만원):</label>
+                            <div class="flex gap-4">
+                                <input type="number" name="monthly_rent_min" placeholder="최소"
+                                      class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <span class="self-center">~</span>
+                                <input type="number" name="monthly_rent_max" placeholder="최대"
+                                      class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container mt-6">
+                <button type="button" id="backButton"
+                        class="bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
+                    이전 페이지로
+                </button>
+                <button type="button" id="submitButton" 
+                        class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    다음 페이지로
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initialize } from "{% static 'js/recommendations/page2.js' %}";
+        initialize();
+    </script>
+</body>
+</html> 

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전월세 시세 분석</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+        }
+        .dropdown-container {
+            display: none;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .chart-container {
+            display: none;  /* 🚀 기본적으로 숨김 */
+            margin-top: 20px;
+        }
+        #buildingTypeChart, #transactionTypeChart {
+            max-width: 300px;
+            max-height: 300px;
+            margin: auto;
+        }
+        #no-selection-message {
+            display: none;
+            font-size: 18px;
+            color: gray;
+            margin-top: 20px;
+        }
+        .analysis-text {
+            display: none;
+            margin-top: 10px;
+            font-size: 16px;
+            text-align: left;
+            padding: 15px;
+            border-radius: 8px;
+            transition: opacity 0.3s ease-in-out;
+            background: linear-gradient(135deg, #ffe6e6, #e6f7ff); /* 🔥 부드러운 그라디언트 */
+            color: #333;
+            font-weight: normal;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid #ff6666; /* 왼쪽 테두리에 포인트 */
+        }
+        /* ✅ 특정 강조할 부분만 굵게 */
+        .analysis-text strong {
+            font-weight: bold;
+            color: black;
+        }
+        .highlight {
+        background-color: #fff53b;  /* 노란색 배경 */
+        color: #000;               /* 글자색 */
+        padding: 0 4px;            /* 좌우 여백 */
+        border-radius: 3px;        /* 모서리를 둥글게 */
+        font-weight: bold;         /* 굵게 표시 (옵션) */
+        }
+    </style>
+</head>
+<body>
+    <h2 id="analysis-title">📊 전월세 시세 분석</h2>
+    <div class="container">
+        <div class="dropdown-container">
+            <select id="region-select">
+                <option value="">법정동명 선택</option>
+            </select>
+            <select id="building-select">
+                <option value="">건물용도 선택</option>
+            </select>
+            <select id="transaction-select">
+                <option value="">거래유형 선택</option>
+            </select>
+        </div>
+        <p id="no-selection-message">조회하고 싶은 항목을 선택해주세요!</p>
+        <div class="chart-container" id="chart-area">
+            <canvas id="priceTrendChart"></canvas>
+        </div>
+        <div class="analysis-text" id="rent-analysis"></div>
+        <div class="analysis-text" id="deposit-rent-analysis"></div>
+        <div class="analysis-text" id="final-price-analysis"></div>
+    </div>
+
+    <script>
+        let priceChartInstance;
+        let buildingChartInstance;
+        let transactionChartInstance;
+        let csvData = [];
+
+        function loadCSVData() {
+            fetch('/static/data/서울_전월세_연도별_변화_통계_updated.csv')
+                .then(response => response.text())
+                .then(data => {
+                    parseCSV(data);
+                })
+                .catch(error => console.error("CSV 데이터 로드 오류: ", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const regionSelect = document.getElementById("region-select");
+
+            // ✅ 사용자가 지역(동)을 변경하면 sessionStorage에 저장
+            regionSelect.addEventListener("change", function () {
+                sessionStorage.setItem("selectedDong", regionSelect.value);
+                console.log("✅ 동 변경됨:", regionSelect.value);
+            });
+
+            // ✅ 페이지 로드 시 sessionStorage에서 동 불러와 적용
+            applyStoredSelection();
+        });
+
+        function parseCSV(csvText) {
+            const rows = csvText.split("\n").map(row => row.split(","));
+            const headers = rows.shift().map(header => header.trim());
+            csvData = rows.map(row => Object.fromEntries(row.map((val, index) => [headers[index], val.trim()])));
+            populateDropdowns();
+        }
+
+        function populateDropdowns() {
+            const regionSet = new Set();
+            const buildingSet = new Set();
+            const transactionSet = new Set();
+            
+            csvData.forEach(row => {
+                if (row["법정동명"] && row["법정동명"].trim() !== "") {
+                    regionSet.add(row["법정동명"].trim());
+                }
+                if (row["건물용도"] && row["건물용도"].trim() !== "") {
+                    buildingSet.add(row["건물용도"].trim());
+                }
+                if (row["거래유형"] && row["거래유형"].trim() !== "") {
+                    transactionSet.add(row["거래유형"].trim());
+                }
+            });
+
+            fillDropdown("region-select", regionSet);
+            fillDropdown("building-select", buildingSet);
+            fillDropdown("transaction-select", transactionSet);
+
+            // ✅ CSV 데이터를 다 채운 후 sessionStorage 값 반영
+            applyStoredSelection();
+        }
+
+        // ✅ 저장된 동을 적용하는 함수 추가
+        function applyStoredSelection() {
+            const savedDong = sessionStorage.getItem("selectedDong");
+            const regionSelect = document.getElementById("region-select");
+
+            if (savedDong && regionSelect) {
+                // 저장된 동이 드롭다운 옵션에 존재하는지 확인 후 적용
+                const options = Array.from(regionSelect.options);
+                if (options.some(option => option.value === savedDong)) {
+                    regionSelect.value = savedDong;
+                    console.log("🔄 저장된 동 적용:", savedDong);
+                    updateCharts(); // 선택된 값에 맞춰 차트 업데이트
+                }
+            }
+        }
+
+        window.addEventListener("message", function (event) {
+            if (event.data.type === "updateDong") {
+                const selectedDong = event.data.dong;
+                console.log("📩 listings.html에서 동 정보 수신:", selectedDong);
+
+                // ✅ 동 옵션이 로드된 후에 적용되도록 setTimeout 사용
+                function applyDongSelection() {
+                    const regionSelect = document.getElementById("region-select");
+                    const options = Array.from(regionSelect.options);
+                    
+                    if (options.length > 1) { // 드롭다운이 채워졌는지 확인
+                        if (options.some(option => option.value === selectedDong)) {
+                            regionSelect.value = selectedDong;
+                            console.log("✅ researchment.html - 동 자동 적용:", selectedDong);
+                            updateCharts(); // 선택된 값에 맞춰 차트 업데이트
+                        }
+                    } else {
+                        console.warn("⚠️ 동 목록이 아직 로드되지 않음. 300ms 후 다시 시도...");
+                        setTimeout(applyDongSelection, 300); // 300ms 후 재시도
+                    }
+                }
+
+                applyDongSelection(); // 첫 실행
+            }
+
+            if (event.data.type === "updateTransaction") {
+                const selectedTransaction = event.data.transaction;
+                console.log("📩 listings.html에서 거래유형 정보 수신:", selectedTransaction);
+
+                function applyTransactionSelection() {
+                    const transactionSelect = document.getElementById("transaction-select");
+                    const options = Array.from(transactionSelect.options);
+
+                    if (options.length > 1) { // 드롭다운이 채워졌는지 확인
+                        if (options.some(option => option.value === selectedTransaction)) {
+                            transactionSelect.value = selectedTransaction;
+                            console.log("✅ researchment.html - 거래유형 자동 적용:", selectedTransaction);
+                            updateCharts(); // 선택된 값에 맞춰 차트 업데이트
+                        }
+                    } else {
+                        console.warn("⚠️ 거래유형 목록이 아직 로드되지 않음. 300ms 후 다시 시도...");
+                        setTimeout(applyTransactionSelection, 300); // 300ms 후 재시도
+                    }
+                }
+
+                applyTransactionSelection(); // 첫 실행
+            }
+        });
+
+        function checkSelections() {
+            const region = document.getElementById("region-select").value;
+            
+            const noSelectionMessage = document.getElementById("no-selection-message");
+            const chartArea = document.getElementById("chart-area");
+
+            if (!region) {
+                noSelectionMessage.style.display = "block";
+                chartArea.style.display = "none";
+            } else {
+                noSelectionMessage.style.display = "none";
+                chartArea.style.display = "block";
+            }
+        }
+
+        function fillDropdown(id, dataSet) {
+            const dropdown = document.getElementById(id);
+            dataSet.forEach(value => {
+                const option = document.createElement("option");
+                option.value = value;
+                option.textContent = value;
+                dropdown.appendChild(option);
+            });
+        }
+
+        function updateCharts() {
+            updateAnalysisTitle();
+            updatePriceChart();
+            updateTextAnalysis();
+        }
+
+        function updateAnalysisTitle() {
+            const region = document.getElementById("region-select").value || "전월세";
+            const building = document.getElementById("building-select").value || "시세";
+            const transaction = document.getElementById("transaction-select").value || "";
+            document.getElementById("analysis-title").textContent = `📊 ${region} ${building} ${transaction} 분석`;
+        }
+
+        function updatePriceChart() {
+            const chartArea = document.getElementById("chart-area");
+            const selectedRegion = document.getElementById("region-select").value;
+            const selectedTransaction = document.getElementById("transaction-select").value;
+
+            if (!selectedRegion) {
+                chartArea.style.display = "none";
+                return;
+            }
+
+            if (!selectedTransaction) {
+                chartArea.style.display = "none"; // 거래유형이 선택되지 않으면 숨김
+                applyFadeEffect("no-selection-message", "");
+                return;
+            } else {
+                chartArea.style.display = "block"; // 거래유형이 선택되면 그래프 표시
+                applyFadeEffect("no-selection-message", "");
+            }
+
+            if (priceChartInstance) priceChartInstance.destroy();
+            const ctx = document.getElementById("priceTrendChart").getContext("2d");
+
+            const filteredData = csvData.filter(row =>
+                row["법정동명"] === selectedRegion && row["거래유형"] === selectedTransaction
+            );
+
+            if (filteredData.length === 0) {
+                chartArea.style.display = "none"; // 선택한 데이터가 없으면 그래프 숨기기
+                return;
+            }
+
+            const years = [...new Set(filteredData.map(row => row["년도"]))].sort();
+            const depositData = years.map(year => parseFloat(filteredData.find(row => row["년도"] === year)?.["보증금(만원)"]) || 0);
+            const rentData = years.map(year => parseFloat(filteredData.find(row => row["년도"] === year)?.["임대료(만원)"]) || 0);
+
+            priceChartInstance = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: years,
+                    datasets: [
+                        { label: "보증금", data: depositData, borderColor: "blue", borderWidth: 2, fill: false, yAxisID: 'y1' },
+                        { label: "임대료", data: rentData, borderColor: "red", borderWidth: 2, fill: false, yAxisID: 'y2' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y1: { position: 'left', title: { display: true, text: '보증금(만원)' } },
+                        y2: { position: 'right', title: { display: true, text: '임대료(만원)' } }
+                    }
+                }
+            });
+        }
+
+        function updateTextAnalysis() {
+            const selectedRegion = document.getElementById("region-select").value;
+            const selectedTransaction = document.getElementById("transaction-select").value; // 거래유형 선택 값
+
+            if (!selectedRegion) {
+                applyFadeEffect("rent-analysis", "🏡 원하는 지역을 선택해 주세요.");
+                applyFadeEffect("yearly-trend-analysis", "");
+                applyFadeEffect("deposit-rent-analysis", "");
+                applyFadeEffect("final-price-analysis", "");
+                return;
+            }
+
+            // ✅ 거래유형을 선택하지 않았다면 안내 메시지 출력
+            if (!selectedTransaction) {
+                applyFadeEffect("rent-analysis", "📢 거래유형(월세/전세)을 선택해 주세요!");
+                applyFadeEffect("yearly-trend-analysis", "");
+                applyFadeEffect("deposit-rent-analysis", "");
+                applyFadeEffect("final-price-analysis", "");
+                return;
+            }
+
+            // 🔍 선택한 지역 & 거래유형 데이터만 필터링
+            const filteredData = csvData.filter(row => row["법정동명"] === selectedRegion && row["거래유형"] === selectedTransaction);
+
+            if (filteredData.length === 0) {
+                applyFadeEffect("rent-analysis", `😢 해당 지역에 ${selectedTransaction} 데이터가 없습니다.`);
+                applyFadeEffect("yearly-trend-analysis", "");
+                applyFadeEffect("deposit-rent-analysis", "");
+                applyFadeEffect("final-price-analysis", "");
+                return;
+            }
+
+            // ✅ 시세 분석 텍스트 생성
+            let analysisText = generateAnalysisText(filteredData, selectedTransaction);
+            applyFadeEffect("rent-analysis", analysisText);
+
+            // ✅ 보증금 대비 월세 비율 분석 (월세만 적용)
+            if (selectedTransaction === "월세") {
+                let ratioText = generateDepositRentRatio(filteredData, selectedRegion);
+                applyFadeEffect("deposit-rent-analysis", ratioText);
+            } else {
+                applyFadeEffect("deposit-rent-analysis", "");  // 전세 선택 시 숨기기
+            }
+
+            // ✅ 최종 월세 또는 전세 평균가 출력
+            let avgPriceText = generateAvgPriceText(filteredData, selectedTransaction, selectedRegion);
+            applyFadeEffect("final-price-analysis", avgPriceText);
+        }
+
+        // 📌 분석 결과 생성 함수 (전세 / 월세 구분)
+        function generateAnalysisText(data, transactionType) {
+            if (data.length === 0) {
+                return `🚫 **${transactionType} 데이터 없음**`;
+            }
+
+            let yearlyPrice = {};
+            let yearlyCount = {};
+            let totalPrice = 0;
+            let totalCount = 0;
+            let priceKey = transactionType === "전세" ? "보증금(만원)" : "임대료(만원)";
+
+            data.forEach(row => {
+                let price = parseFloat(row[priceKey]);
+                if (price > 0) {
+                    if (!yearlyPrice[row["년도"]]) {
+                        yearlyPrice[row["년도"]] = 0;
+                        yearlyCount[row["년도"]] = 0;
+                    }
+                    yearlyPrice[row["년도"]] += price;
+                    yearlyCount[row["년도"]]++;
+
+                    totalPrice += price;
+                    totalCount++;
+                }
+            });
+
+            Object.keys(yearlyPrice).forEach(year => {
+                yearlyPrice[year] = (yearlyPrice[year] / yearlyCount[year]).toFixed(2);
+            });
+
+            let trendText = "데이터 부족";
+            let trendIcon = "❓";
+            let trendAdvice = "";
+
+            if (yearlyPrice["2022"] && yearlyPrice["2023"] && yearlyPrice["2024"]) {
+                let diff1 = yearlyPrice["2023"] - yearlyPrice["2022"];
+                let diff2 = yearlyPrice["2024"] - yearlyPrice["2023"];
+                
+                if (diff1 > 0 && diff2 > 0) {
+                    trendText = "계속 상승 중";
+                    trendIcon = "📈";
+                    trendAdvice = "앞으로도 가격이 상승할 가능성이 높으니 저렴한 다른 매물을 계약하는 것이 유리할 수 있습니다!";
+                } else if (diff1 < 0 && diff2 < 0) {
+                    trendText = "계속 하락 중";
+                    trendIcon = "📉";
+                    trendAdvice = "매물이 이전의 경우보다 저렴해지고 있으니 지금 계약하는게 좋은 선택이 될 수 있습니다!";
+                } else {
+                    trendText = "변동성 있음";
+                    trendIcon = "🔄";
+                    trendAdvice = "가격 변동이 있으니 다양한 매물을 비교해보고 신중히 결정하세요!";
+                }
+            }
+
+            return `
+                <strong> ${trendIcon} ${transactionType} 시세 분석 </strong> <br>
+                2022년: ${yearlyPrice["2022"] ? yearlyPrice["2022"] + "만 원" : "데이터 없음"}<br>
+                2023년: ${yearlyPrice["2023"] ? yearlyPrice["2023"] + "만 원" : "데이터 없음"}<br>
+                2024년: ${yearlyPrice["2024"] ? yearlyPrice["2024"] + "만 원" : "데이터 없음"}<br>
+                현재 ${trendText} 상태입니다. ${trendAdvice}
+            `; 
+        }
+
+        function generateDepositRentRatio(data, selectedRegion) {
+            let ratioData = {};
+
+            data.forEach(row => {
+                if (row["보증금(만원)"] && row["임대료(만원)"]) {
+                    let ratio = parseFloat(row["임대료(만원)"]) / parseFloat(row["보증금(만원)"]);
+                    ratioData[row["법정동명"]] = ratio;
+                }
+            });
+
+            let sortedRatio = Object.entries(ratioData).sort((a, b) => b[1] - a[1]);
+
+            let ratioText = `💸 <strong> ${selectedRegion} 보증금 대비 월세 비율 </strong> <br>`;
+            if (sortedRatio.length > 0) {
+                let ratioVal = sortedRatio[0][1] * 100; // 비율을 퍼센트로 변환
+                ratioText += `현재 보증금 대비 월세 비율은 <span class="highlight"> ${ratioVal.toFixed(2)}%</span>입니다.<br>`;
+                // 조건에 따라 메시지 추가
+                if (parseFloat(ratioVal.toFixed(2)) === 5.50) {
+                    ratioText += "보증금 대비 월세의 전환율이 적정수준입니다!<br><br><span style='font-size:12px;'>전월세변환율 = 보증금 * [기준금리(3.5) + 이율(2)]</span>";
+                } else if (parseFloat(ratioVal.toFixed(2)) > 5.50) {
+                    ratioText += "보증금 대비 월세의 전환율이 보편적인 월세전환율 수준보다 높습니다. 보증금에 비해 다소 높은 가격의 월세입니다!<br><br><span style='font-size:12px;'>전월세변환율 = 보증금 * [기준금리(3.5) + 이율(2)]</span>";
+                } else {
+                    ratioText += "보증금 대비 월세의 전환율이 보편적인 월세전환율 수준보다 저렴한 편입니다. 보증금에 비해 월세의 부담이 적은 지역입니다!<br><br><span style='font-size:12px;'>전월세변환율 = 보증금 * [기준금리(3.5) + 이율(2)]</span>";
+                }
+            } else {
+                ratioText += "데이터 없음";
+            }
+
+            return ratioText;
+        }
+
+        // 📌 최종 월세/전세 평균가 텍스트 생성 함수
+        function generateAvgPriceText(data, transactionType, selectedRegion) {
+            let totalPrice = 0, totalCount = 0;
+            let priceKey = transactionType === "전세" ? "보증금(만원)" : "임대료(만원)";
+
+            data.forEach(row => {
+                let price = parseFloat(row[priceKey]);
+                if (price > 0) {
+                    totalPrice += price;
+                    totalCount++;
+                }
+            });
+
+            let avgPrice = totalCount > 0 ? (totalPrice / totalCount).toFixed(2) : "데이터 없음";
+
+            return `🏠 <strong> ${selectedRegion} ${transactionType} 평균 시세 </strong> <br>
+                현재 ${selectedRegion}의 평균 ${transactionType}는 <span class="highlight"> ${avgPrice} </span>만 원입니다.<br>
+                ${transactionType === "월세" ? "매달 내야 하는 부담을 고려해서 신중히 선택하세요!" : "보증금을 잘 고려하여 적절한 매물을 찾아보세요!"}`;
+        }
+        
+
+        // 📌 텍스트 애니메이션 적용 (fade-in 효과)
+        function applyFadeEffect(elementId, newText) {
+            const element = document.getElementById(elementId);
+            
+            if (!element) return; // 요소가 존재하지 않으면 함수 종료
+
+            if (!newText.trim()) {
+                element.style.display = "none"; // 텍스트가 없으면 숨기기
+            } else {
+                element.style.display = "block"; // 텍스트가 있으면 보이기
+                element.style.opacity = 0;
+                setTimeout(() => {
+                    element.innerHTML = newText;
+                    element.style.opacity = 1;
+                }, 300);
+                "conversion-rate",
+                "전월세변환율 = 보증금 * [기준금리(3.5) + 이율(2)]"
+            }
+        }
+
+        window.onload = function() {
+            applyFadeEffect("rent-analysis", "");
+            applyFadeEffect("yearly-trend-analysis", "");
+            applyFadeEffect("deposit-rent-analysis", "");
+            applyFadeEffect("final-price-analysis", "");
+        };
+
+
+        document.addEventListener("DOMContentLoaded", loadCSVData);
+        document.querySelectorAll("select").forEach(select => select.addEventListener("change", () => {
+            checkSelections();
+            updateAnalysisTitle();
+            updatePriceChart();
+            updateTextAnalysis();
+        }));
+    </script>
+</body>
+</html>

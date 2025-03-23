@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매물 추천</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <style>
+        body {
+            overflow-y: auto;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 120px; /* 하단 여백 크게 증가 */
+            width: 100%; /* 전체 너비 사용 */
+        }
+        .form-container {
+            max-width: 800px;  /* 모달 너비 증가 */
+            margin: 0 auto;    /* 가운데 정렬 */
+            padding: 0 15px;   /* 좌우 여백 추가 */
+        }
+        .facility-item {
+            transition: all 0.3s ease;
+        }
+        .facility-item.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        /* 고정된 버튼 영역 */
+        .button-container {
+            position: relative; /* absolute 대신 relative 사용 */
+            margin-top: 30px;   /* 상단 여백 증가 */
+            margin-bottom: 20px; /* 하단 여백 추가 */
+            padding: 10px 16px; /* 상하 패딩 줄임 */
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: flex;
+            justify-content: flex-end; /* 버튼 우측 정렬 */
+        }
+        
+        /* 버튼 높이 및 너비 축소 */
+        #submitBtn {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            width: 150px; /* 너비 제한 */
+        }
+        
+        /* 미디어 쿼리 추가 */
+        @media (max-height: 700px) {
+            body {
+                padding-bottom: 150px; /* 작은 화면에서 더 큰 여백 */
+            }
+        }
+    </style>
+</head>
+<body class="bg-transparent">
+    <div class="p-6 w-full">
+        <form id="recommendForm" method="post" action="{% url 'recommendations:modal_page2' %}" class="space-y-4 form-container">
+            {% csrf_token %}
+            
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">필수 정보</h2>
+            
+            <!-- 나이 입력 -->
+            <div>
+                <label for="id_age" class="block font-medium mb-2">나이: <span class="text-red-500">*</span></label>
+                <input type="number" name="age" id="id_age" required 
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- 성별 선택 -->
+            <div>
+                <label class="block font-medium mb-2">성별: <span class="text-red-500">*</span></label>
+                <div class="flex gap-4">
+                    <label class="flex-1">
+                        <input type="radio" name="gender" value="male" class="hidden peer" required>
+                        <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                            남성
+                        </div>
+                    </label>
+                    <label class="flex-1">
+                        <input type="radio" name="gender" value="female" class="hidden peer">
+                        <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                            여성
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="space-y-3 mb-6">
+                <h2 class="text-lg font-semibold text-gray-700">선호하는 편의시설을 선택해 주세요! <span class="text-red-500">*</span></h2>
+                <!-- 선호 편의시설 선택 -->
+                <div>
+                    <label class="block font-medium mb-2">선호하는 편의시설 (우선순위대로 선택): <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto p-1 border rounded-lg" id="facilitySelection">
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="subway">지하철</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="bus">버스정류장</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="park_station">주차장</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="convenience_store">편의점</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="electric_gas_station">전기충전소</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="gas_station">주유소</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="supermarket">마트</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="self_laundromat">셀프빨래방</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="hospital">병원</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="police_office">경찰서</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="public_health_center">보건소</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="university">대학교</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="school">학교</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="education">교육기관</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="daycare">어린이집</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="park">공원</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="fitness">운동시설</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="theater">영화관</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="music_room">노래방</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="pc_room">PC방</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="outdorr_sports">야외스포츠</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="tax_office">세무서</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="post_office">우체국</div>
+                        <div class="facility-item p-2 border rounded-lg cursor-pointer hover:bg-gray-50 h-10 flex items-center justify-center" data-facility="community_center">주민센터</div>
+                    </div>
+                    <input type="hidden" name="preferred_facilities" id="preferred_facilities" required>
+                    <div id="selectedFacilities" class="mt-2 text-sm text-gray-600"></div>
+                </div>
+            </div>
+
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">선택 정보</h2>
+
+            <!-- 주 이동수단 -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-700 mb-2">주 교통수단을 선택해 주세요!</h2>
+                <div>
+                    <label class="block font-medium mb-2">주 이용 교통수단:</label>
+                    <div class="flex gap-4">
+                        <label class="flex-1">
+                            <input type="radio" name="transport" value="bus" class="hidden peer">
+                            <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                                버스
+                            </div>
+                        </label>
+                        <label class="flex-1">
+                            <input type="radio" name="transport" value="subway" class="hidden peer">
+                            <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                                지하철
+                            </div>
+                        </label>
+                        <label class="flex-1">
+                            <input type="radio" name="transport" value="car" class="hidden peer">
+                            <div class="text-center py-2 border rounded-lg peer-checked:bg-blue-500 peer-checked:text-white cursor-pointer">
+                                자가용
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 희망 거주 지역 -->
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold text-gray-700 mb-2">희망 거주 지역을 선택해 주세요! (구)<span class="text-red-500">*</span></h2>
+                <div>
+                    <label class="block font-medium mb-2">희망 거주 지역: <span class="text-red-500">* 구 선택 필수</span></label>
+                    <div class="flex gap-4">
+                        <div class="flex-1">
+                            <select id="district-select" name="desired_district" required
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">구 선택</option>
+                                <!-- 구 목록은 API로 가져옵니다 -->
+                            </select>
+                        </div>
+                        <div class="flex-1">
+                            <select id="dong-select" name="desired_dong"
+                                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">동 선택 (선택사항)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 버튼 영역 추가 -->
+            <div class="button-container">
+                <button type="button" id="submitBtn" class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    다음 페이지로
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initialize } from "{% static 'js/recommendations/page1.js' %}";
+        initialize();
+    </script>
+</body>
+</html> 

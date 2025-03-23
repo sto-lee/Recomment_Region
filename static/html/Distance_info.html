@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주변 시설 거리 정보</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+        }
+        .facility-group {
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .facility-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .facility-item:last-child {
+            border-bottom: none;
+        }
+        .distance-badge {
+            background-color: #4682b4;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+        .close-distance {
+            background-color: #2ecc71;
+        }
+        .medium-distance {
+            background-color: #f1c40f;
+        }
+        .far-distance {
+            background-color: #e74c3c;
+        }
+        .facility-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+        .facility-info {
+            display: flex;
+            align-items: center;
+        }
+        .analysis-box {
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            text-align: left;
+            border-left: 4px solid #4682b4;
+        }
+        .facility-type-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .facility-type-header h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: #495057;
+        }
+        .count-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .count-slider {
+            width: 100px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: #e9ecef;
+            border-radius: 2px;
+            outline: none;
+        }
+        .count-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #4682b4;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .count-value {
+            min-width: 20px;
+            text-align: right;
+            color: #4682b4;
+            font-weight: bold;
+        }
+        .facilities-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏃‍♂️ 도보 거리 정보</h1>
+    <div class="container">
+        <div id="facilityDistances">
+            <!-- 데이터는 JavaScript로 동적 생성됨 -->
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수로 현재 데이터 저장
+        let currentData = null;
+
+        // 시설별 상위 N개 항목 추출 (N은 선택 가능)
+        function getTopNFacilities(data, facilityType, n = 5) {
+            if (!data.facilities[facilityType]) return [];
+            return data.facilities[facilityType]
+                .sort((a, b) => a.distance - b.distance)
+                .slice(0, n)
+                .map(item => ({
+                    name: item[`${facilityType}_name`],
+                    type: item[`${facilityType}_type`],
+                    distance: (item.distance / 1000).toFixed(2),
+                    walking_time: item.walking_time
+                }));
+        }
+
+        // 거리에 따른 배지 클래스 결정
+        function getDistanceClass(distance) {
+            if (distance <= 0.5) return 'close-distance';
+            if (distance <= 1) return 'medium-distance';
+            return 'far-distance';
+        }
+
+        // 시설 정보 업데이트
+        async function updateFacilityDistances(center, level) {
+            const container = document.getElementById('facilityDistances');
+            container.innerHTML = '';
+
+            try {
+                // JSON 파일 경로 생성
+                const fileName = `cluster_${center.lat}_${center.lng}.json`;
+                const folderName = level <= 3 ? 'cluster_json_zoom3_with_walking_time' : 'cluster_json_zoom4_with_walking_time';
+                const response = await fetch(`/static/data/dataset/walking_distance/${folderName}/${fileName}`);
+                
+                // 파일이 없는 경우 처리
+                if (!response.ok) {
+                    throw new Error('해당 위치의 데이터를 찾을 수 없습니다.');
+                }
+
+                const data = await response.json();
+                // 데이터를 전역 변수에 저장
+                currentData = data;
+                
+                // 데이터 구조 확인
+                if (!data || !data.facilities) {
+                    throw new Error('올바른 데이터 형식이 아닙니다.');
+                }
+
+                // 시설 종류별로 그룹화
+                const facilityGroups = {
+                    "교통": {types: ["subway", "bus", "park_station"], names: ["지하철", "버스정류장", "주차장"]},
+                    "편의시설": {types: ["convenience_store", "electric_gas_station", "gas_station", "supermarket", "self_laundromat"], names: ["편의점", "전기 충전소", "주유소", "마트", "셀프 빨래방"]},
+                    "의료/안전": {types: ["hospital", "police_office", "public_health_center"], names: ["병원", "경찰서", "보건소"]},
+                    "교육": {types: ["university", "school", "education", "daycare"], names: ["대학", "학교", "교육기관", "어린이집"]},
+                    "여가": {types: ["park", "fitness", "theater", "music_room", "pc_room", "outdorr_sports"], names: ["공원", "운동시설", "영화관", "노래방", "PC방", "야외 스포츠"]},
+                    "기타": {types: ["tax_office", "post_office", "community_center"], names: ["세무서", "우체국", "주민센터"]}
+                };
+
+                for (const [groupName, group] of Object.entries(facilityGroups)) {
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'facility-group';
+                    groupDiv.innerHTML = `<h3>${groupName}</h3>`;
+
+                    let hasAnyFacilities = false;
+
+                    group.types.forEach((type, index) => {
+                        const facilityName = group.names[index];
+                        const facilities = getTopNFacilities(data, type, 5); // 기본값 5개
+                        
+                        if (facilities.length > 0) {
+                            hasAnyFacilities = true;
+                            
+                            // 시설 유형 헤더와 개수 선택 바 추가
+                            groupDiv.innerHTML += `
+                                <div class="facility-type-header">
+                                    <h4>${facilityName}</h4>
+                                    <div class="count-selector">
+                                        <input type="range" 
+                                               min="5" 
+                                               max="10" 
+                                               value="5" 
+                                               class="count-slider" 
+                                               data-type="${type}"
+                                               oninput="updateFacilityCount(this, '${type}')">
+                                        <span class="count-value">5</span>개
+                                    </div>
+                                </div>
+                                <div id="facilities-${type}" class="facilities-container">
+                                    ${facilities.map(facility => `
+                                        <div class="facility-item">
+                                            <div class="facility-info">
+                                                <span>${facility.name}</span>
+                                            </div>
+                                            <div class="distance-info">
+                                                <span class="distance-badge ${getDistanceClass(parseFloat(facility.distance))}">
+                                                    ${facility.distance}km
+                                                </span>
+                                                <span class="text-sm text-gray-500 ml-2">
+                                                    ${facility.walking_time}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `;
+                        }
+                    });
+
+                    // 시설이 하나라도 있는 그룹만 추가
+                    if (hasAnyFacilities) {
+                        container.appendChild(groupDiv);
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error loading facility data:', error);
+                container.innerHTML = `
+                    <div class="error-message" style="text-align: center; padding: 20px; color: #e74c3c;">
+                        <p>🚫 ${error.message || '데이터를 불러오는 중 오류가 발생했습니다.'}</p>
+                        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                            다른 클러스터를 선택해주세요.
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // 시설 개수 업데이트 함수 수정
+        function updateFacilityCount(slider, type) {
+            if (!currentData) return;
+
+            const container = document.getElementById(`facilities-${type}`);
+            const countValue = slider.parentElement.querySelector('.count-value');
+            const selectedCount = parseInt(slider.value);
+            
+            countValue.textContent = selectedCount;
+            
+            // 선택된 개수만큼 시설 표시 업데이트
+            const facilities = getTopNFacilities(currentData, type, selectedCount);
+            
+            // 시설 목록 HTML 생성
+            const facilitiesHTML = facilities.map(facility => `
+                <div class="facility-item">
+                    <div class="facility-info">
+                        <span>${facility.name}</span>
+                    </div>
+                    <div class="distance-info">
+                        <span class="distance-badge ${getDistanceClass(parseFloat(facility.distance))}">
+                            ${facility.distance}km
+                        </span>
+                        <span class="text-sm text-gray-500 ml-2">
+                            ${facility.walking_time}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = facilitiesHTML;
+        }
+
+        // 메시지 수신 이벤트 리스너
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'updateDistances') {
+                updateFacilityDistances(event.data.center, event.data.level);
+            }
+        });
+    </script>
+</body>
+</html>
